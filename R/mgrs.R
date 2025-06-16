@@ -1,5 +1,5 @@
 
-#' MGRS
+#' MGRS (not useful yet, we only take length-1 input)
 #'
 #' @param x in forward mode a lon,lat coordinate
 #' @param code in reverse mode an MGRS code string

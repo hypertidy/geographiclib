@@ -11,3 +11,7 @@ mgrs_rev_cpp <- function(mgrs) {
 mgrs_decode_cpp <- function(mgrs) {
   .Call(`_geographiclib_mgrs_decode_cpp`, mgrs)
 }
+
+polygonarea_cpp <- function() {
+  .Call(`_geographiclib_polygonarea_cpp`)
+}

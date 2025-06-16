@@ -26,12 +26,20 @@ extern "C" SEXP _geographiclib_mgrs_decode_cpp(SEXP mgrs) {
     return cpp11::as_sexp(mgrs_decode_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(mgrs)));
   END_CPP11
 }
+// 000_polygonarea_geographiclib.cpp
+cpp11::doubles polygonarea_cpp();
+extern "C" SEXP _geographiclib_polygonarea_cpp() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(polygonarea_cpp());
+  END_CPP11
+}
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_mgrs_decode_cpp", (DL_FUNC) &_geographiclib_mgrs_decode_cpp, 1},
     {"_geographiclib_mgrs_fwd_cpp",    (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,    1},
     {"_geographiclib_mgrs_rev_cpp",    (DL_FUNC) &_geographiclib_mgrs_rev_cpp,    1},
+    {"_geographiclib_polygonarea_cpp", (DL_FUNC) &_geographiclib_polygonarea_cpp, 0},
     {NULL, NULL, 0}
 };
 }

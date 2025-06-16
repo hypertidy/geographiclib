@@ -3,7 +3,7 @@
 \name{mgrs_fwd}
 \alias{mgrs_fwd}
 \alias{mgrs_rev}
-\title{MGRS}
+\title{MGRS (not useful yet, we only take length-1 input)}
 \usage{
 mgrs_fwd(x)
 
@@ -18,7 +18,7 @@ mgrs_rev(code)
 lon,lat,x,y,zone,northp vector in reverse mode, MGRS code in forward mode
 }
 \description{
-MGRS
+MGRS (not useful yet, we only take length-1 input)
 }
 \examples{
 (code <- mgrs_fwd(c(147.325, -42.881)))

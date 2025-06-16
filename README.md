@@ -23,6 +23,22 @@ Notes for work in progress:
   <https://github.com/geographiclib/geographiclib>
   0a6067b74d2c5316afceb61e3a7a2b2f262960d8)
 
+## Have questions?
+
+Other packages that include source from GeographicLib are these, none
+were suitable for my purposes:
+
+- geosphere for miscellaneous (I considered extending geosphere but it’s
+  not a very responsive project)
+- nngeo for near neighbours
+- geodist for distance calcs
+- sf for distance calcs
+- terra for various
+- googlePolylines
+- BH
+- lwgeom
+- s2
+
 ## Installation
 
 You can install the development version of geographiclib like so:

@@ -2,4 +2,5 @@
 
 export(mgrs_fwd)
 export(mgrs_rev)
+export(polygon_area)
 useDynLib(geographiclib, .registration = TRUE)
