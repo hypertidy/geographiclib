@@ -8,6 +8,14 @@
 \description{
 GeographicLib functions, starting with MGRS.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/hypertidy/geographiclib}
+  \item Report bugs at \url{https://github.com/hypertidy/geographiclib/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Michael Sumner \email{mdsumner@gmail.com}
 

@@ -19,11 +19,19 @@ extern "C" SEXP _geographiclib_mgrs_rev_cpp(SEXP mgrs) {
     return cpp11::as_sexp(mgrs_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(mgrs)));
   END_CPP11
 }
+// 000_mgrs_geographiclib.cpp
+cpp11::strings mgrs_decode_cpp(cpp11::strings mgrs);
+extern "C" SEXP _geographiclib_mgrs_decode_cpp(SEXP mgrs) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mgrs_decode_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(mgrs)));
+  END_CPP11
+}
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_geographiclib_mgrs_fwd_cpp", (DL_FUNC) &_geographiclib_mgrs_fwd_cpp, 1},
-    {"_geographiclib_mgrs_rev_cpp", (DL_FUNC) &_geographiclib_mgrs_rev_cpp, 1},
+    {"_geographiclib_mgrs_decode_cpp", (DL_FUNC) &_geographiclib_mgrs_decode_cpp, 1},
+    {"_geographiclib_mgrs_fwd_cpp",    (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,    1},
+    {"_geographiclib_mgrs_rev_cpp",    (DL_FUNC) &_geographiclib_mgrs_rev_cpp,    1},
     {NULL, NULL, 0}
 };
 }

@@ -7,3 +7,7 @@ mgrs_fwd_cpp <- function(ll) {
 mgrs_rev_cpp <- function(mgrs) {
   .Call(`_geographiclib_mgrs_rev_cpp`, mgrs)
 }
+
+mgrs_decode_cpp <- function(mgrs) {
+  .Call(`_geographiclib_mgrs_decode_cpp`, mgrs)
+}

@@ -48,3 +48,16 @@ cpp11::doubles mgrs_rev_cpp(cpp11::strings mgrs) {
   out.names() = {"lon", "lat", "x", "y", "zone", "northp"};
   return out;
 }
+
+[[cpp11::register]]
+cpp11::strings mgrs_decode_cpp(cpp11::strings mgrs) {
+  string gridzone, block, easting, northing;
+  MGRS::Decode(mgrs[0], gridzone, block, easting, northing);
+  writable::strings out(4);
+  out[0] = gridzone;
+  out[1] = block;
+  out[2] = easting;
+  out[3] = northing;
+  out.names() = {"gridzone", "block", "easting", "northing"};
+  return out;
+}
