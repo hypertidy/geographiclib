@@ -9,22 +9,32 @@ namespace writable = cpp11::writable;
 
 using namespace std;
 using namespace GeographicLib;
-[[cpp11::register]]
-cpp11::strings mgrs_fwd_cpp(cpp11::doubles ll) {
 
+
+string mgrs_fwd0(double lon, double lat, int precision) {
   // Sample forward calculation
   //double lat = -42.881, lon = 147.325; // nipaluna
-  double lon = ll[0];
-  double lat = ll[1];
   int zone;
   bool northp;
   double x, y;
   UTMUPS::Forward(lat, lon, zone, northp, x, y);
   string mgrs;
-  MGRS::Forward(zone, northp, x, y, lat, 5, mgrs);
-
-  writable::strings out(1);
-  out[0] = mgrs;
+  MGRS::Forward(zone, northp, x, y, lat, precision, mgrs);
+  return mgrs;
+}
+[[cpp11::register]]
+cpp11::strings mgrs_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers precision) {
+  size_t nn = lon.size();
+  int zone;
+  bool northp;
+  double x, y;
+  string mgrs;
+  writable::strings out(nn);
+  for (size_t i = 0; i < nn; i++) {
+   UTMUPS::Forward(lat[i], lon[i], zone, northp, x, y);
+    MGRS::Forward(zone, northp, x, y, lat[i], precision[i], mgrs);
+    out[i] = mgrs;
+  }
  return out;
 }
 [[cpp11::register]]

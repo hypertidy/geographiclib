@@ -61,6 +61,15 @@ library(geographiclib)
 mgrs_rev(code)
 ```
 
+The foward mode is vectorized on coordinate and precision value. 
+
+```{r vectorized-mgrs}
+pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
+dput(pts)
+mgrs_fwd(pts, precision = 0:5)
+mgrs_fwd(pts, precision = 5:0)
+
+```
 ## Code of Conduct
   
 Please note that the geographiclib project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

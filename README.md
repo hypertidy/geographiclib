@@ -62,6 +62,23 @@ mgrs_rev(code)
 #>     147.325     -42.881  526541.500 5252348.500      55.000       0.000
 ```
 
+The foward mode is vectorized on coordinate and precision value.
+
+``` r
+pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
+dput(pts)
+#> structure(c(-124.283308396116, 1.25723057426512, 166.786755686626, 
+#> -110.804824540392, 21.6347536537796, -129.085749993101, -30.6520690815523, 
+#> -64.1709041548893, -83.9470116840675, -87.5648662308231, 40.6639107735828, 
+#> 52.7895963191986), dim = c(6L, 2L))
+mgrs_fwd(pts, precision = 0:5)
+#> [1] "10JCM"           "31DDJ18"         "BBF5345"         "AXM472039"      
+#> [5] "34TEL53650164"   "09UVU9421748868"
+mgrs_fwd(pts, precision = 5:0)
+#> [1] "10JCM7704008254" "31DDJ15288278"   "BBF537451"       "AXM4703"        
+#> [5] "34TEL50"         "09UVU"
+```
+
 ## Code of Conduct
 
 Please note that the geographiclib project is released with a

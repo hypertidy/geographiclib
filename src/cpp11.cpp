@@ -6,10 +6,10 @@
 #include <R_ext/Visibility.h>
 
 // 000_mgrs_geographiclib.cpp
-cpp11::strings mgrs_fwd_cpp(cpp11::doubles ll);
-extern "C" SEXP _geographiclib_mgrs_fwd_cpp(SEXP ll) {
+cpp11::strings mgrs_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers precision);
+extern "C" SEXP _geographiclib_mgrs_fwd_cpp(SEXP lon, SEXP lat, SEXP precision) {
   BEGIN_CPP11
-    return cpp11::as_sexp(mgrs_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(ll)));
+    return cpp11::as_sexp(mgrs_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(precision)));
   END_CPP11
 }
 // 000_mgrs_geographiclib.cpp
@@ -37,7 +37,7 @@ extern "C" SEXP _geographiclib_polygonarea_cpp() {
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_mgrs_decode_cpp", (DL_FUNC) &_geographiclib_mgrs_decode_cpp, 1},
-    {"_geographiclib_mgrs_fwd_cpp",    (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,    1},
+    {"_geographiclib_mgrs_fwd_cpp",    (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,    3},
     {"_geographiclib_mgrs_rev_cpp",    (DL_FUNC) &_geographiclib_mgrs_rev_cpp,    1},
     {"_geographiclib_polygonarea_cpp", (DL_FUNC) &_geographiclib_polygonarea_cpp, 0},
     {NULL, NULL, 0}
