@@ -1,0 +1,52 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# geographiclib
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of geographiclib is to wrap the awesome [GeographicLib](https://geographiclib.sourceforge.io/) library. 
+
+Currently only reverse and forward for a simple MGRS conversion is exposed, WIP. 
+
+Notes for work in progress: 
+
+* no changes made to source files, check complains about kissfft.hh and src/GeographicLib/Makefile
+* source code for *this* package is named "000_stuff_geographiclib.cpp" to differentiate from the original sources, which are all included
+* see data-raw/GeographicLib.R for the obtaining source (at 2025-06-16 https://github.com/geographiclib/geographiclib 0a6067b74d2c5316afceb61e3a7a2b2f262960d8)
+
+## Installation
+
+You can install the development version of geographiclib like so:
+
+``` r
+remotes::install_github("hypertidy/geographiclib")
+```
+
+## Example
+
+This is a conversion for MGRS, please note this is really in testing stage and the details will change. 
+
+```{r example}
+library(geographiclib)
+
+(code <- mgrs_fwd(c(147.325, -42.881)))
+mgrs_rev(code)
+```
+
+## Code of Conduct
+  
+Please note that the geographiclib project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
