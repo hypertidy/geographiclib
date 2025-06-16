@@ -5,6 +5,13 @@
 #include "cpp11/declarations.hpp"
 #include <R_ext/Visibility.h>
 
+// 000_lcc_geographiclib.cpp
+int lcc_cpp();
+extern "C" SEXP _geographiclib_lcc_cpp() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(lcc_cpp());
+  END_CPP11
+}
 // 000_mgrs_geographiclib.cpp
 cpp11::strings mgrs_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers precision);
 extern "C" SEXP _geographiclib_mgrs_fwd_cpp(SEXP lon, SEXP lat, SEXP precision) {
@@ -36,6 +43,7 @@ extern "C" SEXP _geographiclib_polygonarea_cpp() {
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
+    {"_geographiclib_lcc_cpp",         (DL_FUNC) &_geographiclib_lcc_cpp,         0},
     {"_geographiclib_mgrs_decode_cpp", (DL_FUNC) &_geographiclib_mgrs_decode_cpp, 1},
     {"_geographiclib_mgrs_fwd_cpp",    (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,    3},
     {"_geographiclib_mgrs_rev_cpp",    (DL_FUNC) &_geographiclib_mgrs_rev_cpp,    1},
