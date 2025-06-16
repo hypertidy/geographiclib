@@ -38,6 +38,7 @@ were suitable for my purposes:
 - BH
 - lwgeom
 - s2
+- mgrs (awesome, but not vectorized and uses the old military code)
 
 ## Installation
 
@@ -67,16 +68,32 @@ The foward mode is vectorized on coordinate and precision value.
 ``` r
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
-#> structure(c(-124.283308396116, 1.25723057426512, 166.786755686626, 
-#> -110.804824540392, 21.6347536537796, -129.085749993101, -30.6520690815523, 
-#> -64.1709041548893, -83.9470116840675, -87.5648662308231, 40.6639107735828, 
-#> 52.7895963191986), dim = c(6L, 2L))
+#> structure(c(114.759704517201, -7.08586019463837, -64.7754746954888, 
+#> -95.5247894860804, 61.3103591278195, 155.611106855795, 31.8269406678155, 
+#> -85.6811079243198, 5.10067101102322, 72.4497017450631, -15.7701186882332, 
+#> 68.7295922124758), dim = c(6L, 2L))
 mgrs_fwd(pts, precision = 0:5)
-#> [1] "10JCM"           "31DDJ18"         "BBF5345"         "AXM472039"      
-#> [5] "34TEL53650164"   "09UVU9421748868"
+#> [1] "50RKA"           "AZS47"           "20NLL0364"       "15XVA150408"    
+#> [5] "41LLC18995576"   "56WPB0568326455"
 mgrs_fwd(pts, precision = 5:0)
-#> [1] "10JCM7704008254" "31DDJ15288278"   "BBF537451"       "AXM4703"        
-#> [5] "34TEL50"         "09UVU"
+#> [1] "50RKA8797123440" "AZS40827605"     "20NLL031640"     "15XVA1540"      
+#> [5] "41LLC15"         "56WPB"
+```
+
+Also it’s fast.
+
+``` r
+x <- do.call(cbind, maps::world.cities[c("long", "lat")])
+dim(x)
+#[1] 43645     2
+system.time(codes <- mgrs_fwd(x))
+#   user  system elapsed 
+#   0.04    0.00    0.04 
+sample(codes, 10)
+# [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"
+# [6] "36RXV9463390163" "31UFT6135362533" "11SLT9551050534" "32TQQ0915128552" "32PMT1934289062"
+sum(nchar(codes))
+#[1] 654675
 ```
 
 ## Code of Conduct

@@ -41,6 +41,8 @@ Other packages that include source from GeographicLib are these, none were suita
 * BH
 * lwgeom
 * s2
+* mgrs (awesome, but not vectorized and uses the old military code)
+
 
 ## Installation
 
@@ -70,6 +72,24 @@ mgrs_fwd(pts, precision = 0:5)
 mgrs_fwd(pts, precision = 5:0)
 
 ```
+
+Also it's fast. 
+
+```{r speed, eval=FALSE}
+x <- do.call(cbind, maps::world.cities[c("long", "lat")])
+dim(x)
+#[1] 43645     2
+system.time(codes <- mgrs_fwd(x))
+#   user  system elapsed 
+#   0.04    0.00    0.04 
+sample(codes, 10)
+# [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"
+# [6] "36RXV9463390163" "31UFT6135362533" "11SLT9551050534" "32TQQ0915128552" "32PMT1934289062"
+sum(nchar(codes))
+#[1] 654675
+```   
+
+
 ## Code of Conduct
   
 Please note that the geographiclib project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
