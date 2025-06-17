@@ -2,7 +2,9 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-## usethis namespace: end
+#' @importFrom Rcpp sourceCpp
 #' @useDynLib geographiclib, .registration = TRUE
+## usethis namespace: end
 NULL
+
 
