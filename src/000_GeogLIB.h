@@ -7,17 +7,17 @@
 
 using namespace std;
 using namespace GeographicLib;
-
+using namespace Rcpp;
 class GeogMGRS{
  public:
-   GeogMGRS() {}
-  std::vector<double> forward(double lon, double lat) const;
-
-   std::vector<string> mgrs(double lon, double lat, int precision) const;
-
+  GeogMGRS() {}
+  Rcpp::DataFrame utmups(Rcpp::NumericVector lon, Rcpp::NumericVector lat) const;
+  std::vector<string> mgrs0(double lon, double lat, int precision) const;
+  Rcpp::CharacterVector mgrs(Rcpp::NumericVector lon, Rcpp::NumericVector lat, Rcpp::IntegerVector precision) const;
  private:
 
 };
+
 
 RCPP_EXPOSED_CLASS(GeogMGRS)
 
