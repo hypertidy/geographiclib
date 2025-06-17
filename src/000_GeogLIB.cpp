@@ -54,6 +54,12 @@ Rcpp::CharacterVector GeogMGRS::mgrs(Rcpp::NumericVector lon, Rcpp::NumericVecto
   return mgrs_;
 }
 
+// just experimenting
+void GeogMGRS::Forward(int zone, bool northp, double x, double y, int prec, std::string &mgrs) const {
+  MGRS::Forward(zone, northp, x, y, 0, prec, mgrs);
+
+}
+
 // ****************************************************************************
 
 RCPP_MODULE(mod_GeogMGRS) {
@@ -61,6 +67,8 @@ RCPP_MODULE(mod_GeogMGRS) {
 
   .constructor
        ("Default constructor")
+  .const_method("Forward", &GeogMGRS::Forward, "forward")
+
   .const_method("utmups", &GeogMGRS::utmups,
 "Generate UTMUPS coord from lon,lat, returns x,y,zone,northp in a dataframe")
   .const_method("mgrs0", &GeogMGRS::mgrs,

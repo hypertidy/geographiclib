@@ -11,6 +11,9 @@ using namespace Rcpp;
 class GeogMGRS{
  public:
   GeogMGRS() {}
+   //just experimenting
+   void Forward (int zone, bool northp, double x, double y, int prec, std::string &mgrs) const;
+
   Rcpp::DataFrame utmups(Rcpp::NumericVector lon, Rcpp::NumericVector lat) const;
   std::vector<string> mgrs0(double lon, double lat, int precision) const;
   Rcpp::CharacterVector mgrs(Rcpp::NumericVector lon, Rcpp::NumericVector lat, Rcpp::IntegerVector precision) const;
