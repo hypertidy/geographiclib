@@ -60,20 +60,20 @@ precision:
 ``` r
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
-#> structure(c(-107.481253920123, -133.803564794362, 70.0526936072856, 
-#> 21.5749115590006, 44.3363820947707, -42.9503603931516, -37.2774341376498, 
-#> -73.1088844919577, 52.4657312734053, 89.4701917190105, -29.9632428959012, 
-#> -4.61918272543699), dim = c(6L, 2L))
+#> structure(c(80.7739260233939, 36.6979004256427, 39.1493193525821, 
+#> -119.001946728677, -12.9028697311878, 18.9792475383729, 88.0304698459804, 
+#> 18.4222341142595, 10.5258371355012, -60.552484751679, -83.9670355897397, 
+#> -11.9155057193711), dim = c(6L, 2L))
 
 # Variable precision: from 100km (0) to 1m (5)
 mgrs_fwd(pts, precision = 0:5)
-#> [1] "13HBU"           "08CND38"         "42UWD7113"       "ZAG216452"      
-#> [5] "38JMM35978510"   "23MQQ2738589102"
+#> [1] "ZCG"             "37QBA53"         "37PEM1663"       "11ELN902853"    
+#> [5] "AYU50305346"     "34LBM7991281987"
 
 # Different precisions for each point
 (code <- mgrs_fwd(pts, precision = 5:0))
-#> [1] "13HBU8001471464" "08CND38798698"   "42UWD715133"     "ZAG2145"        
-#> [5] "38JMM38"         "23MQQ"
+#> [1] "ZCG1585664938" "37QBA56823844" "37PEM163635"   "11ELN9085"    
+#> [5] "AYU55"         "34LBM"
 ```
 
 ### Rich reverse conversion output
@@ -93,20 +93,20 @@ columns:
 
 ``` r
 mgrs_rev(code)
-#>          lon        lat         x       y zone northp precision convergence
-#> 1 -107.48125 -37.277431  280014.5 5871464   13  FALSE         5   1.5034327
-#> 2 -133.80369 -73.108895  538795.0 1886985    8  FALSE         4  -1.1447122
-#> 3   70.05321  52.465626  571550.0 5813350   42   TRUE         3   0.8352199
-#> 4   21.52901  89.472301 2021500.0 1945500    0   TRUE         2  21.5290069
-#> 5   44.32631 -29.964116  435000.0 6685000   38  FALSE         1   0.3364916
-#> 6  -42.74546  -4.972039  750000.0 9450000   23  FALSE         0  -0.1955021
+#>          lon       lat       x       y zone northp precision convergence
+#> 1   80.77404  88.03047 2215856 1964938    0   TRUE         5 80.77403976
+#> 2   36.69788  18.42223  256825 2038445   37   TRUE         4 -0.72786976
+#> 3   39.14943  10.52579  516350 1163550   37   TRUE         3  0.02729787
+#> 4 -118.99668 -60.55155  390500 3285500   11  FALSE         2  1.73888051
+#> 5  -12.48249 -83.96290 1855000 2655000    0  FALSE         1 12.48248938
+#> 6   18.70229 -12.20245  250000 8650000   34  FALSE         0  0.48591301
 #>       scale grid_zone square_100km        crs
-#> 1 1.0001962       13H           BU EPSG:32713
-#> 2 0.9996184       08C           ND EPSG:32708
-#> 3 0.9996628       42U           WD EPSG:32642
-#> 4 0.9940211         Z           AG EPSG:32661
-#> 5 0.9996521       38J           MM EPSG:32738
-#> 6 1.0003737       23M           QQ EPSG:32723
+#> 1 0.9942937         Z           CG EPSG:32661
+#> 2 1.0003311       37Q           BA EPSG:32637
+#> 3 0.9996033       37P           EM EPSG:32637
+#> 4 0.9997469       11E           LN EPSG:32711
+#> 5 0.9967639         A           YU EPSG:32761
+#> 6 1.0003733       34L           BM EPSG:32734
 ```
 
 The reverse conversion returns the center point of each MGRS grid cell.
@@ -166,6 +166,9 @@ the vectorized MGRS functionality needed:
 - **geodist** - Fast distance calculations
 - **nngeo** - Nearest neighbor operations
 - **googlePolylines, BH, lwgeom** - Other geodetic utilities
+
+Here is the Python package by library author Charles F. F. Karney
+<https://geographiclib.sourceforge.io/html/python/>
 
 ## Development notes
 
