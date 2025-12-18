@@ -129,6 +129,8 @@ Several R packages include GeographicLib source code, but none provided the vect
 * **nngeo** - Nearest neighbor operations
 * **googlePolylines, BH, lwgeom** - Other geodetic utilities
 
+Here is the Python package by library author Charles F. F. Karney https://geographiclib.sourceforge.io/html/python/
+
 ## Development notes
 
 * No changes made to GeographicLib source files
