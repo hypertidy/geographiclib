@@ -3,32 +3,85 @@
 \name{mgrs_fwd}
 \alias{mgrs_fwd}
 \alias{mgrs_rev}
-\title{MGRS conversion}
+\title{Convert coordinates to/from Military Grid Reference System (MGRS)}
 \usage{
 mgrs_fwd(x, precision = 5L)
 
 mgrs_rev(code)
 }
 \arguments{
-\item{x}{in forward mode a matrix of lon,lat coordinates}
+\item{x}{A two-column matrix or data frame of coordinates (longitude, latitude)
+in decimal degrees, or a list with longitude and latitude components.
+Can also be a length-2 numeric vector for a single point.}
 
-\item{precision}{in forward mode integer between 0 and 5 (default is 5, full precision)}
+\item{precision}{Integer between 0 and 5 (default 5) specifying the precision
+of the MGRS grid reference:
+\itemize{
+\item 0: 100 km precision
+\item 1: 10 km precision
+\item 2: 1 km precision
+\item 3: 100 m precision
+\item 4: 10 m precision
+\item 5: 1 m precision (full precision)
+}
 
-\item{code}{in reverse mode an MGRS code string}
+Can be a vector to specify different precisions for each point.}
+
+\item{code}{Character vector of MGRS grid reference strings to convert back
+to coordinates.}
 }
 \value{
-lon,lat,x,y,zone,northp vector in reverse mode, MGRS code in forward mode
+\itemize{
+\item \code{mgrs_fwd()}: Character vector of MGRS grid reference strings
+\item \code{mgrs_rev()}: Data frame with columns:
+\itemize{
+\item \code{lon}: Longitude in decimal degrees
+\item \code{lat}: Latitude in decimal degrees
+\item \code{x}: Easting in meters (UTM/UPS projection)
+\item \code{y}: Northing in meters (UTM/UPS projection)
+\item \code{zone}: UTM zone number (0 for polar UPS regions)
+\item \code{northp}: Logical, TRUE for northern hemisphere, FALSE for southern
+\item \code{precision}: Integer precision level (0-5) encoded in the MGRS string
+\item \code{convergence}: Meridian convergence in degrees (angle between true north and grid north)
+\item \code{scale}: Scale factor at the point (dimensionless, typically near 1.0)
+\item \code{grid_zone}: Grid zone designator (e.g., "51P", "04L")
+\item \code{square_100km}: 100km square identifier (e.g., "SM", "GH")
+\item \code{crs}: EPSG code string for the appropriate UTM/UPS projection
+(e.g., "EPSG:32755" for UTM zone 55S, "EPSG:32661" for UPS North)
+}
+}
 }
 \description{
-Forward mode is vectorized on \code{x} by rows and \code{precision}.
+Convert geographic coordinates (longitude/latitude) to MGRS grid reference
+strings, or convert MGRS strings back to coordinates.
 }
 \details{
-Currently cannnot handle missing values.
+The Military Grid Reference System (MGRS) is a geocoordinate standard used
+by NATO militaries for locating points on Earth. It is an alternative to
+latitude/longitude that uses a hierarchical grid system.
+
+Both functions are fully vectorized. Missing values (NA) are not currently
+supported.
+
+For polar regions (latitude > 84°N or < 80°S), the Universal Polar
+Stereographic (UPS) system is used instead of UTM, indicated by zone = 0.
 }
 \examples{
+# Single point conversion
 (code <- mgrs_fwd(cbind(147.325, -42.881)))
 mgrs_rev(code)
-x <- cbind(long = c(-63.22, 34.02, 49.45, 45.67, 47.4, -66.3, -65.72, 42.31, 8.94, 102.55),
-           lat = c(17.62, -1.9, 37.47, 39.84, 33.15, 17.98, -21.44, 41.65, 50.08, 24.36))
-codes <- mgrs_fwd(x, precision = rep(c(0, 5), each = 5))
+
+# Multiple points with varying precision
+x <- cbind(lon = c(-63.22, 34.02, 49.45, 45.67, 47.4),
+           lat = c(17.62, -1.9, 37.47, 39.84, 33.15))
+codes <- mgrs_fwd(x, precision = c(5, 4, 3, 2, 1))
+codes
+
+# Reverse conversion returns detailed coordinate information
+result <- mgrs_rev(codes)
+result
+
+# Polar regions use UPS (zone 0)
+polar_codes <- mgrs_fwd(cbind(c(147, -100), c(88, -88)))
+mgrs_rev(polar_codes)
 }
