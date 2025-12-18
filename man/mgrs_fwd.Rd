@@ -41,6 +41,11 @@ to coordinates.}
 \item \code{y}: Northing in meters (UTM/UPS projection)
 \item \code{zone}: UTM zone number (0 for polar UPS regions)
 \item \code{northp}: Logical, TRUE for northern hemisphere, FALSE for southern
+\item \code{precision}: Integer precision level (0-5) encoded in the MGRS string
+\item \code{convergence}: Meridian convergence in degrees (angle between true north and grid north)
+\item \code{scale}: Scale factor at the point (dimensionless, typically near 1.0)
+\item \code{grid_zone}: Grid zone designator (e.g., "51P", "04L")
+\item \code{square_100km}: 100km square identifier (e.g., "SM", "GH")
 \item \code{crs}: EPSG code string for the appropriate UTM/UPS projection
 (e.g., "EPSG:32755" for UTM zone 55S, "EPSG:32661" for UPS North)
 }
