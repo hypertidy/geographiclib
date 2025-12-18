@@ -20,7 +20,7 @@ extern "C" SEXP _geographiclib_mgrs_fwd_cpp(SEXP lon, SEXP lat, SEXP precision) 
   END_CPP11
 }
 // 000_mgrs_geographiclib.cpp
-cpp11::doubles mgrs_rev_cpp(cpp11::strings mgrs);
+cpp11::writable::data_frame mgrs_rev_cpp(cpp11::strings mgrs);
 extern "C" SEXP _geographiclib_mgrs_rev_cpp(SEXP mgrs) {
   BEGIN_CPP11
     return cpp11::as_sexp(mgrs_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(mgrs)));

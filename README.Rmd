@@ -69,8 +69,14 @@ The foward mode is vectorized on coordinate and precision value.
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
 mgrs_fwd(pts, precision = 0:5)
-mgrs_fwd(pts, precision = 5:0)
+(code <- mgrs_fwd(pts, precision = 5:0))
 
+```
+
+Reverse mode is vectorized on code and returns rich information based on the centres of each tile. 
+
+```{r vectorized-rev}
+mgrs_rev(code)
 ```
 
 Also it's fast. 

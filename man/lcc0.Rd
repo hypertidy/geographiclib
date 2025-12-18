@@ -7,12 +7,11 @@
 lcc0()
 }
 \value{
-numeric area
+nothing yet, just boilerplate test
 }
 \description{
 LCC transformation (not useful yet)
 }
 \examples{
-(code <- mgrs_fwd(c(147.325, -42.881)))
-mgrs_rev(code)
+invisible(lcc0())
 }
