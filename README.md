@@ -18,6 +18,8 @@ precise geodetic calculations in R.
   coordinates in milliseconds
 - **Fully vectorized UTM/UPS conversion** - Direct access to Universal
   Transverse Mercator and Universal Polar Stereographic projections
+- **Geodesic polygon area** - Accurate area and perimeter calculations
+  on the WGS84 ellipsoid
 - **Rich output** - Get projected coordinates, zones, convergence, scale
   factors, grid designators, and EPSG codes
 - **Variable precision support** - Generate MGRS codes from 100km to 1m
@@ -59,20 +61,20 @@ precision:
 ``` r
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
-#> structure(c(-65.1914023328573, 89.5644163805991, 4.99566365964711, 
-#> 91.4497735351324, -90.5255548842251, -64.8483942355961, 68.791387877427, 
-#> 29.8195662628859, -40.18509183079, 2.93068001512438, -44.0646032011136, 
-#> -55.8151673153043), dim = c(6L, 2L))
+#> structure(c(161.328855799511, -103.391612386331, 135.142396884039, 
+#> 40.8742207288742, 41.9387888163328, 78.1792014464736, -70.6055350229144, 
+#> 17.9450660292059, -9.28087754175067, 0.932147176936269, -48.2449049921706, 
+#> -44.7932648425922), dim = c(6L, 2L))
 
 # Variable precision: from 100km (0) to 1m (5)
 mgrs_fwd(pts, precision = 0:5)
-#> [1] "20WMB"           "45RYP40"         "31GFR6949"       "46NCJ277240"    
-#> [5] "15GXM98171797"   "20FLD8417712945"
+#> [1] "57DWB"           "13QFV78"         "53LNK1574"       "37NGB085030"    
+#> [5] "37FGG18175230"   "44GKR7687936143"
 
 # Different precisions for each point
 (code <- mgrs_fwd(pts, precision = 5:0))
-#> [1] "20WMB1154232678" "45RYP47820155"   "31GFR698497"     "46NCJ2724"      
-#> [5] "15GXM91"         "20FLD"
+#> [1] "57DWB8629264942" "13QFV70338484"   "53LNK156740"     "37NGB0803"      
+#> [5] "37FGG15"         "44GKR"
 ```
 
 ### Rich reverse conversion output
@@ -92,20 +94,20 @@ columns:
 
 ``` r
 mgrs_rev(code)
-#>          lon        lat        x       y zone northp precision convergence
-#> 1 -65.191402  68.791388 411542.5 7632678   20   TRUE         5 -2.04310788
-#> 2  89.564465  29.819601 747825.0 3301555   45   TRUE         4  1.27588481
-#> 3   4.995155 -40.185456 669850.0 5549750   31  FALSE         3 -1.28770847
-#> 4  91.447954   2.934745 327500.0  324500   46   TRUE         2 -0.07948232
-#> 5 -90.564042 -44.092213 695000.0 5115000   15  FALSE         1 -1.69550914
-#> 6 -65.373147 -55.473105 350000.0 3850000   20  FALSE         0  1.95550330
+#>          lon         lat        x       y zone northp precision convergence
+#> 1  161.32885 -70.6055340 586292.5 2164942   57  FALSE         5 -2.19683438
+#> 2 -103.39165  17.9450695 670335.0 1984845   13   TRUE         4  0.49566068
+#> 3  135.14250  -9.2812521 515650.0 8974050   53  FALSE         3 -0.02298188
+#> 4   40.87365   0.9358922 708500.0  103500   37   TRUE         2  0.03061471
+#> 5   41.89478 -48.2217574 715000.0 4655000   37  FALSE         1 -2.15954089
+#> 6   77.84665 -44.6598207 250000.0 5050000   44  FALSE         0  2.21762068
 #>       scale grid_zone square_100km        crs
-#> 1 0.9996957       20W           MB EPSG:32620
-#> 2 1.0003578       45R           YP EPSG:32645
-#> 3 0.9999551       31G           FR EPSG:32731
-#> 4 0.9999684       46N           CJ EPSG:32646
-#> 5 1.0000677       15G           XM EPSG:32715
-#> 6 0.9998760       20F           LD EPSG:32720
+#> 1 0.9996911       57D           WB EPSG:32757
+#> 2 0.9999587       13Q           FV EPSG:32613
+#> 3 0.9996030       53L           NK EPSG:32753
+#> 4 1.0001382       37N           GB EPSG:32637
+#> 5 1.0001680       37F           GG EPSG:32737
+#> 6 1.0003686       44G           KR EPSG:32744
 ```
 
 The reverse conversion returns the center point of each MGRS grid cell.
@@ -154,6 +156,76 @@ utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
 #> 4 EPSG:32638
 ```
 
+## Polygon Area - Geodesic area and perimeter
+
+Compute accurate polygon area and perimeter on the WGS84 ellipsoid:
+
+``` r
+# Triangle: London - New York - Rio de Janeiro
+pts <- cbind(
+  lon = c(0, -74, -43),
+  lat = c(52, 41, -23)
+)
+polygon_area(pts)
+#> $area
+#> [1] 2.653936e+13
+#> 
+#> $perimeter
+#> [1] 22634340
+#> 
+#> $n
+#> [1] 3
+```
+
+The area is returned in square meters and the perimeter in meters. The
+area is signed: positive for counter-clockwise polygons, negative for
+clockwise.
+
+``` r
+# Area in square kilometers
+result <- polygon_area(pts)
+abs(result$area) / 1e6
+#> [1] 26539358
+```
+
+### Multiple polygons
+
+Use the `id` argument to compute area for multiple polygons at once:
+
+``` r
+pts <- cbind(
+  lon = c(0, -74, -43, 100, 110, 105, 120),
+  lat = c(52, 41, -23, 10, 10, 20, 15)
+)
+polygon_area(pts, id = c(1, 1, 1, 2, 2, 2, 2))
+#>   id          area perimeter n
+#> 1  1  2.653936e+13  22634340 3
+#> 2  2 -4.264720e+11   6253557 4
+```
+
+### Polyline length
+
+Set `polyline = TRUE` to compute the length of a path instead of a
+closed polygon:
+
+``` r
+# Great circle route length
+route <- cbind(
+  lon = c(151.2, -122.4, -0.1),  # Sydney - San Francisco - London
+
+  lat = c(-33.9, 37.8, 51.5)
+)
+polygon_area(route, polyline = TRUE)
+#> $area
+#> [1] 4.680388e-310
+#> 
+#> $perimeter
+#> [1] 20577363
+#> 
+#> $n
+#> [1] 3
+```
+
 ### Polar regions
 
 Both MGRS and UTM/UPS automatically handle polar regions using UPS:
@@ -184,35 +256,6 @@ utmups_fwd(polar_pts)
 
 Note that `zone = 0` indicates UPS projection, with dedicated EPSG codes
 (32661 for North, 32761 for South).
-
-### Convergence and scale
-
-The convergence angle and scale factor are useful for surveying and
-geodetic applications:
-
-``` r
-# Points across different longitudes at same latitude
-pts <- cbind(lon = seq(-120, 120, by = 30), lat = 45)
-result <- utmups_fwd(pts)
-
-# Convergence varies with distance from central meridian
-data.frame(
-  lon = result$lon,
-  zone = result$zone,
-  convergence = round(result$convergence, 2),
-  scale = round(result$scale, 6)
-)
-#>    lon zone convergence    scale
-#> 1 -120   11       -2.12 1.000287
-#> 2  -90   16       -2.12 1.000287
-#> 3  -60   21       -2.12 1.000287
-#> 4  -30   26       -2.12 1.000287
-#> 5    0   31       -2.12 1.000287
-#> 6   30   36       -2.12 1.000287
-#> 7   60   41       -2.12 1.000287
-#> 8   90   46       -2.12 1.000287
-#> 9  120   51       -2.12 1.000287
-```
 
 ### Performance
 
@@ -245,10 +288,11 @@ sum(nchar(codes))
 ## Comparison with other packages
 
 Several R packages include GeographicLib source code, but none provided
-the vectorized MGRS and UTM/UPS functionality needed:
+the vectorized MGRS, UTM/UPS, and polygon area functionality needed:
 
 - **mgrs** - MGRS support but not vectorized, uses older GEOTRANS code
-- **geosphere** - Miscellaneous geodetic functions
+- **geosphere** - Miscellaneous geodetic functions including polygon
+  area (spherical approximation)
 - **sf, terra, s2** - Distance and geodetic calculations
 - **geodist** - Fast distance calculations
 - **nngeo** - Nearest neighbor operations

@@ -25,6 +25,7 @@ The goal of geographiclib is to wrap the awesome [GeographicLib](https://geograp
 
 * **Fully vectorized MGRS conversion** - Convert thousands of coordinates in milliseconds
 * **Fully vectorized UTM/UPS conversion** - Direct access to Universal Transverse Mercator and Universal Polar Stereographic projections
+* **Geodesic polygon area** - Accurate area and perimeter calculations on the WGS84 ellipsoid
 * **Rich output** - Get projected coordinates, zones, convergence, scale factors, grid designators, and EPSG codes
 * **Variable precision support** - Generate MGRS codes from 100km to 1m precision
 * **Polar region support** - Handles UPS (Universal Polar Stereographic) zones automatically
@@ -104,6 +105,53 @@ The forward conversion automatically selects the appropriate UTM zone (or UPS fo
 utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
 ```
 
+## Polygon Area - Geodesic area and perimeter
+
+Compute accurate polygon area and perimeter on the WGS84 ellipsoid:
+
+```{r polygon-area}
+# Triangle: London - New York - Rio de Janeiro
+pts <- cbind(
+  lon = c(0, -74, -43),
+  lat = c(52, 41, -23)
+)
+polygon_area(pts)
+```
+
+The area is returned in square meters and the perimeter in meters. The area is signed: positive for counter-clockwise polygons, negative for clockwise.
+
+```{r polygon-area-km}
+# Area in square kilometers
+result <- polygon_area(pts)
+abs(result$area) / 1e6
+```
+
+### Multiple polygons
+
+Use the `id` argument to compute area for multiple polygons at once:
+
+```{r polygon-multiple}
+pts <- cbind(
+  lon = c(0, -74, -43, 100, 110, 105, 120),
+  lat = c(52, 41, -23, 10, 10, 20, 15)
+)
+polygon_area(pts, id = c(1, 1, 1, 2, 2, 2, 2))
+```
+
+### Polyline length
+
+Set `polyline = TRUE` to compute the length of a path instead of a closed polygon:
+
+```{r polyline}
+# Great circle route length
+route <- cbind(
+  lon = c(151.2, -122.4, -0.1),  # Sydney - San Francisco - London
+
+  lat = c(-33.9, 37.8, 51.5)
+)
+polygon_area(route, polyline = TRUE)
+```
+
 ### Polar regions
 
 Both MGRS and UTM/UPS automatically handle polar regions using UPS:
@@ -121,24 +169,6 @@ utmups_fwd(polar_pts)
 ```
 
 Note that `zone = 0` indicates UPS projection, with dedicated EPSG codes (32661 for North, 32761 for South).
-
-### Convergence and scale
-
-The convergence angle and scale factor are useful for surveying and geodetic applications:
-
-```{r convergence-scale}
-# Points across different longitudes at same latitude
-pts <- cbind(lon = seq(-120, 120, by = 30), lat = 45)
-result <- utmups_fwd(pts)
-
-# Convergence varies with distance from central meridian
-data.frame(
-  lon = result$lon,
-  zone = result$zone,
-  convergence = round(result$convergence, 2),
-  scale = round(result$scale, 6)
-)
-```
 
 ### Performance
 
@@ -170,10 +200,10 @@ sum(nchar(codes))
 
 ## Comparison with other packages
 
-Several R packages include GeographicLib source code, but none provided the vectorized MGRS and UTM/UPS functionality needed:
+Several R packages include GeographicLib source code, but none provided the vectorized MGRS, UTM/UPS, and polygon area functionality needed:
 
 * **mgrs** - MGRS support but not vectorized, uses older GEOTRANS code
-* **geosphere** - Miscellaneous geodetic functions
+* **geosphere** - Miscellaneous geodetic functions including polygon area (spherical approximation)
 * **sf, terra, s2** - Distance and geodetic calculations
 * **geodist** - Fast distance calculations
 * **nngeo** - Nearest neighbor operations

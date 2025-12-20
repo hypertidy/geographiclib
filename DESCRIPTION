@@ -1,11 +1,11 @@
 Package: geographiclib
 Title: Access to 'GeographicLib' 
-Version: 0.0.1.9003
+Version: 0.1.0
 Authors@R: c(
     person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("aut", "cre")), 
     person("Charles", "Karney", role = "ctb", comment="GeographicLib")
     )
-Description: GeographicLib functions, starting with MGRS.
+Description: GeographicLib functions, with MGRS, UTMUPS, and polygonarea. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

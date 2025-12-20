@@ -6,7 +6,7 @@
 \alias{geographiclib-package}
 \title{geographiclib: Access to 'GeographicLib'}
 \description{
-GeographicLib functions, starting with MGRS.
+GeographicLib functions, with MGRS, UTMUPS, and polygonarea.
 }
 \seealso{
 Useful links:

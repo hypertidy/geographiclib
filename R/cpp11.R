@@ -16,8 +16,16 @@ mgrs_decode_cpp <- function(mgrs) {
   .Call(`_geographiclib_mgrs_decode_cpp`, mgrs)
 }
 
-polygonarea_cpp <- function() {
-  .Call(`_geographiclib_polygonarea_cpp`)
+polygonarea_cpp <- function(lon, lat, id, polyline) {
+  .Call(`_geographiclib_polygonarea_cpp`, lon, lat, id, polyline)
+}
+
+polygonarea_single_cpp <- function(lon, lat, polyline) {
+  .Call(`_geographiclib_polygonarea_single_cpp`, lon, lat, polyline)
+}
+
+polygonarea_cumulative_cpp <- function(lon, lat, polyline) {
+  .Call(`_geographiclib_polygonarea_cumulative_cpp`, lon, lat, polyline)
 }
 
 utmups_fwd_cpp <- function(lon, lat) {
