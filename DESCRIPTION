@@ -1,6 +1,6 @@
 Package: geographiclib
 Title: Access to 'GeographicLib' 
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("aut", "cre")), 
     person("Charles", "Karney", role = "ctb", comment="GeographicLib")

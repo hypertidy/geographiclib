@@ -18,6 +18,8 @@ precise geodetic calculations in R.
   coordinates in milliseconds
 - **Fully vectorized UTM/UPS conversion** - Direct access to Universal
   Transverse Mercator and Universal Polar Stereographic projections
+- **Geodesic calculations** - Exact solutions for direct and inverse
+  geodesic problems on the WGS84 ellipsoid”
 - **Geodesic polygon area** - Accurate area and perimeter calculations
   on the WGS84 ellipsoid
 - **Rich output** - Get projected coordinates, zones, convergence, scale
@@ -61,20 +63,20 @@ precision:
 ``` r
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
-#> structure(c(161.328855799511, -103.391612386331, 135.142396884039, 
-#> 40.8742207288742, 41.9387888163328, 78.1792014464736, -70.6055350229144, 
-#> 17.9450660292059, -9.28087754175067, 0.932147176936269, -48.2449049921706, 
-#> -44.7932648425922), dim = c(6L, 2L))
+#> structure(c(-135.940789924935, 146.450087428093, -135.992219271138, 
+#> 98.8097724225372, -109.255064958706, -161.520988801494, -84.63214145042, 
+#> -63.0903754150495, -12.7286182204261, -84.0003408305347, 48.6669166339561, 
+#> 27.0200930396095), dim = c(6L, 2L))
 
 # Variable precision: from 100km (0) to 1m (5)
 mgrs_fwd(pts, precision = 0:5)
-#> [1] "57DWB"           "13QFV78"         "53LNK1574"       "37NGB085030"    
-#> [5] "37FGG18175230"   "44GKR7687936143"
+#> [1] "ATH"             "55EDL70"         "08LLL9292"       "BJL588978"      
+#> [5] "12UXU28479189"   "04RBQ4987691161"
 
 # Different precisions for each point
 (code <- mgrs_fwd(pts, precision = 5:0))
-#> [1] "57DWB8629264942" "13QFV70338484"   "53LNK156740"     "37NGB0803"      
-#> [5] "37FGG15"         "44GKR"
+#> [1] "ATH8527771429" "55EDL72230422" "08LLL922926"   "BJL5897"      
+#> [5] "12UXU29"       "04RBQ"
 ```
 
 ### Rich reverse conversion output
@@ -94,20 +96,20 @@ columns:
 
 ``` r
 mgrs_rev(code)
-#>          lon         lat        x       y zone northp precision convergence
-#> 1  161.32885 -70.6055340 586292.5 2164942   57  FALSE         5 -2.19683438
-#> 2 -103.39165  17.9450695 670335.0 1984845   13   TRUE         4  0.49566068
-#> 3  135.14250  -9.2812521 515650.0 8974050   53  FALSE         3 -0.02298188
-#> 4   40.87365   0.9358922 708500.0  103500   37   TRUE         2  0.03061471
-#> 5   41.89478 -48.2217574 715000.0 4655000   37  FALSE         1 -2.15954089
-#> 6   77.84665 -44.6598207 250000.0 5050000   44  FALSE         0  2.21762068
+#>          lon       lat       x       y zone northp precision convergence
+#> 1 -135.94079 -84.63214 1585278 1571430    0  FALSE         5 135.9407888
+#> 2  146.45015 -63.09035  472235 3004225   55  FALSE         4   0.4903171
+#> 3 -135.99251 -12.72879  392250 8592650    8  FALSE         3   0.2187079
+#> 4   98.84748 -84.00268 2658500 1897500    0  FALSE         2 -98.8474781
+#> 5 -109.30131  48.69551  625000 5395000   12   TRUE         1   1.2762439
+#> 6 -161.51154  26.64883  250000 2950000    4   TRUE         0  -1.1270625
 #>       scale grid_zone square_100km        crs
-#> 1 0.9996911       57D           WB EPSG:32757
-#> 2 0.9999587       13Q           FV EPSG:32613
-#> 3 0.9996030       53L           NK EPSG:32753
-#> 4 1.0001382       37N           GB EPSG:32637
-#> 5 1.0001680       37F           GG EPSG:32737
-#> 6 1.0003686       44G           KR EPSG:32744
+#> 1 0.9961843         A           TH EPSG:32761
+#> 2 0.9996094       55E           DL EPSG:32755
+#> 3 0.9997436       08L           LL EPSG:32708
+#> 4 0.9967276         B           JL EPSG:32761
+#> 5 0.9997920       12U           XU EPSG:32612
+#> 6 1.0003717       04R           BQ EPSG:32604
 ```
 
 The reverse conversion returns the center point of each MGRS grid cell.
@@ -154,6 +156,77 @@ utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
 #> 2 EPSG:32620
 #> 3 EPSG:32661
 #> 4 EPSG:32638
+```
+
+## Geodesic Calculations
+
+Solve geodesic problems on the WGS84 ellipsoid with full
+double-precision accuracy.
+
+### Direct problem
+
+Given a starting point, azimuth (bearing), and distance, find the
+destination:
+
+``` r
+# Where do you end up starting from London, heading east for 1000 km?
+geodesic_direct(c(-0.1, 51.5), azi = 90, s = 1000000)
+#>   lon1 lat1 azi1   s12     lon2     lat2     azi2    m12       M12       M21
+#> 1 -0.1 51.5   90 1e+06 14.12014 50.62607 101.0838 995914 0.9877522 0.9877514
+#>            S12
+#> 1 7.838198e+12
+```
+
+### Inverse problem
+
+Given two points, find the distance and azimuths between them:
+
+``` r
+# Distance from London to New York
+geodesic_inverse(c(-0.1, 51.5), c(-74, 40.7))
+#>   lon1 lat1 lon2 lat2     s12      azi1      azi2     m12       M12       M21
+#> 1 -0.1 51.5  -74 40.7 5587820 -71.62462 -128.7635 4900877 0.6407216 0.6404073
+#>             S12
+#> 1 -4.040644e+13
+```
+
+### Geodesic paths
+
+Generate points along the shortest path (geodesic) between two points:
+
+``` r
+# Great circle path from London to New York
+path <- geodesic_path(c(-0.1, 51.5), c(-74, 40.7), n = 10)
+path
+#>           lon      lat        azi         s
+#> 1   -0.100000 51.50000  -71.62462       0.0
+#> 2   -8.884387 52.93855  -78.57312  620868.8
+#> 3  -18.121882 53.69011  -85.98680 1241737.7
+#> 4  -27.529365 53.71152  -93.57462 1862606.5
+#> 5  -36.785150 53.00151 -101.00705 2483475.3
+#> 6  -45.602073 51.60102 -107.98901 3104344.2
+#> 7  -53.782959 49.58257 -114.31523 3725213.0
+#> 8  -61.236199 47.03438 -119.88570 4346081.8
+#> 9  -67.957770 44.04615 -124.68751 4966950.7
+#> 10 -74.000000 40.70000 -128.76352 5587819.5
+```
+
+### Distance matrix
+
+Compute distances between sets of points:
+
+``` r
+cities <- cbind(
+  lon = c(-0.1, -74, 139.7, 151.2),  # London, NYC, Tokyo, Sydney
+  lat = c(51.5, 40.7, 35.7, -33.9)
+)
+# Distance matrix in kilometers
+geodesic_distance_matrix(cities) / 1000
+#>           [,1]     [,2]      [,3]      [,4]
+#> [1,]     0.000  5587.82  9581.233 16990.084
+#> [2,]  5587.820     0.00 10872.923 15990.627
+#> [3,]  9581.233 10872.92     0.000  7797.237
+#> [4,] 16990.084 15990.63  7797.237     0.000
 ```
 
 ## Polygon Area - Geodesic area and perimeter
@@ -217,7 +290,7 @@ route <- cbind(
 )
 polygon_area(route, polyline = TRUE)
 #> $area
-#> [1] 4.680388e-310
+#> [1] 4.659115e-310
 #> 
 #> $perimeter
 #> [1] 20577363

@@ -25,6 +25,7 @@ The goal of geographiclib is to wrap the awesome [GeographicLib](https://geograp
 
 * **Fully vectorized MGRS conversion** - Convert thousands of coordinates in milliseconds
 * **Fully vectorized UTM/UPS conversion** - Direct access to Universal Transverse Mercator and Universal Polar Stereographic projections
+* **Geodesic calculations** - Exact solutions for direct and inverse geodesic problems on the WGS84 ellipsoid"
 * **Geodesic polygon area** - Accurate area and perimeter calculations on the WGS84 ellipsoid
 * **Rich output** - Get projected coordinates, zones, convergence, scale factors, grid designators, and EPSG codes
 * **Variable precision support** - Generate MGRS codes from 100km to 1m precision
@@ -103,6 +104,50 @@ The forward conversion automatically selects the appropriate UTM zone (or UPS fo
 ```{r utmups-reverse}
 # Reverse: UTM/UPS to Geographic
 utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
+```
+
+## Geodesic Calculations
+
+Solve geodesic problems on the WGS84 ellipsoid with full double-precision accuracy.
+
+### Direct problem
+
+Given a starting point, azimuth (bearing), and distance, find the destination:
+
+```{r geodesic-direct}
+# Where do you end up starting from London, heading east for 1000 km?
+geodesic_direct(c(-0.1, 51.5), azi = 90, s = 1000000)
+```
+
+### Inverse problem
+
+Given two points, find the distance and azimuths between them:
+
+```{r geodesic-inverse}
+# Distance from London to New York
+geodesic_inverse(c(-0.1, 51.5), c(-74, 40.7))
+```
+
+### Geodesic paths
+
+Generate points along the shortest path (geodesic) between two points:
+
+```{r geodesic-path}
+# Great circle path from London to New York
+path <- geodesic_path(c(-0.1, 51.5), c(-74, 40.7), n = 10)
+path
+```
+### Distance matrix
+
+Compute distances between sets of points:
+
+```{r geodesic-matrix}
+cities <- cbind(
+  lon = c(-0.1, -74, 139.7, 151.2),  # London, NYC, Tokyo, Sydney
+  lat = c(51.5, 40.7, 35.7, -33.9)
+)
+# Distance matrix in kilometers
+geodesic_distance_matrix(cities) / 1000
 ```
 
 ## Polygon Area - Geodesic area and perimeter
