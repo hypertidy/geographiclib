@@ -117,20 +117,20 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">6</span>, <span class="op">-</span><span class="fl">180</span>, <span class="fl">180</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">6</span>, <span class="op">-</span><span class="fl">90</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput</a></span><span class="op">(</span><span class="va">pts</span><span class="op">)</span></span>
-<span><span class="co">#&gt; structure(c(168.54785816744, 169.508864488453, 62.3109609726816, </span></span>
-<span><span class="co">#&gt; -105.109947966412, 97.2814318723977, 159.053902504966, -72.2564091067761, </span></span>
-<span><span class="co">#&gt; 79.538566977717, -76.83280242607, -67.7227939199656, 80.1980826118961, </span></span>
-<span><span class="co">#&gt; -14.1883090557531), dim = c(6L, 2L))</span></span>
+<span><span class="co">#&gt; structure(c(-65.1914023328573, 89.5644163805991, 4.99566365964711, </span></span>
+<span><span class="co">#&gt; 91.4497735351324, -90.5255548842251, -64.8483942355961, 68.791387877427, </span></span>
+<span><span class="co">#&gt; 29.8195662628859, -40.18509183079, 2.93068001512438, -44.0646032011136, </span></span>
+<span><span class="co">#&gt; -55.8151673153043), dim = c(6L, 2L))</span></span>
 <span></span>
 <span><span class="co"># Variable precision: from 100km (0) to 1m (5)</span></span>
 <span><span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">pts</span>, precision <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "59CMV"           "59XMJ63"         "41CMQ8271"       "13DDE953880"    </span></span>
-<span><span class="co">#&gt; [5] "47XMK67340417"   "57LWE0581631446"</span></span>
+<span><span class="co">#&gt; [1] "20WMB"           "45RYP40"         "31GFR6949"       "46NCJ277240"    </span></span>
+<span><span class="co">#&gt; [5] "15GXM98171797"   "20FLD8417712945"</span></span>
 <span></span>
 <span><span class="co"># Different precisions for each point</span></span>
 <span><span class="op">(</span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">pts</span>, precision <span class="op">=</span> <span class="fl">5</span><span class="op">:</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "59CMV1661080766" "59XMJ69773047"   "41CMQ824717"     "13DDE9588"      </span></span>
-<span><span class="co">#&gt; [5] "47XMK60"         "57LWE"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "20WMB1154232678" "45RYP47820155"   "31GFR698497"     "46NCJ2724"      </span></span>
+<span><span class="co">#&gt; [5] "15GXM91"         "20FLD"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="rich-reverse-conversion-output">Rich reverse conversion output<a class="anchor" aria-label="anchor" href="#rich-reverse-conversion-output"></a>
@@ -152,20 +152,20 @@
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/mgrs_fwd.html">mgrs_rev</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          lon       lat        x       y zone northp precision convergence</span></span>
-<span><span class="co">#&gt; 1  168.54786 -72.25641 416610.5 1980766   59  FALSE         5  2.33562020</span></span>
-<span><span class="co">#&gt; 2  169.50874  79.53861 469775.0 8830475   59   TRUE         4 -1.46648202</span></span>
-<span><span class="co">#&gt; 3   62.30980 -76.83309 482450.0 1471750   41  FALSE         3  0.67205594</span></span>
-<span><span class="co">#&gt; 4 -105.10635 -67.71864 495500.0 2488500   13  FALSE         2  0.09841205</span></span>
-<span><span class="co">#&gt; 5   97.15689  80.20480 465000.0 8905000   47   TRUE         1 -1.81626281</span></span>
-<span><span class="co">#&gt; 6  159.46304 -14.02012 550000.0 8450000   57  FALSE         0 -0.11217919</span></span>
+<span><span class="co">#&gt;          lon        lat        x       y zone northp precision convergence</span></span>
+<span><span class="co">#&gt; 1 -65.191402  68.791388 411542.5 7632678   20   TRUE         5 -2.04310788</span></span>
+<span><span class="co">#&gt; 2  89.564465  29.819601 747825.0 3301555   45   TRUE         4  1.27588481</span></span>
+<span><span class="co">#&gt; 3   4.995155 -40.185456 669850.0 5549750   31  FALSE         3 -1.28770847</span></span>
+<span><span class="co">#&gt; 4  91.447954   2.934745 327500.0  324500   46   TRUE         2 -0.07948232</span></span>
+<span><span class="co">#&gt; 5 -90.564042 -44.092213 695000.0 5115000   15  FALSE         1 -1.69550914</span></span>
+<span><span class="co">#&gt; 6 -65.373147 -55.473105 350000.0 3850000   20  FALSE         0  1.95550330</span></span>
 <span><span class="co">#&gt;       scale grid_zone square_100km        crs</span></span>
-<span><span class="co">#&gt; 1 0.9996850       59C           MV EPSG:32759</span></span>
-<span><span class="co">#&gt; 2 0.9996112       59X           MJ EPSG:32659</span></span>
-<span><span class="co">#&gt; 3 0.9996038       41C           MQ EPSG:32741</span></span>
-<span><span class="co">#&gt; 4 0.9996002       13D           DE EPSG:32713</span></span>
-<span><span class="co">#&gt; 5 0.9996150       47X           MK EPSG:32647</span></span>
-<span><span class="co">#&gt; 6 0.9996309       57L           WE EPSG:32757</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 0.9996957       20W           MB EPSG:32620</span></span>
+<span><span class="co">#&gt; 2 1.0003578       45R           YP EPSG:32645</span></span>
+<span><span class="co">#&gt; 3 0.9999551       31G           FR EPSG:32731</span></span>
+<span><span class="co">#&gt; 4 0.9999684       46N           CJ EPSG:32646</span></span>
+<span><span class="co">#&gt; 5 1.0000677       15G           XM EPSG:32715</span></span>
+<span><span class="co">#&gt; 6 0.9998760       20F           LD EPSG:32720</span></span></code></pre></div>
 <p>The reverse conversion returns the center point of each MGRS grid cell.</p>
 </div>
 </div>
