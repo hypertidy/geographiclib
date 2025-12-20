@@ -2,7 +2,7 @@
  * \file GeodesicExact.cpp
  * \brief Implementation for GeographicLib::GeodesicExact class
  *
- * Copyright (c) Charles Karney (2012-2023) <karney@alum.mit.edu> and licensed
+ * Copyright (c) Charles Karney (2012-2025) <karney@alum.mit.edu> and licensed
  * under the MIT/X11 License.  For more information, see
  * https://geographiclib.sourceforge.io/
  *
@@ -83,7 +83,7 @@ namespace GeographicLib {
     if (!(isfinite(_a) && _a > 0))
       throw GeographicErr("Equatorial radius is not positive");
     if (!(isfinite(_b) && _b > 0))
-      throw GeographicErr("Polar semi-axis is not positive");
+      throw GeographicErr("Polar semiaxis is not positive");
 
     // Required number of terms in DST for full accuracy for all precisions as
     // a function of n in [-0.99, 0.99].  Values determined by running
@@ -356,7 +356,7 @@ namespace GeographicLib {
       12,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,15,15,15,15,15,15,
       15,16,16,16,17,17,17,17,18,18,19,20,21,23,24
     };
-#elif GEOGRAPHICLIB_PRECISION == 5
+#elif GEOGRAPHICLIB_PRECISION >= 5
     static const unsigned char narr[2*ndiv+1] = {
       27,26,24,23,22,22,21,21,20,20,20,19,19,19,19,18,18,18,18,18,17,17,17,17,
       17,17,17,17,16,16,16,16,16,16,16,15,15,15,15,15,15,15,15,15,15,15,15,14,
@@ -450,7 +450,6 @@ namespace GeographicLib {
     // Compute longitude difference (AngDiff does this carefully).  Result is
     // in [-180, 180] but -180 is only for west-going geodesics.  180 is for
     // east-going and meridional geodesics.
-    using std::isnan;           // Needed for Centos 7, ubuntu 14
     real lon12s, lon12 = Math::AngDiff(lon1, lon2, lon12s);
     // Make longitude difference positive.
     int lonsign = signbit(lon12) ? -1 : 1;
@@ -555,10 +554,7 @@ namespace GeographicLib {
       // 0.  Test case was
       //
       //    echo 20.001 0 20.001 0 | GeodSolve -i
-      //
-      // In fact, we will have sig12 > pi/2 for meridional geodesic which is
-      // not a shortest path.
-      if (sig12 < 1 || m12x >= 0) {
+      if (sig12 < tol2_ || m12x >= 0) {
         // Need at least 2, to handle 90 0 90 180
         if (sig12 < 3 * tiny_ ||
             // Prevent negative s12 or m12 for short lines

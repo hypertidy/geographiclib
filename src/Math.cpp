@@ -14,32 +14,35 @@ namespace GeographicLib {
   using namespace std;
 
   void Math::dummy() {
-    static_assert(GEOGRAPHICLIB_PRECISION >= 1 && GEOGRAPHICLIB_PRECISION <= 5,
-                  "Bad value of precision");
+    static_assert(GEOGRAPHICLIB_PRECISION >= 1, "Bad value of precision");
   }
 
   int Math::digits() {
-#if GEOGRAPHICLIB_PRECISION != 5
-    return numeric_limits<real>::digits;
-#else
+#if GEOGRAPHICLIB_PRECISION == 5
     return numeric_limits<real>::digits();
+#else
+    return numeric_limits<real>::digits;
 #endif
   }
 
   int Math::set_digits(int ndigits) {
-#if GEOGRAPHICLIB_PRECISION != 5
-    (void)ndigits;
-#else
+#if GEOGRAPHICLIB_PRECISION >= 5
+#  if GEOGRAPHICLIB_PRECISION > 5
+    // This sets ndigits = GEOGRAPHICLIB_PRECISION
+    ndigits = numeric_limits<real>::digits;
+#  endif
     mpfr::mpreal::set_default_prec(ndigits >= 2 ? ndigits : 2);
+#else
+    (void) ndigits;
 #endif
     return digits();
   }
 
   int Math::digits10() {
-#if GEOGRAPHICLIB_PRECISION != 5
-    return numeric_limits<real>::digits10;
-#else
+#if GEOGRAPHICLIB_PRECISION == 5
     return numeric_limits<real>::digits10();
+#else
+    return numeric_limits<real>::digits10;
 #endif
   }
 
@@ -101,9 +104,9 @@ namespace GeographicLib {
   template<typename T> void Math::sincosd(T x, T& sinx, T& cosx) {
     // In order to minimize round-off errors, this function exactly reduces
     // the argument to the range [-45, 45] before converting it to radians.
-    T d, r; int q = 0;
-    d = remquo(x, T(qd), &q);   // now abs(r) <= 45
-    r = d * degree<T>();
+    int q = 0;
+    T d = remquo(x, T(qd), &q),   // now abs(r) <= 45
+      r = d * degree<T>();
     // g++ -O turns these two function calls into a call to sincos
     T s = sin(r), c = cos(r);
     if (2 * fabs(d) == qd) {
@@ -151,7 +154,19 @@ namespace GeographicLib {
     // http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1950.pdf
     // mpreal needs T(0) here
     cosx += T(0);                            // special values from F.10.1.12
-    if (sinx == 0) sinx = copysign(sinx, x+t); // special values from F.10.1.13
+    // Should we copy the sign from x or x+t?  Given that t is small, there's
+    // only a distinction if x+t == +/- 0.  Here are the cases
+    //     x   t   x-sign  (x+t)-sign
+    //    <0  >0    -0       +0      different
+    //    >0  <0    +0       +0
+    //    -0  -0    -0       -0
+    //    -0  +0    -0       +0      different
+    //    +0  -0    +0       +0
+    //    +0  +0    +0       +0
+    // On balance, taking the sign from x is better, particularly for the case
+    // x = -0, t = +0.  This choice also avoids the bias towards +0 that x+t
+    // gives.
+    if (sinx == 0) sinx = copysign(sinx, x); // special values from F.10.1.13
   }
 
   template<typename T> T Math::sind(T x) {
@@ -191,21 +206,22 @@ namespace GeographicLib {
     sincosd(x, s, c);
     // http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1950.pdf
     T r = s / c;  // special values from F.10.1.14
-    // With C++17 this becomes clamp(s / c, -overflow, overflow);
-    // Use max/min here (instead of fmax/fmin) to preserve NaN
-    return min(max(r, -overflow), overflow);
+    return clamp(r, -overflow, overflow);
   }
 
   template<typename T> T Math::atan2d(T y, T x) {
     // In order to minimize round-off errors, this function rearranges the
     // arguments so that result of atan2 is in the range [-pi/4, pi/4] before
-    // converting it to degrees and mapping the result to the correct
-    // quadrant.
+    // converting it to degrees and mapping the result to the correct quadrant.
+    // With mpreal we could use T(mpfr::atan2u(y, x, td)); but we're not ready
+    // for this yet.
     int q = 0;
     if (fabs(y) > fabs(x)) { swap(x, y); q = 2; }
     if (signbit(x)) { x = -x; ++q; }
     // here x >= 0 and x >= abs(y), so angle is in [-pi/4, pi/4]
-    T ang = atan2(y, x) / degree<T>();
+    // Replace atan2(y, x) / degree<T>() by this to ensure that special values
+    // (45, 90, etc.) are returned.
+    T ang = (atan2(y, x) / pi<T>()) * T(hd);
     switch (q) {
     case 1: ang = copysign(T(hd), y) - ang; break;
     case 2: ang =            qd      - ang; break;
@@ -267,35 +283,33 @@ namespace GeographicLib {
   }
 
   template<typename T> T Math::hypot3(T x, T y, T z) {
-#if __cplusplus < 201703L || GEOGRAPHICLIB_PRECISION == 4
-    return sqrt(x*x + y*y + z*z);
+#if GEOGRAPHICLIB_PRECISION == 4
+    // Boost implementation is given by
+    //   https://github.com/boostorg/math/pull/1318
+    // might make its way into 1.90 or later
+    return hypot(hypot(x, y), z);
 #else
     return hypot(x, y, z);
 #endif
   }
 
+  template<typename T> T Math::clamp(T x, T a, T b) {
+    // Use max/min here (instead of fmax/fmin) to preserve NaN
+    return min(max(x, a), b);
+  }
+
   template<typename T> T Math::NaN() {
-#if defined(_MSC_VER)
-    return numeric_limits<T>::has_quiet_NaN ?
-      numeric_limits<T>::quiet_NaN() :
-      (numeric_limits<T>::max)();
-#else
-    return numeric_limits<T>::has_quiet_NaN ?
-      numeric_limits<T>::quiet_NaN() :
-      numeric_limits<T>::max();
-#endif
+    if constexpr (numeric_limits<T>::has_quiet_NaN)
+      return numeric_limits<T>::quiet_NaN();
+    else
+      return (numeric_limits<T>::max)();
   }
 
   template<typename T> T Math::infinity() {
-#if defined(_MSC_VER)
-    return numeric_limits<T>::has_infinity ?
-        numeric_limits<T>::infinity() :
-        (numeric_limits<T>::max)();
-#else
-    return numeric_limits<T>::has_infinity ?
-      numeric_limits<T>::infinity() :
-      numeric_limits<T>::max();
-#endif
+    if constexpr (numeric_limits<T>::has_infinity)
+      return numeric_limits<T>::infinity();
+    else
+      return (numeric_limits<T>::max)();
     }
 
   /// \cond SKIP
@@ -316,6 +330,7 @@ namespace GeographicLib {
   template T    GEOGRAPHICLIB_EXPORT Math::taupf        <T>(T, T);         \
   template T    GEOGRAPHICLIB_EXPORT Math::tauf         <T>(T, T);         \
   template T    GEOGRAPHICLIB_EXPORT Math::hypot3       <T>(T, T, T);      \
+  template T    GEOGRAPHICLIB_EXPORT Math::clamp        <T>(T, T, T);      \
   template T    GEOGRAPHICLIB_EXPORT Math::NaN          <T>();             \
   template T    GEOGRAPHICLIB_EXPORT Math::infinity     <T>();
 
@@ -334,8 +349,14 @@ namespace GeographicLib {
 #undef GEOGRAPHICLIB_MATH_INSTANTIATE
 
   // Also we need int versions for Utility::nummatch
-  template int GEOGRAPHICLIB_EXPORT Math::NaN     <int>();
-  template int GEOGRAPHICLIB_EXPORT Math::infinity<int>();
+#define GEOGRAPHICLIB_MATH_INSTANTIATE2(T)             \
+  template T GEOGRAPHICLIB_EXPORT Math::NaN     <T>(); \
+  template T GEOGRAPHICLIB_EXPORT Math::infinity<T>();
+
+  GEOGRAPHICLIB_MATH_INSTANTIATE2(int)
+  GEOGRAPHICLIB_MATH_INSTANTIATE2(unsigned long long)
+
+#undef GEOGRAPHICLIB_MATH_INSTANTIATE2
   /// \endcond
 
 } // namespace GeographicLib

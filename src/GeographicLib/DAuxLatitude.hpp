@@ -43,8 +43,8 @@ namespace GeographicLib {
      *   auxiliary latitude \e zeta.
      * @param[in] auxout an AuxLatitude::aux indicating the type of
      *   auxiliary latitude \e eta.
-     * @param[in] zeta1 the first of the input auxiliary latitudeas.
-     * @param[in] zeta2 the second of the input auxiliary latitude.
+     * @param[in] zeta1 the first of the input auxiliary latitudes.
+     * @param[in] zeta2 the second of the input auxiliary latitudes.
      * @return the divided difference (\e eta2 - \e eta1) / (\e zeta2 - \e
      *   zeta1).
      *
@@ -71,7 +71,7 @@ namespace GeographicLib {
      *   phi1), where \e beta is the parametric latitude.
      *
      * \note This routine uses the exact formulas and is valid for arbitrary
-     * latitude.
+     * flattening.
      **********************************************************************/
     Math::real DParametric(const AuxAngle& phi1, const AuxAngle& phi2) const;
     /**
@@ -84,7 +84,7 @@ namespace GeographicLib {
      *   phi1), where \e mu is the rectifying latitude.
      *
      * \note This routine uses the exact formulas and is valid for arbitrary
-     * latitude.
+     * flattening.
      **********************************************************************/
     Math::real DRectifying(const AuxAngle& phi1, const AuxAngle& phi2) const;
     /**
@@ -98,7 +98,7 @@ namespace GeographicLib {
      *   and \e chi is the conformal latitude.
      *
      * \note This routine uses the exact formulas and is valid for arbitrary
-     * latitude.
+     * flattening.
      **********************************************************************/
     Math::real DIsometric(const AuxAngle& phi1, const AuxAngle& phi2) const;
     /**
@@ -142,7 +142,7 @@ namespace GeographicLib {
      * This routine computes Dasinh(x, y) / Datan(x, y).
      **********************************************************************/
     static Math::real Dlam(real x, real y) {
-      using std::isnan; using std::isinf;
+      using std::isnan, std::isinf;
       return x == y ? base::sc(x) :
         (isnan(x) || isnan(y) ? std::numeric_limits<real>::quiet_NaN() :
          (isinf(x) || isinf(y) ? std::numeric_limits<real>::infinity() :
@@ -163,7 +163,7 @@ namespace GeographicLib {
      * latitude.
      **********************************************************************/
     static Math::real Dp0Dpsi(real x, real y) {
-      using std::isnan; using std::isinf; using std::copysign;
+      using std::isnan, std::isinf, std::copysign;
       return x == y ? base::sn(x) :
         (isnan(x + y) ? x + y : // N.B. nan for inf-inf
          (isinf(x) ? copysign(real(1), x) :
@@ -183,7 +183,7 @@ namespace GeographicLib {
     /// \endcond
   private:
     static real Dsin(real x, real y) {
-      using std::sin; using std::cos;
+      using std::sin, std::cos;
       real d = (x - y) / 2;
       return cos((x + y) / 2) * (d != 0 ? sin(d) / d : 1);
     }

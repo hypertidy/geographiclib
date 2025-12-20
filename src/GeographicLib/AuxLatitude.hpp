@@ -30,7 +30,7 @@
  * to enable truncation errors to be measured easily.
  **********************************************************************/
 #  define GEOGRAPHICLIB_AUXLATITUDE_ORDER \
-  (GEOGRAPHICLIB_PRECISION == 2 || GEOGRAPHICLIB_PRECISION == 5 ? 6 : \
+  (GEOGRAPHICLIB_PRECISION == 2 || GEOGRAPHICLIB_PRECISION >= 5 ? 6 : \
    (GEOGRAPHICLIB_PRECISION == 1 ? 4 : 8))
 #endif
 
@@ -181,10 +181,10 @@ namespace GeographicLib {
     AuxLatitude(real a, real f);
     /**
      * Construct and return an AuxLatitude object specified in terms of the
-     * semi-axes
+     * semiaxes
      *
      * @param[in] a equatorial radius.
-     * @param[in] b polar semi-axis.
+     * @param[in] b polar semiaxis.
      * @exception GeographicErr if \e a or \e b is not positive.
      *
      * This allows a new AuxAngle to be initialized as an angle in radians with
@@ -283,7 +283,7 @@ namespace GeographicLib {
      **********************************************************************/
     Math::real EquatorialRadius() const { return _a; }
     /**
-     * @return \e b the polar semi-axis of the ellipsoid (meters).
+     * @return \e b the polar semiaxis of the ellipsoid (meters).
      **********************************************************************/
     Math::real PolarSemiAxis() const { return _b; }
     /**
@@ -386,7 +386,7 @@ namespace GeographicLib {
     { using std::hypot; return hypot(real(1), tphi); }
     // the function tphi / sqrt(1 + tphi^2), convert tan to sin
     static real sn(real tphi) {
-      using std::isinf; using std::copysign;
+      using std::isinf, std::copysign;
       return isinf(tphi) ? copysign(real(1), tphi) : tphi / sc(tphi);
     }
     // Populate [_c[Lmax * k], _c[Lmax * (k + 1)])

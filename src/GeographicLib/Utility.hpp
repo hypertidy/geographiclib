@@ -316,12 +316,23 @@ namespace GeographicLib {
      * @param[out] array the output array of type IntT (internal).
      * @param[in] num the size of the array.
      * @exception GeographicErr if the data cannot be read.
+     *
+     * This routine is used to read binary data files for the Geoid,
+     * GravityModel, and MagneticModel classes.  In the case of GravityModel
+     * and MagneticMode, the data is published by a government agency as text
+     * files, and the coefficient to realize the models are converted to a
+     * double precision binary format to minimize storage and to simplify
+     * reading the data.
+     *
+     * For GEOGRAPHIC_PRECISION == 2, the data is read faithfully.  For
+     * GEOGRAPHICLIB_PRECISION > 2, external data of type double is interpreted
+     * as an approximation of an exact decimal value; this exact number is
+     * convered to a real number at the higher precision.
      **********************************************************************/
     template<typename ExtT, typename IntT, bool bigendp>
       static void readarray(std::istream& str, IntT array[], size_t num) {
 #if GEOGRAPHICLIB_PRECISION < 4
-      // for C++17 use if constexpr
-      if (sizeof(IntT) == sizeof(ExtT) &&
+      if constexpr (sizeof(IntT) == sizeof(ExtT) &&
           std::numeric_limits<IntT>::is_integer ==
           std::numeric_limits<ExtT>::is_integer)
         {
@@ -329,8 +340,8 @@ namespace GeographicLib {
           str.read(reinterpret_cast<char*>(array), num * sizeof(ExtT));
           if (!str.good())
             throw GeographicErr("Failure reading data");
-          // for C++17 use if constexpr
-          if (bigendp != Math::bigendian) { // endian mismatch -> swap bytes
+          if constexpr (bigendp != Math::bigendian) {
+            // endian mismatch -> swap bytes
             for (size_t i = num; i--;)
               array[i] = Math::swab<IntT>(array[i]);
           }
@@ -352,9 +363,9 @@ namespace GeographicLib {
               ExtT x = bigendp == Math::bigendian ? buffer[j] :
                 Math::swab<ExtT>(buffer[j]);
 #if GEOGRAPHICLIB_PRECISION > 2
-              // for C++17 use if constexpr folding in test of
+              // typeid doesn't allow if constexpr here
               if (typeid(ExtT) == typeid(double) &&
-                    typeid(IntT) == typeid(Math::real)) {
+                  typeid(IntT) == typeid(Math::real)) {
                 // readarray is used to read in coefficient data rapidly.  Thus
                 // 8.3n is stored in its IEEE double representation.  This is
                 // fine is the working precision is double.  However, when
@@ -382,7 +393,7 @@ namespace GeographicLib {
                 // N.B. printing with precision 14 = digis10 - 1 allows short
                 // numbers to be represended with trailing zeros.  This isn't
                 // necessarily the case with precision = digits10, e.g., 8.3
-                // becomes 8.300000000000001
+                // becomes 8.300000000000001.
                 //
                 // This prescription doesn't exactly implement the method
                 // proposed.  If the published table of numbers includes
@@ -456,10 +467,10 @@ namespace GeographicLib {
       static void writearray(std::ostream& str, const IntT array[], size_t num)
     {
 #if GEOGRAPHICLIB_PRECISION < 4
-      if (sizeof(IntT) == sizeof(ExtT) &&
-          std::numeric_limits<IntT>::is_integer ==
-          std::numeric_limits<ExtT>::is_integer &&
-          bigendp == Math::bigendian)
+      if constexpr (sizeof(IntT) == sizeof(ExtT) &&
+                    std::numeric_limits<IntT>::is_integer ==
+                    std::numeric_limits<ExtT>::is_integer &&
+                    bigendp == Math::bigendian)
         {
           // Data is compatible (including endian-ness).
           str.write(reinterpret_cast<const char*>(array), num * sizeof(ExtT));
@@ -540,13 +551,15 @@ namespace GeographicLib {
      *   256 (i.e., about 77 decimal digits).
      * @return the resulting number of bits of precision.
      *
-     * This only has an effect when GEOGRAPHICLIB_PRECISION = 5.  The
+     * This only has an effect when GEOGRAPHICLIB_PRECISION >= 5.  The
      * precision should only be set once and before calls to any other
      * GeographicLib functions.  (Several functions, for example Math::pi(),
      * cache the return value in a static local variable.  The precision needs
      * to be set before a call to any such functions.)  In multi-threaded
      * applications, it is necessary also to set the precision in each thread
-     * (see the example GeoidToGTX.cpp).
+     * (see the example GeoidToGTX.cpp).  If GEOGRAPHICLIB_PRECISION > 5, then
+     * the precision is set to GEOGRAPHICLIB_PRECISION, the compile-time value,
+     * and \e ndigits is ignored.
      *
      * \note Use Math::digits() to return the current precision in bits.
      **********************************************************************/
