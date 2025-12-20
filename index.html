@@ -78,7 +78,9 @@
 <li>
 <strong>Fully vectorized MGRS conversion</strong> - Convert thousands of coordinates in milliseconds</li>
 <li>
-<strong>Rich reverse conversion output</strong> - Get UTM/UPS coordinates, zones, convergence, scale factors, grid designators, and EPSG codes</li>
+<strong>Fully vectorized UTM/UPS conversion</strong> - Direct access to Universal Transverse Mercator and Universal Polar Stereographic projections</li>
+<li>
+<strong>Rich output</strong> - Get projected coordinates, zones, convergence, scale factors, grid designators, and EPSG codes</li>
 <li>
 <strong>Variable precision support</strong> - Generate MGRS codes from 100km to 1m precision</li>
 <li>
@@ -86,7 +88,6 @@
 <li>
 <strong>Fast C++ implementation</strong> - Built on GeographicLib’s battle-tested geodetic algorithms</li>
 </ul>
-<p>Currently MGRS (Military Grid Reference System) conversion is exposed. More GeographicLib functionality coming soon!</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -96,7 +97,7 @@
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hypertidy/geographiclib"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="mgrs---military-grid-reference-system">MGRS - Military Grid Reference System<a class="anchor" aria-label="anchor" href="#mgrs---military-grid-reference-system"></a>
 </h2>
 <p>Convert coordinates to MGRS and back:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -116,20 +117,20 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">6</span>, <span class="op">-</span><span class="fl">180</span>, <span class="fl">180</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">6</span>, <span class="op">-</span><span class="fl">90</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dput.html" class="external-link">dput</a></span><span class="op">(</span><span class="va">pts</span><span class="op">)</span></span>
-<span><span class="co">#&gt; structure(c(80.7739260233939, 36.6979004256427, 39.1493193525821, </span></span>
-<span><span class="co">#&gt; -119.001946728677, -12.9028697311878, 18.9792475383729, 88.0304698459804, </span></span>
-<span><span class="co">#&gt; 18.4222341142595, 10.5258371355012, -60.552484751679, -83.9670355897397, </span></span>
-<span><span class="co">#&gt; -11.9155057193711), dim = c(6L, 2L))</span></span>
+<span><span class="co">#&gt; structure(c(168.54785816744, 169.508864488453, 62.3109609726816, </span></span>
+<span><span class="co">#&gt; -105.109947966412, 97.2814318723977, 159.053902504966, -72.2564091067761, </span></span>
+<span><span class="co">#&gt; 79.538566977717, -76.83280242607, -67.7227939199656, 80.1980826118961, </span></span>
+<span><span class="co">#&gt; -14.1883090557531), dim = c(6L, 2L))</span></span>
 <span></span>
 <span><span class="co"># Variable precision: from 100km (0) to 1m (5)</span></span>
 <span><span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">pts</span>, precision <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "ZCG"             "37QBA53"         "37PEM1663"       "11ELN902853"    </span></span>
-<span><span class="co">#&gt; [5] "AYU50305346"     "34LBM7991281987"</span></span>
+<span><span class="co">#&gt; [1] "59CMV"           "59XMJ63"         "41CMQ8271"       "13DDE953880"    </span></span>
+<span><span class="co">#&gt; [5] "47XMK67340417"   "57LWE0581631446"</span></span>
 <span></span>
 <span><span class="co"># Different precisions for each point</span></span>
 <span><span class="op">(</span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">pts</span>, precision <span class="op">=</span> <span class="fl">5</span><span class="op">:</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "ZCG1585664938" "37QBA56823844" "37PEM163635"   "11ELN9085"    </span></span>
-<span><span class="co">#&gt; [5] "AYU55"         "34LBM"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "59CMV1661080766" "59XMJ69773047"   "41CMQ824717"     "13DDE9588"      </span></span>
+<span><span class="co">#&gt; [5] "47XMK60"         "57LWE"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="rich-reverse-conversion-output">Rich reverse conversion output<a class="anchor" aria-label="anchor" href="#rich-reverse-conversion-output"></a>
@@ -151,31 +152,73 @@
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/mgrs_fwd.html">mgrs_rev</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          lon       lat       x       y zone northp precision convergence</span></span>
-<span><span class="co">#&gt; 1   80.77404  88.03047 2215856 1964938    0   TRUE         5 80.77403976</span></span>
-<span><span class="co">#&gt; 2   36.69788  18.42223  256825 2038445   37   TRUE         4 -0.72786976</span></span>
-<span><span class="co">#&gt; 3   39.14943  10.52579  516350 1163550   37   TRUE         3  0.02729787</span></span>
-<span><span class="co">#&gt; 4 -118.99668 -60.55155  390500 3285500   11  FALSE         2  1.73888051</span></span>
-<span><span class="co">#&gt; 5  -12.48249 -83.96290 1855000 2655000    0  FALSE         1 12.48248938</span></span>
-<span><span class="co">#&gt; 6   18.70229 -12.20245  250000 8650000   34  FALSE         0  0.48591301</span></span>
+<span><span class="co">#&gt;          lon       lat        x       y zone northp precision convergence</span></span>
+<span><span class="co">#&gt; 1  168.54786 -72.25641 416610.5 1980766   59  FALSE         5  2.33562020</span></span>
+<span><span class="co">#&gt; 2  169.50874  79.53861 469775.0 8830475   59   TRUE         4 -1.46648202</span></span>
+<span><span class="co">#&gt; 3   62.30980 -76.83309 482450.0 1471750   41  FALSE         3  0.67205594</span></span>
+<span><span class="co">#&gt; 4 -105.10635 -67.71864 495500.0 2488500   13  FALSE         2  0.09841205</span></span>
+<span><span class="co">#&gt; 5   97.15689  80.20480 465000.0 8905000   47   TRUE         1 -1.81626281</span></span>
+<span><span class="co">#&gt; 6  159.46304 -14.02012 550000.0 8450000   57  FALSE         0 -0.11217919</span></span>
 <span><span class="co">#&gt;       scale grid_zone square_100km        crs</span></span>
-<span><span class="co">#&gt; 1 0.9942937         Z           CG EPSG:32661</span></span>
-<span><span class="co">#&gt; 2 1.0003311       37Q           BA EPSG:32637</span></span>
-<span><span class="co">#&gt; 3 0.9996033       37P           EM EPSG:32637</span></span>
-<span><span class="co">#&gt; 4 0.9997469       11E           LN EPSG:32711</span></span>
-<span><span class="co">#&gt; 5 0.9967639         A           YU EPSG:32761</span></span>
-<span><span class="co">#&gt; 6 1.0003733       34L           BM EPSG:32734</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 0.9996850       59C           MV EPSG:32759</span></span>
+<span><span class="co">#&gt; 2 0.9996112       59X           MJ EPSG:32659</span></span>
+<span><span class="co">#&gt; 3 0.9996038       41C           MQ EPSG:32741</span></span>
+<span><span class="co">#&gt; 4 0.9996002       13D           DE EPSG:32713</span></span>
+<span><span class="co">#&gt; 5 0.9996150       47X           MK EPSG:32647</span></span>
+<span><span class="co">#&gt; 6 0.9996309       57L           WE EPSG:32757</span></span></code></pre></div>
 <p>The reverse conversion returns the center point of each MGRS grid cell.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="utmups---universal-transverse-mercator--universal-polar-stereographic">UTM/UPS - Universal Transverse Mercator / Universal Polar Stereographic<a class="anchor" aria-label="anchor" href="#utmups---universal-transverse-mercator--universal-polar-stereographic"></a>
+</h2>
+<p>Direct access to UTM/UPS projections for precise coordinate conversion:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Forward: Geographic to UTM/UPS</span></span>
+<span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">147.325</span>, <span class="op">-</span><span class="fl">63.22</span>, <span class="fl">0</span>, <span class="fl">45.67</span><span class="op">)</span>,</span>
+<span>             lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">42.881</span>, <span class="fl">17.62</span>, <span class="fl">88</span>, <span class="fl">39.84</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">utm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">pts</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           x       y zone northp convergence     scale     lon     lat</span></span>
+<span><span class="co">#&gt; 1  526541.3 5252349   55  FALSE -0.22115661 0.9996087 147.325 -42.881</span></span>
+<span><span class="co">#&gt; 2  476660.8 1948158   20   TRUE -0.06659487 0.9996067 -63.220  17.620</span></span>
+<span><span class="co">#&gt; 3 2000000.0 1777931    0   TRUE  0.00000000 0.9943028   0.000  88.000</span></span>
+<span><span class="co">#&gt; 4  557324.5 4410214   38   TRUE  0.42924443 0.9996405  45.670  39.840</span></span>
+<span><span class="co">#&gt;          crs</span></span>
+<span><span class="co">#&gt; 1 EPSG:32755</span></span>
+<span><span class="co">#&gt; 2 EPSG:32620</span></span>
+<span><span class="co">#&gt; 3 EPSG:32661</span></span>
+<span><span class="co">#&gt; 4 EPSG:32638</span></span></code></pre></div>
+<p>The forward conversion automatically selects the appropriate UTM zone (or UPS for polar regions) and returns:</p>
+<ul>
+<li>Projected coordinates (x/y in meters)</li>
+<li>Zone and hemisphere information</li>
+<li>Meridian convergence and scale factor</li>
+<li>EPSG CRS codes</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Reverse: UTM/UPS to Geographic</span></span>
+<span><span class="fu"><a href="reference/utmups_fwd.html">utmups_rev</a></span><span class="op">(</span><span class="va">utm</span><span class="op">$</span><span class="va">x</span>, <span class="va">utm</span><span class="op">$</span><span class="va">y</span>, <span class="va">utm</span><span class="op">$</span><span class="va">zone</span>, <span class="va">utm</span><span class="op">$</span><span class="va">northp</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       lon     lat         x       y zone northp convergence     scale</span></span>
+<span><span class="co">#&gt; 1 147.325 -42.881  526541.3 5252349   55  FALSE -0.22115661 0.9996087</span></span>
+<span><span class="co">#&gt; 2 -63.220  17.620  476660.8 1948158   20   TRUE -0.06659487 0.9996067</span></span>
+<span><span class="co">#&gt; 3   0.000  88.000 2000000.0 1777931    0   TRUE  0.00000000 0.9943028</span></span>
+<span><span class="co">#&gt; 4  45.670  39.840  557324.5 4410214   38   TRUE  0.42924443 0.9996405</span></span>
+<span><span class="co">#&gt;          crs</span></span>
+<span><span class="co">#&gt; 1 EPSG:32755</span></span>
+<span><span class="co">#&gt; 2 EPSG:32620</span></span>
+<span><span class="co">#&gt; 3 EPSG:32661</span></span>
+<span><span class="co">#&gt; 4 EPSG:32638</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="polar-regions">Polar regions<a class="anchor" aria-label="anchor" href="#polar-regions"></a>
 </h3>
-<p>Polar coordinates automatically use UPS (Universal Polar Stereographic):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>Both MGRS and UTM/UPS automatically handle polar regions using UPS:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># North and South pole regions</span></span>
 <span><span class="va">polar_pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">147</span>, <span class="fl">148</span>, <span class="op">-</span><span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">88</span>, <span class="op">-</span><span class="fl">88</span>, <span class="op">-</span><span class="fl">85</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">polar_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">polar_pts</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/mgrs_fwd.html">mgrs_rev</a></span><span class="op">(</span><span class="va">polar_codes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># MGRS in polar regions</span></span>
+<span><span class="va">polar_mgrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">polar_pts</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/mgrs_fwd.html">mgrs_rev</a></span><span class="op">(</span><span class="va">polar_mgrs</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         lon lat       x       y zone northp precision convergence     scale</span></span>
 <span><span class="co">#&gt; 1  147.0000  88 2120948 2186242    0   TRUE         5    147.0000 0.9943028</span></span>
 <span><span class="co">#&gt; 2  148.0001 -88 2117678 1811674    0  FALSE         5   -148.0001 0.9943028</span></span>
@@ -183,22 +226,62 @@
 <span><span class="co">#&gt;   grid_zone square_100km        crs</span></span>
 <span><span class="co">#&gt; 1         Z           BJ EPSG:32661</span></span>
 <span><span class="co">#&gt; 2         B           BL EPSG:32761</span></span>
-<span><span class="co">#&gt; 3         A           SM EPSG:32761</span></span></code></pre></div>
+<span><span class="co">#&gt; 3         A           SM EPSG:32761</span></span>
+<span></span>
+<span><span class="co"># Direct UTM/UPS conversion</span></span>
+<span><span class="fu"><a href="reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">polar_pts</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         x       y zone northp convergence     scale  lon lat        crs</span></span>
+<span><span class="co">#&gt; 1 2120948 2186243    0   TRUE         147 0.9943028  147  88 EPSG:32661</span></span>
+<span><span class="co">#&gt; 2 2117679 1811675    0  FALSE        -148 0.9943028  148 -88 EPSG:32761</span></span>
+<span><span class="co">#&gt; 3 1452981 1903546    0  FALSE         100 0.9958948 -100 -85 EPSG:32761</span></span></code></pre></div>
 <p>Note that <code>zone = 0</code> indicates UPS projection, with dedicated EPSG codes (32661 for North, 32761 for South).</p>
+</div>
+<div class="section level3">
+<h3 id="convergence-and-scale">Convergence and scale<a class="anchor" aria-label="anchor" href="#convergence-and-scale"></a>
+</h3>
+<p>The convergence angle and scale factor are useful for surveying and geodetic applications:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Points across different longitudes at same latitude</span></span>
+<span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">120</span>, <span class="fl">120</span>, by <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">pts</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Convergence varies with distance from central meridian</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  lon <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">lon</span>,</span>
+<span>  zone <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">zone</span>,</span>
+<span>  convergence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">convergence</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">scale</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;    lon zone convergence    scale</span></span>
+<span><span class="co">#&gt; 1 -120   11       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 2  -90   16       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 3  -60   21       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 4  -30   26       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 5    0   31       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 6   30   36       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 7   60   41       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 8   90   46       -2.12 1.000287</span></span>
+<span><span class="co">#&gt; 9  120   51       -2.12 1.000287</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="performance">Performance<a class="anchor" aria-label="anchor" href="#performance"></a>
 </h3>
 <p>It’s fast - process tens of thousands of coordinates in milliseconds:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># World cities dataset</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">cbind</span>, <span class="fu">maps</span><span class="fu">::</span><span class="va">world.cities</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"long"</span>, <span class="st">"lat"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#[1] 43645     2</span></span>
 <span></span>
+<span><span class="co"># MGRS conversion</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#   user  system elapsed </span></span>
 <span><span class="co">#   0.04    0.00    0.04 </span></span>
+<span></span>
+<span><span class="co"># UTM/UPS conversion</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">utm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#   user  system elapsed </span></span>
+<span><span class="co">#   0.03    0.00    0.03</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">codes</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co"># [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"</span></span>
@@ -211,7 +294,7 @@
 <div class="section level2">
 <h2 id="comparison-with-other-packages">Comparison with other packages<a class="anchor" aria-label="anchor" href="#comparison-with-other-packages"></a>
 </h2>
-<p>Several R packages include GeographicLib source code, but none provided the vectorized MGRS functionality needed:</p>
+<p>Several R packages include GeographicLib source code, but none provided the vectorized MGRS and UTM/UPS functionality needed:</p>
 <ul>
 <li>
 <strong>mgrs</strong> - MGRS support but not vectorized, uses older GEOTRANS code</li>
@@ -226,7 +309,6 @@
 <li>
 <strong>googlePolylines, BH, lwgeom</strong> - Other geodetic utilities</li>
 </ul>
-<p>Here is the Python package by library author Charles F. F. Karney <a href="https://geographiclib.sourceforge.io/html/python/" class="external-link uri">https://geographiclib.sourceforge.io/html/python/</a></p>
 </div>
 <div class="section level2">
 <h2 id="development-notes">Development notes<a class="anchor" aria-label="anchor" href="#development-notes"></a>
