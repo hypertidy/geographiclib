@@ -19,3 +19,11 @@ mgrs_decode_cpp <- function(mgrs) {
 polygonarea_cpp <- function() {
   .Call(`_geographiclib_polygonarea_cpp`)
 }
+
+utmups_fwd_cpp <- function(lon, lat) {
+  .Call(`_geographiclib_utmups_fwd_cpp`, lon, lat)
+}
+
+utmups_rev_cpp <- function(x, y, zone, northp) {
+  .Call(`_geographiclib_utmups_rev_cpp`, x, y, zone, northp)
+}

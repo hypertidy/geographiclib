@@ -1,5 +1,9 @@
 # geographiclib dev
 
+* Added UTMUPS support. 
+
+* Pull source to align to GeographicLib2.7
+
 * New fields from Reverse() for mgrs_rev(). 
 
 * Vectorized mgrs_rev and handle poles. 

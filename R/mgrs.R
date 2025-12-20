@@ -37,6 +37,7 @@
 #'   - `square_100km`: 100km square identifier (e.g., "SM", "GH")
 #'   - `crs`: EPSG code string for the appropriate UTM/UPS projection
 #'     (e.g., "EPSG:32755" for UTM zone 55S, "EPSG:32661" for UPS North)
+#' 
 #' @details
 #' The Military Grid Reference System (MGRS) is a geocoordinate standard used
 #' by NATO militaries for locating points on Earth. It is an alternative to
