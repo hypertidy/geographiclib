@@ -16,17 +16,16 @@ precise geodetic calculations in R.
 
 - **Fully vectorized MGRS conversion** - Convert thousands of
   coordinates in milliseconds
-- **Rich reverse conversion output** - Get UTM/UPS coordinates, zones,
-  convergence, scale factors, grid designators, and EPSG codes
+- **Fully vectorized UTM/UPS conversion** - Direct access to Universal
+  Transverse Mercator and Universal Polar Stereographic projections
+- **Rich output** - Get projected coordinates, zones, convergence, scale
+  factors, grid designators, and EPSG codes
 - **Variable precision support** - Generate MGRS codes from 100km to 1m
   precision
 - **Polar region support** - Handles UPS (Universal Polar Stereographic)
   zones automatically
 - **Fast C++ implementation** - Built on GeographicLib’s battle-tested
   geodetic algorithms
-
-Currently MGRS (Military Grid Reference System) conversion is exposed.
-More GeographicLib functionality coming soon!
 
 ## Installation
 
@@ -36,7 +35,7 @@ You can install the development version of geographiclib like so:
 remotes::install_github("hypertidy/geographiclib")
 ```
 
-## Example
+## MGRS - Military Grid Reference System
 
 Convert coordinates to MGRS and back:
 
@@ -60,20 +59,20 @@ precision:
 ``` r
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
-#> structure(c(80.7739260233939, 36.6979004256427, 39.1493193525821, 
-#> -119.001946728677, -12.9028697311878, 18.9792475383729, 88.0304698459804, 
-#> 18.4222341142595, 10.5258371355012, -60.552484751679, -83.9670355897397, 
-#> -11.9155057193711), dim = c(6L, 2L))
+#> structure(c(168.54785816744, 169.508864488453, 62.3109609726816, 
+#> -105.109947966412, 97.2814318723977, 159.053902504966, -72.2564091067761, 
+#> 79.538566977717, -76.83280242607, -67.7227939199656, 80.1980826118961, 
+#> -14.1883090557531), dim = c(6L, 2L))
 
 # Variable precision: from 100km (0) to 1m (5)
 mgrs_fwd(pts, precision = 0:5)
-#> [1] "ZCG"             "37QBA53"         "37PEM1663"       "11ELN902853"    
-#> [5] "AYU50305346"     "34LBM7991281987"
+#> [1] "59CMV"           "59XMJ63"         "41CMQ8271"       "13DDE953880"    
+#> [5] "47XMK67340417"   "57LWE0581631446"
 
 # Different precisions for each point
 (code <- mgrs_fwd(pts, precision = 5:0))
-#> [1] "ZCG1585664938" "37QBA56823844" "37PEM163635"   "11ELN9085"    
-#> [5] "AYU55"         "34LBM"
+#> [1] "59CMV1661080766" "59XMJ69773047"   "41CMQ824717"     "13DDE9588"      
+#> [5] "47XMK60"         "57LWE"
 ```
 
 ### Rich reverse conversion output
@@ -93,33 +92,79 @@ columns:
 
 ``` r
 mgrs_rev(code)
-#>          lon       lat       x       y zone northp precision convergence
-#> 1   80.77404  88.03047 2215856 1964938    0   TRUE         5 80.77403976
-#> 2   36.69788  18.42223  256825 2038445   37   TRUE         4 -0.72786976
-#> 3   39.14943  10.52579  516350 1163550   37   TRUE         3  0.02729787
-#> 4 -118.99668 -60.55155  390500 3285500   11  FALSE         2  1.73888051
-#> 5  -12.48249 -83.96290 1855000 2655000    0  FALSE         1 12.48248938
-#> 6   18.70229 -12.20245  250000 8650000   34  FALSE         0  0.48591301
+#>          lon       lat        x       y zone northp precision convergence
+#> 1  168.54786 -72.25641 416610.5 1980766   59  FALSE         5  2.33562020
+#> 2  169.50874  79.53861 469775.0 8830475   59   TRUE         4 -1.46648202
+#> 3   62.30980 -76.83309 482450.0 1471750   41  FALSE         3  0.67205594
+#> 4 -105.10635 -67.71864 495500.0 2488500   13  FALSE         2  0.09841205
+#> 5   97.15689  80.20480 465000.0 8905000   47   TRUE         1 -1.81626281
+#> 6  159.46304 -14.02012 550000.0 8450000   57  FALSE         0 -0.11217919
 #>       scale grid_zone square_100km        crs
-#> 1 0.9942937         Z           CG EPSG:32661
-#> 2 1.0003311       37Q           BA EPSG:32637
-#> 3 0.9996033       37P           EM EPSG:32637
-#> 4 0.9997469       11E           LN EPSG:32711
-#> 5 0.9967639         A           YU EPSG:32761
-#> 6 1.0003733       34L           BM EPSG:32734
+#> 1 0.9996850       59C           MV EPSG:32759
+#> 2 0.9996112       59X           MJ EPSG:32659
+#> 3 0.9996038       41C           MQ EPSG:32741
+#> 4 0.9996002       13D           DE EPSG:32713
+#> 5 0.9996150       47X           MK EPSG:32647
+#> 6 0.9996309       57L           WE EPSG:32757
 ```
 
 The reverse conversion returns the center point of each MGRS grid cell.
 
+## UTM/UPS - Universal Transverse Mercator / Universal Polar Stereographic
+
+Direct access to UTM/UPS projections for precise coordinate conversion:
+
+``` r
+# Forward: Geographic to UTM/UPS
+pts <- cbind(lon = c(147.325, -63.22, 0, 45.67),
+             lat = c(-42.881, 17.62, 88, 39.84))
+(utm <- utmups_fwd(pts))
+#>           x       y zone northp convergence     scale     lon     lat
+#> 1  526541.3 5252349   55  FALSE -0.22115661 0.9996087 147.325 -42.881
+#> 2  476660.8 1948158   20   TRUE -0.06659487 0.9996067 -63.220  17.620
+#> 3 2000000.0 1777931    0   TRUE  0.00000000 0.9943028   0.000  88.000
+#> 4  557324.5 4410214   38   TRUE  0.42924443 0.9996405  45.670  39.840
+#>          crs
+#> 1 EPSG:32755
+#> 2 EPSG:32620
+#> 3 EPSG:32661
+#> 4 EPSG:32638
+```
+
+The forward conversion automatically selects the appropriate UTM zone
+(or UPS for polar regions) and returns:
+
+- Projected coordinates (x/y in meters)
+- Zone and hemisphere information
+- Meridian convergence and scale factor
+- EPSG CRS codes
+
+``` r
+# Reverse: UTM/UPS to Geographic
+utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
+#>       lon     lat         x       y zone northp convergence     scale
+#> 1 147.325 -42.881  526541.3 5252349   55  FALSE -0.22115661 0.9996087
+#> 2 -63.220  17.620  476660.8 1948158   20   TRUE -0.06659487 0.9996067
+#> 3   0.000  88.000 2000000.0 1777931    0   TRUE  0.00000000 0.9943028
+#> 4  45.670  39.840  557324.5 4410214   38   TRUE  0.42924443 0.9996405
+#>          crs
+#> 1 EPSG:32755
+#> 2 EPSG:32620
+#> 3 EPSG:32661
+#> 4 EPSG:32638
+```
+
 ### Polar regions
 
-Polar coordinates automatically use UPS (Universal Polar Stereographic):
+Both MGRS and UTM/UPS automatically handle polar regions using UPS:
 
 ``` r
 # North and South pole regions
 polar_pts <- cbind(c(147, 148, -100), c(88, -88, -85))
-polar_codes <- mgrs_fwd(polar_pts)
-mgrs_rev(polar_codes)
+
+# MGRS in polar regions
+polar_mgrs <- mgrs_fwd(polar_pts)
+mgrs_rev(polar_mgrs)
 #>         lon lat       x       y zone northp precision convergence     scale
 #> 1  147.0000  88 2120948 2186242    0   TRUE         5    147.0000 0.9943028
 #> 2  148.0001 -88 2117678 1811674    0  FALSE         5   -148.0001 0.9943028
@@ -128,10 +173,46 @@ mgrs_rev(polar_codes)
 #> 1         Z           BJ EPSG:32661
 #> 2         B           BL EPSG:32761
 #> 3         A           SM EPSG:32761
+
+# Direct UTM/UPS conversion
+utmups_fwd(polar_pts)
+#>         x       y zone northp convergence     scale  lon lat        crs
+#> 1 2120948 2186243    0   TRUE         147 0.9943028  147  88 EPSG:32661
+#> 2 2117679 1811675    0  FALSE        -148 0.9943028  148 -88 EPSG:32761
+#> 3 1452981 1903546    0  FALSE         100 0.9958948 -100 -85 EPSG:32761
 ```
 
 Note that `zone = 0` indicates UPS projection, with dedicated EPSG codes
 (32661 for North, 32761 for South).
+
+### Convergence and scale
+
+The convergence angle and scale factor are useful for surveying and
+geodetic applications:
+
+``` r
+# Points across different longitudes at same latitude
+pts <- cbind(lon = seq(-120, 120, by = 30), lat = 45)
+result <- utmups_fwd(pts)
+
+# Convergence varies with distance from central meridian
+data.frame(
+  lon = result$lon,
+  zone = result$zone,
+  convergence = round(result$convergence, 2),
+  scale = round(result$scale, 6)
+)
+#>    lon zone convergence    scale
+#> 1 -120   11       -2.12 1.000287
+#> 2  -90   16       -2.12 1.000287
+#> 3  -60   21       -2.12 1.000287
+#> 4  -30   26       -2.12 1.000287
+#> 5    0   31       -2.12 1.000287
+#> 6   30   36       -2.12 1.000287
+#> 7   60   41       -2.12 1.000287
+#> 8   90   46       -2.12 1.000287
+#> 9  120   51       -2.12 1.000287
+```
 
 ### Performance
 
@@ -143,9 +224,15 @@ x <- do.call(cbind, maps::world.cities[c("long", "lat")])
 dim(x)
 #[1] 43645     2
 
+# MGRS conversion
 system.time(codes <- mgrs_fwd(x))
 #   user  system elapsed 
 #   0.04    0.00    0.04 
+
+# UTM/UPS conversion
+system.time(utm <- utmups_fwd(x))
+#   user  system elapsed 
+#   0.03    0.00    0.03
 
 sample(codes, 10)
 # [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"
@@ -158,7 +245,7 @@ sum(nchar(codes))
 ## Comparison with other packages
 
 Several R packages include GeographicLib source code, but none provided
-the vectorized MGRS functionality needed:
+the vectorized MGRS and UTM/UPS functionality needed:
 
 - **mgrs** - MGRS support but not vectorized, uses older GEOTRANS code
 - **geosphere** - Miscellaneous geodetic functions
@@ -166,9 +253,6 @@ the vectorized MGRS functionality needed:
 - **geodist** - Fast distance calculations
 - **nngeo** - Nearest neighbor operations
 - **googlePolylines, BH, lwgeom** - Other geodetic utilities
-
-Here is the Python package by library author Charles F. F. Karney
-<https://geographiclib.sourceforge.io/html/python/>
 
 ## Development notes
 
