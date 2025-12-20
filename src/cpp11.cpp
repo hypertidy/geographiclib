@@ -40,6 +40,20 @@ extern "C" SEXP _geographiclib_polygonarea_cpp() {
     return cpp11::as_sexp(polygonarea_cpp());
   END_CPP11
 }
+// 000_utm_ups.cpp
+cpp11::writable::data_frame utmups_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat);
+extern "C" SEXP _geographiclib_utmups_fwd_cpp(SEXP lon, SEXP lat) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(utmups_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat)));
+  END_CPP11
+}
+// 000_utm_ups.cpp
+cpp11::writable::data_frame utmups_rev_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::integers zone, cpp11::logicals northp);
+extern "C" SEXP _geographiclib_utmups_rev_cpp(SEXP x, SEXP y, SEXP zone, SEXP northp) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(utmups_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(zone), cpp11::as_cpp<cpp11::decay_t<cpp11::logicals>>(northp)));
+  END_CPP11
+}
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
@@ -48,6 +62,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_mgrs_fwd_cpp",    (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,    3},
     {"_geographiclib_mgrs_rev_cpp",    (DL_FUNC) &_geographiclib_mgrs_rev_cpp,    1},
     {"_geographiclib_polygonarea_cpp", (DL_FUNC) &_geographiclib_polygonarea_cpp, 0},
+    {"_geographiclib_utmups_fwd_cpp",  (DL_FUNC) &_geographiclib_utmups_fwd_cpp,  2},
+    {"_geographiclib_utmups_rev_cpp",  (DL_FUNC) &_geographiclib_utmups_rev_cpp,  4},
     {NULL, NULL, 0}
 };
 }

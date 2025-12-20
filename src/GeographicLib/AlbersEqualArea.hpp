@@ -46,7 +46,7 @@ namespace GeographicLib {
    * aligned with the cardinal directions is projected to a rectangle with
    * dimensions \e k (in the E-W direction) and 1/\e k (in the N-S direction).
    * The E-W sides of the rectangle are oriented &gamma; degrees
-   * counter-clockwise from the \e x axis.  There is no provision in this class
+   * counterclockwise from the \e x axis.  There is no provision in this class
    * for specifying a false easting or false northing or a different latitude
    * of origin.
    *
@@ -74,7 +74,7 @@ namespace GeographicLib {
     // atan (sqrt(-e2) * x)/sqrt(-e2) if f < 0
     // x                              if f = 0
     real atanhee(real x) const {
-      using std::atan; using std::atanh;
+      using std::atan, std::atanh;
       return _f > 0 ? atanh(_e * x)/_e : (_f < 0 ? (atan(_e * x)/_e) : x);
     }
     // return atanh(sqrt(x))/sqrt(x) - 1, accurate for small x
