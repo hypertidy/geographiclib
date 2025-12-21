@@ -100,8 +100,9 @@ and creating buffers.
 The \strong{inverse problem} finds the shortest path (geodesic) between two
 points and returns the distance and azimuths at both endpoints.
 
-The azimuth is measured in degrees clockwise from north (0° = north,
-90° = east, 180° = south, 270° = west).
+The azimuth is measured in degrees from north, with positive values
+clockwise (east) and negative values counter-clockwise (west).
+The range is -180° to 180° (e.g., 90° = east, -90° = west, 180° or -180° = south).
 }
 \examples{
 # Direct problem: Where do you end up starting from London,
