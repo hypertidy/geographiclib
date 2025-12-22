@@ -19,309 +19,60 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/hypertidy/geographiclib/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hypertidy/geographiclib/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of geographiclib is to wrap the awesome [GeographicLib](https://geographiclib.sourceforge.io/) library for precise geodetic calculations in R.
+R interface to [GeographicLib](https://geographiclib.sourceforge.io/) for precise geodetic calculations on the WGS84 ellipsoid.
 
 ## Features
 
-* **Fully vectorized MGRS conversion** - Convert thousands of coordinates in milliseconds
-* **Fully vectorized UTM/UPS conversion** - Direct access to Universal Transverse Mercator and Universal Polar Stereographic projections
-* **Lambert Conformal Conic projection** - Configurable LCC with single or two standard parallels
-* **Geohash encoding/decoding** - Fast, vectorized Geohash conversions with precision control
-* **Geodesic calculations** - Exact solutions for direct and inverse geodesic problems on the WGS84 ellipsoid
-* **Geodesic polygon area** - Accurate area and perimeter calculations on the WGS84 ellipsoid
-* **Rich output** - Get projected coordinates, zones, convergence, scale factors, grid designators, and EPSG codes
-* **Variable precision support** - Generate MGRS codes from 100km to 1m precision
-* **Polar region support** - Handles UPS (Universal Polar Stereographic) zones automatically
-* **Fast C++ implementation** - Built on GeographicLib's battle-tested geodetic algorithms
+* **MGRS** - Military Grid Reference System encoding/decoding
+* **UTM/UPS** - Universal Transverse Mercator and Universal Polar Stereographic projections
+* **Lambert Conformal Conic** - Configurable LCC projection
+* **Geohash** - Geohash encoding/decoding with precision control
+* **Geodesic calculations** - Distance, bearing, paths, and area on the ellipsoid
+
+All functions are fully vectorized with rich metadata output.
 
 ## Installation
 
-You can install the development version of geographiclib like so:
-
-``` r
+```r
 remotes::install_github("hypertidy/geographiclib")
 ```
 
-## MGRS - Military Grid Reference System
-
-Convert coordinates to MGRS and back:
+## Quick example
 
 ```{r example}
 library(geographiclib)
 
-(code <- mgrs_fwd(c(147.325, -42.881)))
-mgrs_rev(code)
+# Coordinates to MGRS
+pts <- cbind(lon = c(147.32, -74.01, 0.13),
+             lat = c(-42.88, 40.71, 51.51))
+(codes <- mgrs_fwd(pts))
+
+# MGRS back to coordinates with full metadata
+mgrs_rev(codes)
 ```
 
-### Vectorized forward conversion
+## Documentation
 
-The `mgrs_fwd()` function is fully vectorized on both coordinates and precision:
+See the [package overview vignette](https://hypertidy.github.io/geographiclib/articles/geographiclib-overview.html) for a comprehensive tour of all features including:
 
-```{r vectorized-mgrs}
-pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
-dput(pts)
+- MGRS and Geohash encoding
+- UTM/UPS and Lambert Conformal Conic projections
+- Geodesic distance, bearing, and path calculations
+- Polygon area on the ellipsoid
 
-# Variable precision: from 100km (0) to 1m (5)
-mgrs_fwd(pts, precision = 0:5)
-
-# Different precisions for each point
-(code <- mgrs_fwd(pts, precision = 5:0))
-```
-
-### Rich reverse conversion output
-
-The `mgrs_rev()` function returns a comprehensive data frame with 12 columns:
-
-- **Geographic coordinates** (`lon`/`lat` in decimal degrees)
-- **Projected coordinates** (`x`/`y` in meters, UTM/UPS)
-- **Zone information** (`zone` number, `northp` hemisphere, `grid_zone` designator, `square_100km` ID)
-- **Geodetic properties** (`convergence` angle in degrees, `scale` factor)
-- **Precision level** (0-5, decoded from MGRS string)
-- **CRS identification** (`crs` as EPSG codes for direct use with spatial packages)
-
-```{r vectorized-rev}
-mgrs_rev(code)
-```
-
-The reverse conversion returns the center point of each MGRS grid cell.
-
-## UTM/UPS - Universal Transverse Mercator / Universal Polar Stereographic
-
-Direct access to UTM/UPS projections for precise coordinate conversion:
-
-```{r utmups-example}
-# Forward: Geographic to UTM/UPS
-pts <- cbind(lon = c(147.325, -63.22, 0, 45.67),
-             lat = c(-42.881, 17.62, 88, 39.84))
-(utm <- utmups_fwd(pts))
-```
-
-The forward conversion automatically selects the appropriate UTM zone (or UPS for polar regions) and returns:
-
-- Projected coordinates (x/y in meters)
-- Zone and hemisphere information
-- Meridian convergence and scale factor
-- EPSG CRS codes
-
-```{r utmups-reverse}
-# Reverse: UTM/UPS to Geographic
-utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
-```
-
-## Lambert Conformal Conic Projection
-
-The Lambert Conformal Conic (LCC) projection is widely used for aeronautical charts and regional coordinate systems:
-```{r lcc-example}
-# Single standard parallel (tangent cone)
-pts <- cbind(lon = c(-100, -99, -98), lat = c(40, 41, 42))
-lcc_fwd(pts, lon0 = -100, stdlat = 40)
-
-# Two standard parallels (secant cone) - common for regional systems
-lcc_fwd(pts, lon0 = -96, stdlat1 = 33, stdlat2 = 45)
-```
-
-Round-trip conversion:
-
-```{r lcc-roundtrip}
-fwd <- lcc_fwd(pts, lon0 = -100, stdlat = 40)
-lcc_rev(fwd$x, fwd$y, lon0 = -100, stdlat = 40)
-```
-
-## Geohash
-
-Convert coordinates to Geohash strings and back:
-
-```{r geohash-example}
-# Single point conversion
-(gh <- geohash_fwd(c(147.325, -42.881)))
-geohash_rev(gh)
-```
-
-Geohash has a useful property: truncating a code reduces precision but still contains the original point:
-
-```{r geohash-truncate}
-# Full precision
-gh <- geohash_fwd(c(147.325, -42.881), len = 12)
-gh
-
-# Truncated versions still contain the original point
-substr(gh, 1, 8)  # ~19m precision
-substr(gh, 1, 6)  # ~610m precision
-substr(gh, 1, 4)  # ~20km precision
-```
-
-Check resolution for different Geohash lengths:
-
-```{r geohash-resolution}
-geohash_resolution(c(4, 6, 8, 10, 12))
-```
-
-## Geodesic Calculations
-
-Solve geodesic problems on the WGS84 ellipsoid with full double-precision accuracy.
-
-### Direct problem
-
-Given a starting point, azimuth (bearing), and distance, find the destination:
-
-```{r geodesic-direct}
-# Where do you end up starting from London, heading east for 1000 km?
-geodesic_direct(c(-0.1, 51.5), azi = 90, s = 1000000)
-```
-
-### Inverse problem
-
-Given two points, find the distance and azimuths between them:
-
-```{r geodesic-inverse}
-# Distance from London to New York
-geodesic_inverse(c(-0.1, 51.5), c(-74, 40.7))
-```
-
-### Geodesic paths
-
-Generate points along the shortest path (geodesic) between two points:
-
-```{r geodesic-path}
-# Great circle path from London to New York
-path <- geodesic_path(c(-0.1, 51.5), c(-74, 40.7), n = 10)
-path
-```
-
-### Distance matrix
-
-Compute distances between sets of points:
-
-```{r geodesic-matrix}
-cities <- cbind(
-  lon = c(-0.1, -74, 139.7, 151.2),  # London, NYC, Tokyo, Sydney
-  lat = c(51.5, 40.7, 35.7, -33.9)
-)
-# Distance matrix in kilometers
-geodesic_distance_matrix(cities) / 1000
-```
-
-## Polygon Area - Geodesic area and perimeter
-
-Compute accurate polygon area and perimeter on the WGS84 ellipsoid:
-
-```{r polygon-area}
-# Triangle: London - New York - Rio de Janeiro
-pts <- cbind(
-  lon = c(0, -74, -43),
-  lat = c(52, 41, -23)
-)
-polygon_area(pts)
-```
-
-The area is returned in square meters and the perimeter in meters. The area is signed: positive for counter-clockwise polygons, negative for clockwise.
-
-```{r polygon-area-km}
-# Area in square kilometers
-result <- polygon_area(pts)
-abs(result$area) / 1e6
-```
-
-### Multiple polygons
-
-Use the `id` argument to compute area for multiple polygons at once:
-
-```{r polygon-multiple}
-pts <- cbind(
-  lon = c(0, -74, -43, 100, 110, 105, 120),
-  lat = c(52, 41, -23, 10, 10, 20, 15)
-)
-polygon_area(pts, id = c(1, 1, 1, 2, 2, 2, 2))
-```
-
-### Polyline length
-
-Set `polyline = TRUE` to compute the length of a path instead of a closed polygon:
-
-```{r polyline}
-# Great circle route length
-route <- cbind(
-  lon = c(151.2, -122.4, -0.1),  # Sydney - San Francisco - London
-  lat = c(-33.9, 37.8, 51.5)
-)
-polygon_area(route, polyline = TRUE)
-```
-
-## Polar regions
-
-Both MGRS and UTM/UPS automatically handle polar regions using UPS:
-
-```{r polar}
-# North and South pole regions
-polar_pts <- cbind(c(147, 148, -100), c(88, -88, -85))
-
-# MGRS in polar regions
-polar_mgrs <- mgrs_fwd(polar_pts)
-mgrs_rev(polar_mgrs)
-
-# Direct UTM/UPS conversion
-utmups_fwd(polar_pts)
-```
-
-Note that `zone = 0` indicates UPS projection, with dedicated EPSG codes (32661 for North, 32761 for South).
+Full documentation at <https://hypertidy.github.io/geographiclib/>
 
 ## Performance
 
-It's fast - process tens of thousands of coordinates in milliseconds:
+Fast C++ implementation - process tens of thousands of coordinates in milliseconds:
 
 ```{r speed, eval=FALSE}
-# World cities dataset
 x <- do.call(cbind, maps::world.cities[c("long", "lat")])
-dim(x)
-#[1] 43645     2
-
-# MGRS conversion
-system.time(codes <- mgrs_fwd(x))
-#   user  system elapsed 
-#   0.04    0.00    0.04 
-
-# UTM/UPS conversion
-system.time(utm <- utmups_fwd(x))
-#   user  system elapsed 
-#   0.03    0.00    0.03
-
-# Geohash conversion
-system.time(gh <- geohash_fwd(x))
-#   user  system elapsed 
-#   0.02    0.00    0.02
-
-# Geodesic distances (pairwise)
-system.time(d <- geodesic_distance(x[1:10000,], x[10001:20000,]))
-#   user  system elapsed 
-#   0.02    0.00    0.02
-
-sample(codes, 10)
-# [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"
-# [6] "36RXV9463390163" "31UFT6135362533" "11SLT9551050534" "32TQQ0915128552" "32PMT1934289062"
-
-sum(nchar(codes))
-#[1] 654675
+system.time(mgrs_fwd(x))       # 43,645 points
+#>  user  system elapsed 
+#>  0.04    0.00    0.04
 ```
 
-## Comparison with other packages
-
-Several R packages provide geodetic functionality, but none provided the complete vectorized interface to GeographicLib needed:
-
-* **mgrs** - MGRS support but not vectorized, uses older GEOTRANS code
-* **geohash** - Geohash support but not as feature-rich
-* **geosphere** - Miscellaneous geodetic functions including polygon area (spherical approximation)
-* **sf, terra, s2** - Distance and geodetic calculations
-* **geodist** - Fast distance calculations
-* **nngeo** - Nearest neighbor operations
-* **googlePolylines, BH, lwgeom** - Other geodetic utilities
-
-## Development notes
-
-* No changes made to GeographicLib source files
-* Package source code named "000_*_geographiclib.cpp" to differentiate from original sources
-* See `data-raw/GeographicLib.R` for source provenance (obtained 2025-06-16 from https://github.com/geographiclib/geographiclib commit 0a6067b)
-* Note: R CMD check complains about kissfft.hh and src/GeographicLib/Makefile (non-package files from upstream)
-
 ## Code of Conduct
-  
+
 Please note that the geographiclib project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
