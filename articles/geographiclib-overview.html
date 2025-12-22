@@ -163,13 +163,34 @@ vectorized and return rich metadata.</p>
 <span><span class="co">#&gt; 5  12   1.676381e-07   3.352761e-07</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="lambert-conformal-conic-projection">Lambert Conformal Conic Projection<a class="anchor" aria-label="anchor" href="#lambert-conformal-conic-projection"></a>
+</h2>
+<p>The LCC projection is widely used for aeronautical charts and
+regional coordinate systems:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Single standard parallel (tangent cone)</span></span>
+<span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="op">-</span><span class="fl">99</span>, <span class="op">-</span><span class="fl">98</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">41</span>, <span class="fl">42</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">pts</span>, lon0 <span class="op">=</span> <span class="op">-</span><span class="fl">100</span>, stdlat <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           x        y convergence    scale  lon lat</span></span>
+<span><span class="co">#&gt; 1      0.00      0.0   0.0000000 1.000000 -100  40</span></span>
+<span><span class="co">#&gt; 2  84146.25 111521.9   0.6427876 1.000152  -99  41</span></span>
+<span><span class="co">#&gt; 3 165789.24 224013.2   1.2855752 1.000613  -98  42</span></span>
+<span></span>
+<span><span class="co"># Two standard parallels (secant cone)</span></span>
+<span><span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">pts</span>, lon0 <span class="op">=</span> <span class="op">-</span><span class="fl">96</span>, stdlat1 <span class="op">=</span> <span class="fl">33</span>, stdlat2 <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           x        y convergence     scale  lon lat</span></span>
+<span><span class="co">#&gt; 1 -339643.8 108321.8   -2.521985 0.9946660 -100  40</span></span>
+<span><span class="co">#&gt; 2 -251122.5 215464.1   -1.891489 0.9950973  -99  41</span></span>
+<span><span class="co">#&gt; 3 -164998.9 323691.8   -1.260993 0.9958400  -98  42</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="geodesic-calculations">Geodesic Calculations<a class="anchor" aria-label="anchor" href="#geodesic-calculations"></a>
 </h2>
 <p>Solve geodesic problems on the WGS84 ellipsoid.</p>
 <div class="section level3">
 <h3 id="inverse-problem-distance-and-bearing-between-points">Inverse problem: distance and bearing between points<a class="anchor" aria-label="anchor" href="#inverse-problem-distance-and-bearing-between-points"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># London to New York</span></span>
 <span><span class="fu"><a href="../reference/geodesic_direct.html">geodesic_inverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74</span>, <span class="fl">40.7</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   lon1 lat1 lon2 lat2     s12      azi1      azi2     m12       M12       M21</span></span>
@@ -180,7 +201,7 @@ vectorized and return rich metadata.</p>
 <div class="section level3">
 <h3 id="direct-problem-destination-from-start-bearing-and-distance">Direct problem: destination from start, bearing, and distance<a class="anchor" aria-label="anchor" href="#direct-problem-destination-from-start-bearing-and-distance"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1000km east from London</span></span>
 <span><span class="fu"><a href="../reference/geodesic_direct.html">geodesic_direct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span><span class="op">)</span>, azi <span class="op">=</span> <span class="fl">90</span>, s <span class="op">=</span> <span class="fl">1000000</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   lon1 lat1 azi1   s12     lon2     lat2     azi2    m12       M12       M21</span></span>
@@ -192,7 +213,7 @@ vectorized and return rich metadata.</p>
 <h3 id="geodesic-paths">Geodesic paths<a class="anchor" aria-label="anchor" href="#geodesic-paths"></a>
 </h3>
 <p>Generate points along the shortest path between two locations:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_direct.html">geodesic_path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74</span>, <span class="fl">40.7</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">path</span></span>
 <span><span class="co">#&gt;         lon      lat        azi       s</span></span>
@@ -205,7 +226,7 @@ vectorized and return rich metadata.</p>
 <div class="section level3">
 <h3 id="distance-matrix">Distance matrix<a class="anchor" aria-label="anchor" href="#distance-matrix"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cities</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="op">-</span><span class="fl">74</span>, <span class="fl">139.7</span>, <span class="fl">151.2</span><span class="op">)</span>,</span>
 <span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">51.5</span>, <span class="fl">40.7</span>, <span class="fl">35.7</span>, <span class="op">-</span><span class="fl">33.9</span><span class="op">)</span></span>
@@ -222,10 +243,41 @@ vectorized and return rich metadata.</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="rhumb-lines-loxodromes">Rhumb Lines (Loxodromes)<a class="anchor" aria-label="anchor" href="#rhumb-lines-loxodromes"></a>
+</h2>
+<p>Rhumb lines are paths of constant bearing. They are not the shortest
+path (geodesics are), but they maintain a constant compass heading -
+useful for navigation.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Rhumb distance vs geodesic: London to New York</span></span>
+<span><span class="fu"><a href="../reference/geodesic_direct.html">geodesic_inverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74</span>, <span class="fl">40.7</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">s12</span> <span class="op">/</span> <span class="fl">1000</span>  <span class="co"># km</span></span>
+<span><span class="co">#&gt; [1] 5587.82</span></span>
+<span><span class="fu"><a href="../reference/rhumb_direct.html">rhumb_inverse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74</span>, <span class="fl">40.7</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">s12</span> <span class="op">/</span> <span class="fl">1000</span>     <span class="co"># km (longer!)</span></span>
+<span><span class="co">#&gt; [1] 5812.568</span></span>
+<span></span>
+<span><span class="co"># Generate rhumb line path</span></span>
+<span><span class="fu"><a href="../reference/rhumb_direct.html">rhumb_path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74</span>, <span class="fl">40.7</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in format.data.frame(if (omit) x[seq_len(n0), , drop = FALSE] else x, :</span></span>
+<span><span class="co">#&gt; corrupt data frame: columns will be truncated or padded with NAs</span></span>
+<span><span class="co">#&gt;         lon      lat       s     azi12</span></span>
+<span><span class="co">#&gt; 1  -0.10000 51.50000       0 -101.9189</span></span>
+<span><span class="co">#&gt; 2 -20.00072 48.80191 1453142      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3 -38.86061 46.10255 2906284      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4 -56.82095 43.40192 4359426      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 -74.00000 40.70000 5812568      &lt;NA&gt;</span></span></code></pre></div>
+<p>Key properties: east-west rhumb lines maintain constant latitude,
+north-south rhumb lines maintain constant longitude:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Heading due east maintains latitude</span></span>
+<span><span class="fu"><a href="../reference/rhumb_direct.html">rhumb_direct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span><span class="op">)</span>, azi <span class="op">=</span> <span class="fl">90</span>, s <span class="op">=</span> <span class="fl">1000000</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   lon1 lat1 azi12   s12     lon2 lat2          S12</span></span>
+<span><span class="co">#&gt; 1    0   45    90 1e+06 12.68282   45 6.338984e+12</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="polygon-area">Polygon Area<a class="anchor" aria-label="anchor" href="#polygon-area"></a>
 </h2>
 <p>Compute accurate polygon area and perimeter on the ellipsoid:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Triangle: London - New York - Sydney</span></span>
 <span><span class="va">triangle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.1</span>, <span class="op">-</span><span class="fl">74</span>, <span class="fl">151.2</span><span class="op">)</span>,</span>
@@ -246,7 +298,7 @@ vectorized and return rich metadata.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">area</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e12</span></span>
 <span><span class="co">#&gt; [1] 144.4896</span></span></code></pre></div>
 <p>Multiple polygons with the <code>id</code> argument:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">11</span>, <span class="fl">11</span><span class="op">)</span>,</span>
 <span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
@@ -261,7 +313,7 @@ vectorized and return rich metadata.</p>
 </h2>
 <p>All functions handle polar regions automatically using UPS (Universal
 Polar Stereographic) when appropriate:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">polar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">180</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">89</span>, <span class="op">-</span><span class="fl">89</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># MGRS uses polar grid zones</span></span>
@@ -278,13 +330,13 @@ Polar Stereographic) when appropriate:</p>
 <h2 id="performance">Performance<a class="anchor" aria-label="anchor" href="#performance"></a>
 </h2>
 <p>All functions are implemented in C++ and fully vectorized:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 40,000+ points in milliseconds</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">40000</span>, <span class="op">-</span><span class="fl">180</span>, <span class="fl">180</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">40000</span>, <span class="op">-</span><span class="fl">80</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.031   0.000   0.033</span></span>
+<span><span class="co">#&gt;   0.032   0.001   0.032</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geohash_fwd.html">geohash_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
@@ -292,7 +344,7 @@ Polar Stereographic) when appropriate:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic_direct.html">geodesic_distance_matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;    0.06    0.00    0.06</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.059   0.000   0.060</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further Reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>

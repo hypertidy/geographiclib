@@ -12,10 +12,11 @@
 <url><loc>/reference/geographiclib-package.html</loc></url>
 <url><loc>/reference/geohash_fwd.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
-<url><loc>/reference/lcc0.html</loc></url>
+<url><loc>/reference/lcc_fwd.html</loc></url>
 <url><loc>/reference/mgrs_fwd.html</loc></url>
 <url><loc>/reference/polygon_area.html</loc></url>
 <url><loc>/reference/polygon_area_cumulative.html</loc></url>
+<url><loc>/reference/rhumb_direct.html</loc></url>
 <url><loc>/reference/utmups_fwd.html</loc></url>
 <url><loc>/todo-Geohash.html</loc></url>
 </urlset>

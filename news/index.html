@@ -62,6 +62,30 @@
 <div class="section level3">
 <h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <div class="section level4">
+<h4 id="rhumb-line-loxodrome-calculations-0-2-0">Rhumb line (loxodrome) calculations<a class="anchor" aria-label="anchor" href="#rhumb-line-loxodrome-calculations-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/rhumb_direct.html">rhumb_direct()</a></code> - Solve the direct rhumb problem (find destination given start, azimuth, distance)</li>
+<li>
+<code><a href="../reference/rhumb_direct.html">rhumb_inverse()</a></code> - Solve the inverse rhumb problem (find distance and azimuth between two points)</li>
+<li>
+<code><a href="../reference/rhumb_direct.html">rhumb_path()</a></code> - Generate points along a rhumb line between two points</li>
+<li>
+<code><a href="../reference/rhumb_direct.html">rhumb_line()</a></code> - Generate points at specified distances along a rhumb line</li>
+<li>
+<code><a href="../reference/rhumb_direct.html">rhumb_distance()</a></code> - Compute pairwise rhumb distances</li>
+<li>
+<code><a href="../reference/rhumb_direct.html">rhumb_distance_matrix()</a></code> - Compute rhumb distance matrix between sets of points</li>
+</ul></div>
+<div class="section level4">
+<h4 id="lambert-conformal-conic-projection-0-2-0">Lambert Conformal Conic projection<a class="anchor" aria-label="anchor" href="#lambert-conformal-conic-projection-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/lcc_fwd.html">lcc_fwd()</a></code> - Convert geographic coordinates to LCC projected coordinates</li>
+<li>
+<code><a href="../reference/lcc_fwd.html">lcc_rev()</a></code> - Convert LCC coordinates back to geographic</li>
+<li>Supports both single standard parallel (tangent cone) and two standard parallels (secant cone)</li>
+<li>Returns convergence angle and scale factor</li>
+</ul></div>
+<div class="section level4">
 <h4 id="geohash-support-0-2-0">Geohash support<a class="anchor" aria-label="anchor" href="#geohash-support-0-2-0"></a></h4>
 <ul><li>
 <code><a href="../reference/geohash_fwd.html">geohash_fwd()</a></code> - Convert geographic coordinates to Geohash strings</li>
