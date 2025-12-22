@@ -78,6 +78,30 @@ Resolution table for different lengths:
 geohash_resolution(c(4, 6, 8, 10, 12))
 ```
 
+## GARS - Global Area Reference System
+
+Military grid system with 3 precision levels:
+
+```{r gars}
+gars_fwd(c(-74, 40.7), precision = 0)
+gars_fwd(c(-74, 40.7), precision = 1)
+gars_fwd(c(-74, 40.7), precision = 2)
+
+gars_rev("213LR29")
+```
+
+## Georef - World Geographic Reference System
+
+Aviation-oriented grid system:
+
+```{r georef}
+georef_fwd(c(-0.1, 51.5), precision = 0)
+georef_fwd(c(-0.1, 51.5), precision = 1)
+georef_fwd(c(-0.1, 51.5), precision = 2)
+
+georef_rev("GJPJ3230")
+```
+
 ## Lambert Conformal Conic Projection
 
 The LCC projection is widely used for aeronautical charts and regional coordinate systems:
@@ -89,6 +113,40 @@ lcc_fwd(pts, lon0 = -100, stdlat = 40)
 
 # Two standard parallels (secant cone)
 lcc_fwd(pts, lon0 = -96, stdlat1 = 33, stdlat2 = 45)
+```
+
+## Azimuthal Equidistant Projection
+
+Project relative to any center point - preserves distances from center:
+
+```{r azeq}
+pts <- cbind(lon = c(-74, 139.7, 151.2), lat = c(40.7, 35.7, -33.9))
+result <- azeq_fwd(pts, lon0 = -0.1, lat0 = 51.5)
+result
+
+# Distance from London = sqrt(x^2 + y^2)
+sqrt(result$x^2 + result$y^2) / 1000
+```
+
+## Geocentric (ECEF) Coordinates
+
+Convert between geodetic and Earth-Centered Earth-Fixed coordinates:
+
+```{r geocentric}
+geocentric_fwd(c(-0.1, 51.5))
+
+# With height
+geocentric_fwd(c(-0.1, 51.5), h = 1000)
+```
+
+## WGS84 Ellipsoid
+
+Access ellipsoid parameters and derived quantities:
+
+```{r ellipsoid}
+ellipsoid_params()
+
+ellipsoid_curvature(c(0, 45, 90))
 ```
 
 ## Geodesic Calculations

@@ -2,6 +2,29 @@
 
 ## New features
 
+### Geocentric (ECEF) coordinates
+* `geocentric_fwd()` - Convert geodetic (lon/lat/height) to geocentric (X/Y/Z) coordinates
+* `geocentric_rev()` - Convert geocentric (X/Y/Z) to geodetic coordinates
+
+### WGS84 Ellipsoid parameters
+* `ellipsoid_params()` - Get WGS84 ellipsoid parameters (a, f, b, e², etc.)
+* `ellipsoid_circle()` - Get circle of latitude radius and meridian distance
+* `ellipsoid_latitudes()` - Convert to auxiliary latitudes (parametric, geocentric, rectifying, authalic, conformal, isometric)
+* `ellipsoid_latitudes_inv()` - Convert auxiliary latitudes back to geographic
+* `ellipsoid_curvature()` - Get meridional and transverse radii of curvature
+
+### Azimuthal Equidistant projection
+* `azeq_fwd()` - Convert geographic to azimuthal equidistant projection
+* `azeq_rev()` - Convert azimuthal equidistant to geographic coordinates
+
+### GARS (Global Area Reference System)
+* `gars_fwd()` - Convert geographic coordinates to GARS codes
+* `gars_rev()` - Convert GARS codes to geographic coordinates
+
+### Georef (World Geographic Reference System)
+* `georef_fwd()` - Convert geographic coordinates to Georef codes
+* `georef_rev()` - Convert Georef codes to geographic coordinates
+
 ### Rhumb line (loxodrome) calculations
 * `rhumb_direct()` - Solve the direct rhumb problem (find destination given start, azimuth, distance)
 * `rhumb_inverse()` - Solve the inverse rhumb problem (find distance and azimuth between two points)

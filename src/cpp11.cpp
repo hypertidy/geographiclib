@@ -5,6 +5,83 @@
 #include "cpp11/declarations.hpp"
 #include <R_ext/Visibility.h>
 
+// 000_azimuthaleq_geographiclib.cpp
+cpp11::writable::data_frame azimuthaleq_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, double lon0, double lat0);
+extern "C" SEXP _geographiclib_azimuthaleq_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP lat0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(azimuthaleq_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0)));
+  END_CPP11
+}
+// 000_azimuthaleq_geographiclib.cpp
+cpp11::writable::data_frame azimuthaleq_rev_cpp(cpp11::doubles x, cpp11::doubles y, double lon0, double lat0);
+extern "C" SEXP _geographiclib_azimuthaleq_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP lat0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(azimuthaleq_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0)));
+  END_CPP11
+}
+// 000_ellipsoid_geographiclib.cpp
+cpp11::writable::list ellipsoid_params_cpp();
+extern "C" SEXP _geographiclib_ellipsoid_params_cpp() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(ellipsoid_params_cpp());
+  END_CPP11
+}
+// 000_ellipsoid_geographiclib.cpp
+cpp11::writable::data_frame ellipsoid_circle_cpp(cpp11::doubles lat);
+extern "C" SEXP _geographiclib_ellipsoid_circle_cpp(SEXP lat) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(ellipsoid_circle_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat)));
+  END_CPP11
+}
+// 000_ellipsoid_geographiclib.cpp
+cpp11::writable::data_frame ellipsoid_latitudes_cpp(cpp11::doubles lat);
+extern "C" SEXP _geographiclib_ellipsoid_latitudes_cpp(SEXP lat) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(ellipsoid_latitudes_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat)));
+  END_CPP11
+}
+// 000_ellipsoid_geographiclib.cpp
+cpp11::writable::data_frame ellipsoid_latitudes_inv_cpp(cpp11::doubles lat, cpp11::strings type);
+extern "C" SEXP _geographiclib_ellipsoid_latitudes_inv_cpp(SEXP lat, SEXP type) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(ellipsoid_latitudes_inv_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(type)));
+  END_CPP11
+}
+// 000_ellipsoid_geographiclib.cpp
+cpp11::writable::data_frame ellipsoid_curvature_cpp(cpp11::doubles lat);
+extern "C" SEXP _geographiclib_ellipsoid_curvature_cpp(SEXP lat) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(ellipsoid_curvature_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat)));
+  END_CPP11
+}
+// 000_gars_geographiclib.cpp
+cpp11::writable::strings gars_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers precision);
+extern "C" SEXP _geographiclib_gars_fwd_cpp(SEXP lon, SEXP lat, SEXP precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(gars_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(precision)));
+  END_CPP11
+}
+// 000_gars_geographiclib.cpp
+cpp11::writable::data_frame gars_rev_cpp(cpp11::strings gars);
+extern "C" SEXP _geographiclib_gars_rev_cpp(SEXP gars) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(gars_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(gars)));
+  END_CPP11
+}
+// 000_geocentric_geographiclib.cpp
+cpp11::writable::data_frame geocentric_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles h);
+extern "C" SEXP _geographiclib_geocentric_fwd_cpp(SEXP lon, SEXP lat, SEXP h) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geocentric_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(h)));
+  END_CPP11
+}
+// 000_geocentric_geographiclib.cpp
+cpp11::writable::data_frame geocentric_rev_cpp(cpp11::doubles X, cpp11::doubles Y, cpp11::doubles Z);
+extern "C" SEXP _geographiclib_geocentric_rev_cpp(SEXP X, SEXP Y, SEXP Z) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geocentric_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(X), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(Y), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(Z)));
+  END_CPP11
+}
 // 000_geodesicexact_geographiclib.cpp
 cpp11::writable::data_frame geodesic_direct_cpp(cpp11::doubles lon1, cpp11::doubles lat1, cpp11::doubles azi1, cpp11::doubles s12);
 extern "C" SEXP _geographiclib_geodesic_direct_cpp(SEXP lon1, SEXP lat1, SEXP azi1, SEXP s12) {
@@ -80,6 +157,20 @@ int geohash_length_for_precisions_cpp(double lat_resolution, double lon_resoluti
 extern "C" SEXP _geographiclib_geohash_length_for_precisions_cpp(SEXP lat_resolution, SEXP lon_resolution) {
   BEGIN_CPP11
     return cpp11::as_sexp(geohash_length_for_precisions_cpp(cpp11::as_cpp<cpp11::decay_t<double>>(lat_resolution), cpp11::as_cpp<cpp11::decay_t<double>>(lon_resolution)));
+  END_CPP11
+}
+// 000_georef_geographiclib.cpp
+cpp11::writable::strings georef_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers precision);
+extern "C" SEXP _geographiclib_georef_fwd_cpp(SEXP lon, SEXP lat, SEXP precision) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(georef_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(precision)));
+  END_CPP11
+}
+// 000_georef_geographiclib.cpp
+cpp11::writable::data_frame georef_rev_cpp(cpp11::strings georef);
+extern "C" SEXP _geographiclib_georef_rev_cpp(SEXP georef) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(georef_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(georef)));
   END_CPP11
 }
 // 000_lcc_geographiclib.cpp
@@ -211,6 +302,17 @@ extern "C" SEXP _geographiclib_utmups_rev_cpp(SEXP x, SEXP y, SEXP zone, SEXP no
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
+    {"_geographiclib_azimuthaleq_fwd_cpp",               (DL_FUNC) &_geographiclib_azimuthaleq_fwd_cpp,               4},
+    {"_geographiclib_azimuthaleq_rev_cpp",               (DL_FUNC) &_geographiclib_azimuthaleq_rev_cpp,               4},
+    {"_geographiclib_ellipsoid_circle_cpp",              (DL_FUNC) &_geographiclib_ellipsoid_circle_cpp,              1},
+    {"_geographiclib_ellipsoid_curvature_cpp",           (DL_FUNC) &_geographiclib_ellipsoid_curvature_cpp,           1},
+    {"_geographiclib_ellipsoid_latitudes_cpp",           (DL_FUNC) &_geographiclib_ellipsoid_latitudes_cpp,           1},
+    {"_geographiclib_ellipsoid_latitudes_inv_cpp",       (DL_FUNC) &_geographiclib_ellipsoid_latitudes_inv_cpp,       2},
+    {"_geographiclib_ellipsoid_params_cpp",              (DL_FUNC) &_geographiclib_ellipsoid_params_cpp,              0},
+    {"_geographiclib_gars_fwd_cpp",                      (DL_FUNC) &_geographiclib_gars_fwd_cpp,                      3},
+    {"_geographiclib_gars_rev_cpp",                      (DL_FUNC) &_geographiclib_gars_rev_cpp,                      1},
+    {"_geographiclib_geocentric_fwd_cpp",                (DL_FUNC) &_geographiclib_geocentric_fwd_cpp,                3},
+    {"_geographiclib_geocentric_rev_cpp",                (DL_FUNC) &_geographiclib_geocentric_rev_cpp,                3},
     {"_geographiclib_geodesic_direct_cpp",               (DL_FUNC) &_geographiclib_geodesic_direct_cpp,               4},
     {"_geographiclib_geodesic_distance_matrix_cpp",      (DL_FUNC) &_geographiclib_geodesic_distance_matrix_cpp,      4},
     {"_geographiclib_geodesic_distance_pairwise_cpp",    (DL_FUNC) &_geographiclib_geodesic_distance_pairwise_cpp,    4},
@@ -222,6 +324,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_geohash_length_for_precisions_cpp", (DL_FUNC) &_geographiclib_geohash_length_for_precisions_cpp, 2},
     {"_geographiclib_geohash_resolution_cpp",            (DL_FUNC) &_geographiclib_geohash_resolution_cpp,            1},
     {"_geographiclib_geohash_rev_cpp",                   (DL_FUNC) &_geographiclib_geohash_rev_cpp,                   1},
+    {"_geographiclib_georef_fwd_cpp",                    (DL_FUNC) &_geographiclib_georef_fwd_cpp,                    3},
+    {"_geographiclib_georef_rev_cpp",                    (DL_FUNC) &_geographiclib_georef_rev_cpp,                    1},
     {"_geographiclib_lcc_fwd2_cpp",                      (DL_FUNC) &_geographiclib_lcc_fwd2_cpp,                      7},
     {"_geographiclib_lcc_fwd_cpp",                       (DL_FUNC) &_geographiclib_lcc_fwd_cpp,                       6},
     {"_geographiclib_lcc_rev2_cpp",                      (DL_FUNC) &_geographiclib_lcc_rev2_cpp,                      7},
