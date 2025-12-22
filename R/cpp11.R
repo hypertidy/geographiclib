@@ -24,6 +24,26 @@ geodesic_distance_pairwise_cpp <- function(lon1, lat1, lon2, lat2) {
   .Call(`_geographiclib_geodesic_distance_pairwise_cpp`, lon1, lat1, lon2, lat2)
 }
 
+geohash_fwd_cpp <- function(lon, lat, len) {
+  .Call(`_geographiclib_geohash_fwd_cpp`, lon, lat, len)
+}
+
+geohash_rev_cpp <- function(geohash) {
+  .Call(`_geographiclib_geohash_rev_cpp`, geohash)
+}
+
+geohash_resolution_cpp <- function(len) {
+  .Call(`_geographiclib_geohash_resolution_cpp`, len)
+}
+
+geohash_length_for_precision_cpp <- function(resolution) {
+  .Call(`_geographiclib_geohash_length_for_precision_cpp`, resolution)
+}
+
+geohash_length_for_precisions_cpp <- function(lat_resolution, lon_resolution) {
+  .Call(`_geographiclib_geohash_length_for_precisions_cpp`, lat_resolution, lon_resolution)
+}
+
 lcc_cpp <- function() {
   .Call(`_geographiclib_lcc_cpp`)
 }

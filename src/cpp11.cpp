@@ -47,6 +47,41 @@ extern "C" SEXP _geographiclib_geodesic_distance_pairwise_cpp(SEXP lon1, SEXP la
     return cpp11::as_sexp(geodesic_distance_pairwise_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat2)));
   END_CPP11
 }
+// 000_geohash_geographiclib.cpp
+cpp11::writable::strings geohash_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers len);
+extern "C" SEXP _geographiclib_geohash_fwd_cpp(SEXP lon, SEXP lat, SEXP len) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geohash_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(len)));
+  END_CPP11
+}
+// 000_geohash_geographiclib.cpp
+cpp11::writable::data_frame geohash_rev_cpp(cpp11::strings geohash);
+extern "C" SEXP _geographiclib_geohash_rev_cpp(SEXP geohash) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geohash_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(geohash)));
+  END_CPP11
+}
+// 000_geohash_geographiclib.cpp
+cpp11::writable::data_frame geohash_resolution_cpp(cpp11::integers len);
+extern "C" SEXP _geographiclib_geohash_resolution_cpp(SEXP len) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geohash_resolution_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(len)));
+  END_CPP11
+}
+// 000_geohash_geographiclib.cpp
+int geohash_length_for_precision_cpp(double resolution);
+extern "C" SEXP _geographiclib_geohash_length_for_precision_cpp(SEXP resolution) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geohash_length_for_precision_cpp(cpp11::as_cpp<cpp11::decay_t<double>>(resolution)));
+  END_CPP11
+}
+// 000_geohash_geographiclib.cpp
+int geohash_length_for_precisions_cpp(double lat_resolution, double lon_resolution);
+extern "C" SEXP _geographiclib_geohash_length_for_precisions_cpp(SEXP lat_resolution, SEXP lon_resolution) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(geohash_length_for_precisions_cpp(cpp11::as_cpp<cpp11::decay_t<double>>(lat_resolution), cpp11::as_cpp<cpp11::decay_t<double>>(lon_resolution)));
+  END_CPP11
+}
 // 000_lcc_geographiclib.cpp
 int lcc_cpp();
 extern "C" SEXP _geographiclib_lcc_cpp() {
@@ -113,21 +148,26 @@ extern "C" SEXP _geographiclib_utmups_rev_cpp(SEXP x, SEXP y, SEXP zone, SEXP no
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_geographiclib_geodesic_direct_cpp",            (DL_FUNC) &_geographiclib_geodesic_direct_cpp,            4},
-    {"_geographiclib_geodesic_distance_matrix_cpp",   (DL_FUNC) &_geographiclib_geodesic_distance_matrix_cpp,   4},
-    {"_geographiclib_geodesic_distance_pairwise_cpp", (DL_FUNC) &_geographiclib_geodesic_distance_pairwise_cpp, 4},
-    {"_geographiclib_geodesic_inverse_cpp",           (DL_FUNC) &_geographiclib_geodesic_inverse_cpp,           4},
-    {"_geographiclib_geodesic_line_cpp",              (DL_FUNC) &_geographiclib_geodesic_line_cpp,              4},
-    {"_geographiclib_geodesic_path_cpp",              (DL_FUNC) &_geographiclib_geodesic_path_cpp,              5},
-    {"_geographiclib_lcc_cpp",                        (DL_FUNC) &_geographiclib_lcc_cpp,                        0},
-    {"_geographiclib_mgrs_decode_cpp",                (DL_FUNC) &_geographiclib_mgrs_decode_cpp,                1},
-    {"_geographiclib_mgrs_fwd_cpp",                   (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,                   3},
-    {"_geographiclib_mgrs_rev_cpp",                   (DL_FUNC) &_geographiclib_mgrs_rev_cpp,                   1},
-    {"_geographiclib_polygonarea_cpp",                (DL_FUNC) &_geographiclib_polygonarea_cpp,                4},
-    {"_geographiclib_polygonarea_cumulative_cpp",     (DL_FUNC) &_geographiclib_polygonarea_cumulative_cpp,     3},
-    {"_geographiclib_polygonarea_single_cpp",         (DL_FUNC) &_geographiclib_polygonarea_single_cpp,         3},
-    {"_geographiclib_utmups_fwd_cpp",                 (DL_FUNC) &_geographiclib_utmups_fwd_cpp,                 2},
-    {"_geographiclib_utmups_rev_cpp",                 (DL_FUNC) &_geographiclib_utmups_rev_cpp,                 4},
+    {"_geographiclib_geodesic_direct_cpp",               (DL_FUNC) &_geographiclib_geodesic_direct_cpp,               4},
+    {"_geographiclib_geodesic_distance_matrix_cpp",      (DL_FUNC) &_geographiclib_geodesic_distance_matrix_cpp,      4},
+    {"_geographiclib_geodesic_distance_pairwise_cpp",    (DL_FUNC) &_geographiclib_geodesic_distance_pairwise_cpp,    4},
+    {"_geographiclib_geodesic_inverse_cpp",              (DL_FUNC) &_geographiclib_geodesic_inverse_cpp,              4},
+    {"_geographiclib_geodesic_line_cpp",                 (DL_FUNC) &_geographiclib_geodesic_line_cpp,                 4},
+    {"_geographiclib_geodesic_path_cpp",                 (DL_FUNC) &_geographiclib_geodesic_path_cpp,                 5},
+    {"_geographiclib_geohash_fwd_cpp",                   (DL_FUNC) &_geographiclib_geohash_fwd_cpp,                   3},
+    {"_geographiclib_geohash_length_for_precision_cpp",  (DL_FUNC) &_geographiclib_geohash_length_for_precision_cpp,  1},
+    {"_geographiclib_geohash_length_for_precisions_cpp", (DL_FUNC) &_geographiclib_geohash_length_for_precisions_cpp, 2},
+    {"_geographiclib_geohash_resolution_cpp",            (DL_FUNC) &_geographiclib_geohash_resolution_cpp,            1},
+    {"_geographiclib_geohash_rev_cpp",                   (DL_FUNC) &_geographiclib_geohash_rev_cpp,                   1},
+    {"_geographiclib_lcc_cpp",                           (DL_FUNC) &_geographiclib_lcc_cpp,                           0},
+    {"_geographiclib_mgrs_decode_cpp",                   (DL_FUNC) &_geographiclib_mgrs_decode_cpp,                   1},
+    {"_geographiclib_mgrs_fwd_cpp",                      (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,                      3},
+    {"_geographiclib_mgrs_rev_cpp",                      (DL_FUNC) &_geographiclib_mgrs_rev_cpp,                      1},
+    {"_geographiclib_polygonarea_cpp",                   (DL_FUNC) &_geographiclib_polygonarea_cpp,                   4},
+    {"_geographiclib_polygonarea_cumulative_cpp",        (DL_FUNC) &_geographiclib_polygonarea_cumulative_cpp,        3},
+    {"_geographiclib_polygonarea_single_cpp",            (DL_FUNC) &_geographiclib_polygonarea_single_cpp,            3},
+    {"_geographiclib_utmups_fwd_cpp",                    (DL_FUNC) &_geographiclib_utmups_fwd_cpp,                    2},
+    {"_geographiclib_utmups_rev_cpp",                    (DL_FUNC) &_geographiclib_utmups_rev_cpp,                    4},
     {NULL, NULL, 0}
 };
 }

@@ -8,6 +8,17 @@ namespace writable = cpp11::writable;
 using namespace std;
 using namespace GeographicLib;
 
+// Add this helper function near the top of the file, after the includes
+void geohash_resolution(int len, double& lat_res, double& lon_res) {
+  // Geohash uses 5 bits per character, alternating lon/lat starting with lon
+  // For length n: lon gets ceil(5n/2) bits, lat gets floor(5n/2) bits
+  int lon_bits = (5 * len + 1) / 2;  // ceil
+  int lat_bits = (5 * len) / 2;      // floor
+  
+  // Resolution is the cell size: full range / 2^bits
+  lon_res = 360.0 / (1 << lon_bits);  // 360 degrees / 2^lon_bits
+  lat_res = 180.0 / (1 << lat_bits);  // 180 degrees / 2^lat_bits
+}
 // Forward: Geographic (lon/lat) to Geohash string
 // Fully vectorized on coordinates and length
 [[cpp11::register]]
@@ -43,7 +54,7 @@ cpp11::writable::data_frame geohash_rev_cpp(cpp11::strings geohash) {
     int length;
     
     Geohash::Reverse(geohash[i], la, lo, length);
-    Geohash::Resolution(length, lat_res, lon_res);
+    geohash_resolution(length, lat_res, lon_res);
     
     lon[i] = lo;
     lat[i] = la;
@@ -73,7 +84,7 @@ cpp11::writable::data_frame geohash_resolution_cpp(cpp11::integers len) {
   
   for (size_t i = 0; i < nn; i++) {
     double lat_res, lon_res;
-    Geohash::Resolution(len[i], lat_res, lon_res);
+    geohash_resolution(len[i], lat_res, lon_res);
     lat_resolution[i] = lat_res;
     lon_resolution[i] = lon_res;
   }
