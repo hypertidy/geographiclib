@@ -164,21 +164,16 @@ utmups_fwd(polar)
 
 All functions are implemented in C++ and fully vectorized:
 
-```{r performance, eval=FALSE}
+```{r performance, eval=TRUE}
 # 40,000+ points in milliseconds
 x <- cbind(runif(40000, -180, 180), runif(40000, -80, 80))
 
 system.time(mgrs_fwd(x))
-#>  user  system elapsed 
-#>  0.04    0.00    0.04 
 
 system.time(geohash_fwd(x))
-#>  user  system elapsed 
-#>  0.01    0.00    0.01
 
 system.time(geodesic_distance_matrix(x[1:100,]))
-#>  user  system elapsed 
-#>  0.01    0.00    0.01
+
 ```
 
 ## Further Reading

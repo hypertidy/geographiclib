@@ -6,7 +6,7 @@
 \alias{geographiclib-package}
 \title{geographiclib: Access to 'GeographicLib'}
 \description{
-GeographicLib functions, with MGRS, UTMUPS, and polygonarea.
+GeographicLib functions for precise geodetic calculations including MGRS (Military Grid Reference System), UTM/UPS projections, Geohash encoding, geodesic computations (distance, bearing, paths), and polygon area on the WGS84 ellipsoid. All functions are fully vectorized with rich metadata output.
 }
 \seealso{
 Useful links:
