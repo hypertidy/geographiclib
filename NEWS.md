@@ -2,6 +2,14 @@
 
 ## New features
 
+### Rhumb line (loxodrome) calculations
+* `rhumb_direct()` - Solve the direct rhumb problem (find destination given start, azimuth, distance)
+* `rhumb_inverse()` - Solve the inverse rhumb problem (find distance and azimuth between two points)
+* `rhumb_path()` - Generate points along a rhumb line between two points
+* `rhumb_line()` - Generate points at specified distances along a rhumb line
+* `rhumb_distance()` - Compute pairwise rhumb distances
+* `rhumb_distance_matrix()` - Compute rhumb distance matrix between sets of points
+
 ### Lambert Conformal Conic projection
 * `lcc_fwd()` - Convert geographic coordinates to LCC projected coordinates
 * `lcc_rev()` - Convert LCC coordinates back to geographic

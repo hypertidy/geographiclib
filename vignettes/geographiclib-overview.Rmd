@@ -131,6 +131,29 @@ rownames(cities) <- c("London", "NYC", "Tokyo", "Sydney")
 round(geodesic_distance_matrix(cities) / 1000)
 ```
 
+## Rhumb Lines (Loxodromes)
+
+Rhumb lines are paths of constant bearing. They are not the shortest path 
+(geodesics are), but they maintain a constant compass heading - useful for 
+navigation.
+
+```{r rhumb}
+# Rhumb distance vs geodesic: London to New York
+geodesic_inverse(c(-0.1, 51.5), c(-74, 40.7))$s12 / 1000  # km
+rhumb_inverse(c(-0.1, 51.5), c(-74, 40.7))$s12 / 1000     # km (longer!)
+
+# Generate rhumb line path
+rhumb_path(c(-0.1, 51.5), c(-74, 40.7), n = 5)
+```
+
+Key properties: east-west rhumb lines maintain constant latitude, north-south 
+rhumb lines maintain constant longitude:
+
+```{r rhumb-ew}
+# Heading due east maintains latitude
+rhumb_direct(c(0, 45), azi = 90, s = 1000000)
+```
+
 ## Polygon Area
 
 Compute accurate polygon area and perimeter on the ellipsoid:

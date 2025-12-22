@@ -20,6 +20,7 @@ for precise geodetic calculations on the WGS84 ellipsoid.
 - **Geohash** - Geohash encoding/decoding with precision control
 - **Geodesic calculations** - Distance, bearing, paths, and area on the
   ellipsoid
+- **Rhumb lines** - Constant-bearing paths (loxodromes) for navigation
 
 All functions are fully vectorized with rich metadata output.
 

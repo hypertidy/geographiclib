@@ -152,6 +152,48 @@ extern "C" SEXP _geographiclib_polygonarea_cumulative_cpp(SEXP lon, SEXP lat, SE
     return cpp11::as_sexp(polygonarea_cumulative_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<bool>>(polyline)));
   END_CPP11
 }
+// 000_rhumb_geographiclib.cpp
+cpp11::writable::data_frame rhumb_direct_cpp(cpp11::doubles lon1, cpp11::doubles lat1, cpp11::doubles azi12, cpp11::doubles s12);
+extern "C" SEXP _geographiclib_rhumb_direct_cpp(SEXP lon1, SEXP lat1, SEXP azi12, SEXP s12) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(rhumb_direct_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(azi12), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(s12)));
+  END_CPP11
+}
+// 000_rhumb_geographiclib.cpp
+cpp11::writable::data_frame rhumb_inverse_cpp(cpp11::doubles lon1, cpp11::doubles lat1, cpp11::doubles lon2, cpp11::doubles lat2);
+extern "C" SEXP _geographiclib_rhumb_inverse_cpp(SEXP lon1, SEXP lat1, SEXP lon2, SEXP lat2) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(rhumb_inverse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat2)));
+  END_CPP11
+}
+// 000_rhumb_geographiclib.cpp
+cpp11::writable::data_frame rhumb_path_cpp(double lon1, double lat1, double lon2, double lat2, int n_points);
+extern "C" SEXP _geographiclib_rhumb_path_cpp(SEXP lon1, SEXP lat1, SEXP lon2, SEXP lat2, SEXP n_points) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(rhumb_path_cpp(cpp11::as_cpp<cpp11::decay_t<double>>(lon1), cpp11::as_cpp<cpp11::decay_t<double>>(lat1), cpp11::as_cpp<cpp11::decay_t<double>>(lon2), cpp11::as_cpp<cpp11::decay_t<double>>(lat2), cpp11::as_cpp<cpp11::decay_t<int>>(n_points)));
+  END_CPP11
+}
+// 000_rhumb_geographiclib.cpp
+cpp11::writable::data_frame rhumb_line_cpp(double lon1, double lat1, double azi12, cpp11::doubles distances);
+extern "C" SEXP _geographiclib_rhumb_line_cpp(SEXP lon1, SEXP lat1, SEXP azi12, SEXP distances) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(rhumb_line_cpp(cpp11::as_cpp<cpp11::decay_t<double>>(lon1), cpp11::as_cpp<cpp11::decay_t<double>>(lat1), cpp11::as_cpp<cpp11::decay_t<double>>(azi12), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(distances)));
+  END_CPP11
+}
+// 000_rhumb_geographiclib.cpp
+cpp11::writable::doubles rhumb_distance_pairwise_cpp(cpp11::doubles lon1, cpp11::doubles lat1, cpp11::doubles lon2, cpp11::doubles lat2);
+extern "C" SEXP _geographiclib_rhumb_distance_pairwise_cpp(SEXP lon1, SEXP lat1, SEXP lon2, SEXP lat2) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(rhumb_distance_pairwise_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat2)));
+  END_CPP11
+}
+// 000_rhumb_geographiclib.cpp
+cpp11::writable::doubles rhumb_distance_matrix_cpp(cpp11::doubles lon1, cpp11::doubles lat1, cpp11::doubles lon2, cpp11::doubles lat2);
+extern "C" SEXP _geographiclib_rhumb_distance_matrix_cpp(SEXP lon1, SEXP lat1, SEXP lon2, SEXP lat2) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(rhumb_distance_matrix_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat2)));
+  END_CPP11
+}
 // 000_utm_ups.cpp
 cpp11::writable::data_frame utmups_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat);
 extern "C" SEXP _geographiclib_utmups_fwd_cpp(SEXP lon, SEXP lat) {
@@ -190,6 +232,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_polygonarea_cpp",                   (DL_FUNC) &_geographiclib_polygonarea_cpp,                   4},
     {"_geographiclib_polygonarea_cumulative_cpp",        (DL_FUNC) &_geographiclib_polygonarea_cumulative_cpp,        3},
     {"_geographiclib_polygonarea_single_cpp",            (DL_FUNC) &_geographiclib_polygonarea_single_cpp,            3},
+    {"_geographiclib_rhumb_direct_cpp",                  (DL_FUNC) &_geographiclib_rhumb_direct_cpp,                  4},
+    {"_geographiclib_rhumb_distance_matrix_cpp",         (DL_FUNC) &_geographiclib_rhumb_distance_matrix_cpp,         4},
+    {"_geographiclib_rhumb_distance_pairwise_cpp",       (DL_FUNC) &_geographiclib_rhumb_distance_pairwise_cpp,       4},
+    {"_geographiclib_rhumb_inverse_cpp",                 (DL_FUNC) &_geographiclib_rhumb_inverse_cpp,                 4},
+    {"_geographiclib_rhumb_line_cpp",                    (DL_FUNC) &_geographiclib_rhumb_line_cpp,                    4},
+    {"_geographiclib_rhumb_path_cpp",                    (DL_FUNC) &_geographiclib_rhumb_path_cpp,                    5},
     {"_geographiclib_utmups_fwd_cpp",                    (DL_FUNC) &_geographiclib_utmups_fwd_cpp,                    2},
     {"_geographiclib_utmups_rev_cpp",                    (DL_FUNC) &_geographiclib_utmups_rev_cpp,                    4},
     {NULL, NULL, 0}

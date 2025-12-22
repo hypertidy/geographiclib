@@ -84,6 +84,30 @@ polygonarea_cumulative_cpp <- function(lon, lat, polyline) {
   .Call(`_geographiclib_polygonarea_cumulative_cpp`, lon, lat, polyline)
 }
 
+rhumb_direct_cpp <- function(lon1, lat1, azi12, s12) {
+  .Call(`_geographiclib_rhumb_direct_cpp`, lon1, lat1, azi12, s12)
+}
+
+rhumb_inverse_cpp <- function(lon1, lat1, lon2, lat2) {
+  .Call(`_geographiclib_rhumb_inverse_cpp`, lon1, lat1, lon2, lat2)
+}
+
+rhumb_path_cpp <- function(lon1, lat1, lon2, lat2, n_points) {
+  .Call(`_geographiclib_rhumb_path_cpp`, lon1, lat1, lon2, lat2, n_points)
+}
+
+rhumb_line_cpp <- function(lon1, lat1, azi12, distances) {
+  .Call(`_geographiclib_rhumb_line_cpp`, lon1, lat1, azi12, distances)
+}
+
+rhumb_distance_pairwise_cpp <- function(lon1, lat1, lon2, lat2) {
+  .Call(`_geographiclib_rhumb_distance_pairwise_cpp`, lon1, lat1, lon2, lat2)
+}
+
+rhumb_distance_matrix_cpp <- function(lon1, lat1, lon2, lat2) {
+  .Call(`_geographiclib_rhumb_distance_matrix_cpp`, lon1, lat1, lon2, lat2)
+}
+
 utmups_fwd_cpp <- function(lon, lat) {
   .Call(`_geographiclib_utmups_fwd_cpp`, lon, lat)
 }
