@@ -42,7 +42,9 @@ cpp11::writable::data_frame geohash_rev_cpp(cpp11::strings geohash) {
     double la, lo;
     int length;
     
-    Geohash::Reverse(geohash[i], la, lo, length);
+    // Convert cpp11::r_string to std::string
+    std::string gh_str(geohash[i]);
+    Geohash::Reverse(gh_str, la, lo, length);
     
     lon[i] = lo;
     lat[i] = la;

@@ -1,0 +1,189 @@
+---
+title: "Introduction to geographiclib"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to geographiclib}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(geographiclib)
+```
+
+The **geographiclib** package provides R bindings to the 
+[GeographicLib](https://geographiclib.sourceforge.io/) C++ library for precise 
+geodetic calculations. All functions are fully vectorized and return rich 
+metadata.
+ 
+## MGRS - Military Grid Reference System
+
+Convert geographic coordinates to MGRS codes and back:
+
+```{r mgrs}
+# Forward conversion
+(code <- mgrs_fwd(c(147.325, -42.881)))
+
+# Reverse returns rich metadata
+mgrs_rev(code)
+```
+
+Variable precision from 100km (0) to 1m (5):
+
+```{r mgrs-precision}
+mgrs_fwd(c(147.325, -42.881), precision = 0:5)
+```
+
+## UTM/UPS - Universal Transverse Mercator
+
+Direct access to UTM projections with automatic zone selection:
+
+```{r utmups}
+pts <- cbind(lon = c(147.325, -74.006, 0), lat = c(-42.881, 40.7128, 88))
+utmups_fwd(pts)
+```
+
+Reverse conversion requires zone and hemisphere:
+
+```{r utmups-rev}
+utm <- utmups_fwd(c(147.325, -42.881))
+utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
+```
+
+## Geohash
+
+Encode locations as compact strings with hierarchical precision:
+
+```{r geohash}
+# Default length 12 (~19mm precision)
+(gh <- geohash_fwd(c(147.325, -42.881)))
+
+# Truncation preserves containment
+substr(gh, 1, c(4, 6, 8))
+
+# Reverse shows resolution
+geohash_rev(gh)
+```
+
+Resolution table for different lengths:
+
+```{r geohash-res}
+geohash_resolution(c(4, 6, 8, 10, 12))
+```
+
+## Geodesic Calculations
+
+Solve geodesic problems on the WGS84 ellipsoid.
+
+### Inverse problem: distance and bearing between points
+
+```{r geodesic-inverse}
+# London to New York
+geodesic_inverse(c(-0.1, 51.5), c(-74, 40.7))
+```
+
+### Direct problem: destination from start, bearing, and distance
+
+```{r geodesic-direct}
+# 1000km east from London
+geodesic_direct(c(-0.1, 51.5), azi = 90, s = 1000000)
+```
+
+### Geodesic paths
+
+Generate points along the shortest path between two locations:
+
+```{r geodesic-path}
+path <- geodesic_path(c(-0.1, 51.5), c(-74, 40.7), n = 5)
+path
+```
+
+### Distance matrix
+
+```{r geodesic-matrix}
+cities <- cbind(
+  lon = c(-0.1, -74, 139.7, 151.2),
+  lat = c(51.5, 40.7, 35.7, -33.9)
+)
+rownames(cities) <- c("London", "NYC", "Tokyo", "Sydney")
+
+# Distance matrix in km
+round(geodesic_distance_matrix(cities) / 1000)
+```
+
+## Polygon Area
+
+Compute accurate polygon area and perimeter on the ellipsoid:
+ 
+```{r polygon-area}
+# Triangle: London - New York - Sydney
+triangle <- cbind(
+  lon = c(-0.1, -74, 151.2),
+  lat = c(51.5, 40.7, -33.9)
+)
+result <- polygon_area(triangle)
+result
+
+# Area in millions of km²
+abs(result$area) / 1e12
+```
+
+Multiple polygons with the `id` argument:
+
+```{r polygon-multiple}
+pts <- cbind(
+  lon = c(0, 1, 1, 10, 11, 11),
+  lat = c(0, 0, 1, 0, 0, 1)
+)
+polygon_area(pts, id = c(1, 1, 1, 2, 2, 2))
+```
+
+## Polar Regions
+
+All functions handle polar regions automatically using UPS (Universal Polar 
+Stereographic) when appropriate:
+
+```{r polar}
+polar <- cbind(c(0, 180), c(89, -89))
+
+# MGRS uses polar grid zones
+mgrs_fwd(polar)
+
+# UTM/UPS shows zone 0 for polar
+utmups_fwd(polar)
+```
+
+## Performance
+
+All functions are implemented in C++ and fully vectorized:
+
+```{r performance, eval=FALSE}
+# 40,000+ points in milliseconds
+x <- cbind(runif(40000, -180, 180), runif(40000, -80, 80))
+
+system.time(mgrs_fwd(x))
+#>  user  system elapsed 
+#>  0.04    0.00    0.04 
+
+system.time(geohash_fwd(x))
+#>  user  system elapsed 
+#>  0.01    0.00    0.01
+
+system.time(geodesic_distance_matrix(x[1:100,]))
+#>  user  system elapsed 
+#>  0.01    0.00    0.01
+```
+
+## Further Reading
+
+- [GeographicLib documentation](https://geographiclib.sourceforge.io/)
+- [MGRS on Wikipedia](https://en.wikipedia.org/wiki/Military_Grid_Reference_System)
+- [Geohash on Wikipedia](https://en.wikipedia.org/wiki/Geohash)
+- [Geodesics on an ellipsoid](https://en.wikipedia.org/wiki/Geodesics_on_an_ellipsoid)
