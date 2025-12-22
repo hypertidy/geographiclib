@@ -2,6 +2,12 @@
 
 ## New features
 
+### Lambert Conformal Conic projection
+* `lcc_fwd()` - Convert geographic coordinates to LCC projected coordinates
+* `lcc_rev()` - Convert LCC coordinates back to geographic
+* Supports both single standard parallel (tangent cone) and two standard parallels (secant cone)
+* Returns convergence angle and scale factor
+
 ### Geohash support
 * `geohash_fwd()` - Convert geographic coordinates to Geohash strings
 * `geohash_rev()` - Convert Geohash strings back to coordinates with resolution information

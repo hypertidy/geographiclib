@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM+8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB/aFGpk3jaTY6xa8JAGMW/O62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v+k/0an2i+itHDw3v2+9+DBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3/I7AtxEJLtzzuZfI+VVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy/Lt7Kc+0vWY/gAgIIEqAN9we0pwKXreiMasxvabDQMM4riO+qxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw+ymhce7vwM9jSqO8JyVd5RH9gyTt2+J/yUmYlIR0s04n6+7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv/ocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi+W2+MjCzMIDApSwvXzC97Z4Ig8N/BxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh/8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT+AEjAwuDFpBmA9KMDEwMCh9i/v8H8sH0/4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9/lqYwOGZxeUelN2U2R6+cArgtCJpauW7UQBqnFkUsjAY/kOU1cP+DAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl+vvmM/byA48e6tWrKArm4ZJlCbdsrxksL1AwWn/yBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO//sdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd/89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF+9JOS0nbaaYDCQfwCJ7Au3AHj+LO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm+EBXuAbHmIMSRMs+4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL+hD7C1xoaHeLJSEao0FEW14ckxC+TU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13/+lm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl+9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O/AdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB///AA8AAQAAAAAAAAAAAAAAAAABAAAAAA==) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+box-sizing: border-box;
+min-width: 200px;
+max-width: 980px;
+margin: 0 auto;
+padding: 45px;
+padding-top: 0px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<h1 id="geographiclib">geographiclib</h1>
+<!-- badges: start -->
+
+<p><a href="https://github.com/hypertidy/geographiclib/actions/workflows/R-CMD-check.yaml"><img role="img" aria-label="R-CMD-check" src="data:image/svg+xml; charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzUiIGhlaWdodD0iMjAiPgogIDx0aXRsZT5SLUNNRC1jaGVjay55YW1sIC0gZmFpbGluZzwvdGl0bGU+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9IndvcmtmbG93LWZpbGwiIHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjNDQ0RDU2IiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMyNDI5MkUiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic3RhdGUtZmlsbCIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNENzNBNDkiIG9mZnNldD0iMCUiPjwvc3RvcD4KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iI0NCMjQzMSIgb2Zmc2V0PSIxMDAlIj48L3N0b3A+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgPGcgZm9udC1mYW1pbHk9IiYjMzk7RGVqYVZ1IFNhbnMmIzM5OyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4KICAgICAgPHBhdGggaWQ9IndvcmtmbG93LWJnIiBkPSJNMCwzIEMwLDEuMzQzMSAxLjM1NTIsMCAzLjAyNzAyNzAzLDAgTDEzMiwwIEwxMzIsMjAgTDMuMDI3MDI3MDMsMjAgQzEuMzU1MiwyMCAwLDE4LjY1NjkgMCwxNyBMMCwzIFoiIGZpbGw9InVybCgjd29ya2Zsb3ctZmlsbCkiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICA8dGV4dCBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj4KICAgICAgICA8dHNwYW4geD0iMjIuMTk4MTk4MiIgeT0iMTUiIGFyaWEtaGlkZGVuPSJ0cnVlIj5SLUNNRC1jaGVjay55YW1sPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgICA8dGV4dCBmaWxsPSIjRkZGRkZGIj4KICAgICAgICA8dHNwYW4geD0iMjIuMTk4MTk4MiIgeT0iMTQiPlItQ01ELWNoZWNrLnlhbWw8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzIpIiBmb250LWZhbWlseT0iJiMzOTtEZWphVnUgU2FucyYjMzk7LFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICA8cGF0aCBkPSJNMCAwaDQwLjQ3QzQxLjg2OSAwIDQzIDEuMzQzIDQzIDN2MTRjMCAxLjY1Ny0xLjEzMiAzLTIuNTMgM0gwVjB6IiBpZD0ic3RhdGUtYmciIGZpbGw9InVybCgjc3RhdGUtZmlsbCkiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICA8dGV4dCBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiBhcmlhLWhpZGRlbj0idHJ1ZSI+CiAgICAgICAgPHRzcGFuIHg9IjUiIHk9IjE1Ij5mYWlsaW5nPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgICA8dGV4dCBmaWxsPSIjRkZGRkZGIj4KICAgICAgICA8dHNwYW4geD0iNSIgeT0iMTQiPmZhaWxpbmc8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICA8L2c+CiAgICA8cGF0aCBmaWxsPSIjOTU5REE1IiBkPSJNMTEgM2MtMy44NjggMC03IDMuMTMyLTcgN2E2Ljk5NiA2Ljk5NiAwIDAgMCA0Ljc4NiA2LjY0MWMuMzUuMDYyLjQ4Mi0uMTQ4LjQ4Mi0uMzMyIDAtLjE2Ni0uMDEtLjcxOC0uMDEtMS4zMDQtMS43NTguMzI0LTIuMjEzLS40MjktMi4zNTMtLjgyMi0uMDc5LS4yMDItLjQyLS44MjMtLjcxNy0uOTktLjI0NS0uMTMtLjU5NS0uNDU0LS4wMS0uNDYzLjU1Mi0uMDA5Ljk0Ni41MDggMS4wNzcuNzE4LjYzIDEuMDU4IDEuNjM2Ljc2IDIuMDM5LjU3Ny4wNjEtLjQ1NS4yNDUtLjc2MS40NDYtLjkzNi0xLjU1Ny0uMTc1LTMuMTg1LS43NzktMy4xODUtMy40NTYgMC0uNzYyLjI3MS0xLjM5Mi43MTgtMS44ODItLjA3LS4xNzUtLjMxNS0uODkyLjA3LTEuODU1IDAgMCAuNTg2LS4xODMgMS45MjUuNzE4YTYuNSA2LjUgMCAwIDEgMS43NS0uMjM2IDYuNSA2LjUgMCAwIDEgMS43NS4yMzZjMS4zMzgtLjkxIDEuOTI1LS43MTggMS45MjUtLjcxOC4zODUuOTYzLjE0IDEuNjguMDcgMS44NTUuNDQ2LjQ5LjcxNyAxLjExMi43MTcgMS44ODIgMCAyLjY4Ni0xLjYzNiAzLjI4LTMuMTk0IDMuNDU2LjI1NC4yMTkuNDczLjYzOS40NzMgMS4yOTUgMCAuOTM2LS4wMDkgMS42ODktLjAwOSAxLjkyNSAwIC4xODQuMTMxLjQwMi40ODEuMzMyQTcuMDExIDcuMDExIDAgMCAwIDE4IDEwYzAtMy44NjctMy4xMzMtNy03LTd6Ij48L3BhdGg+CiAgPC9nPgo8L3N2Zz4KCg==" alt="R-CMD-check" /></a></p>
+<!-- badges: end -->
+
+<p>The goal of geographiclib is to wrap the awesome <a href="https://geographiclib.sourceforge.io/">GeographicLib</a> library
+for precise geodetic calculations in R.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Fully vectorized MGRS conversion</strong> - Convert
+thousands of coordinates in milliseconds</li>
+<li><strong>Fully vectorized UTM/UPS conversion</strong> - Direct access
+to Universal Transverse Mercator and Universal Polar Stereographic
+projections</li>
+<li><strong>Lambert Conformal Conic projection</strong> - Configurable
+LCC with single or two standard parallels</li>
+<li><strong>Geohash encoding/decoding</strong> - Fast, vectorized
+Geohash conversions with precision control</li>
+<li><strong>Geodesic calculations</strong> - Exact solutions for direct
+and inverse geodesic problems on the WGS84 ellipsoid</li>
+<li><strong>Geodesic polygon area</strong> - Accurate area and perimeter
+calculations on the WGS84 ellipsoid</li>
+<li><strong>Rich output</strong> - Get projected coordinates, zones,
+convergence, scale factors, grid designators, and EPSG codes</li>
+<li><strong>Variable precision support</strong> - Generate MGRS codes
+from 100km to 1m precision</li>
+<li><strong>Polar region support</strong> - Handles UPS (Universal Polar
+Stereographic) zones automatically</li>
+<li><strong>Fast C++ implementation</strong> - Built on GeographicLib’s
+battle-tested geodetic algorithms</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>You can install the development version of geographiclib like so:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;hypertidy/geographiclib&quot;</span>)</span></code></pre></div>
+<h2 id="mgrs---military-grid-reference-system">MGRS - Military Grid
+Reference System</h2>
+<p>Convert coordinates to MGRS and back:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(geographiclib)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>(code <span class="ot">&lt;-</span> <span class="fu">mgrs_fwd</span>(<span class="fu">c</span>(<span class="fl">147.325</span>, <span class="sc">-</span><span class="fl">42.881</span>)))</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;55GEN2654152348&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">mgrs_rev</span>(code)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;       lon     lat        x       y zone northp precision convergence     scale</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; 1 147.325 -42.881 526541.5 5252348   55  FALSE         5  -0.2211584 0.9996087</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;   grid_zone square_100km        crs</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; 1       55G           EN EPSG:32755</span></span></code></pre></div>
+<h3 id="vectorized-forward-conversion">Vectorized forward
+conversion</h3>
+<p>The <code>mgrs_fwd()</code> function is fully vectorized on both
+coordinates and precision:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">runif</span>(<span class="dv">6</span>, <span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>), <span class="fu">runif</span>(<span class="dv">6</span>, <span class="sc">-</span><span class="dv">90</span>, <span class="dv">90</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">dput</span>(pts)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; structure(c(-27.3599457275122, 172.636080561206, -117.036015512422, </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; -47.5933057721704, -171.143041737378, 105.05504976958, 28.349068723619, </span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; 43.595442851074, -14.3855046434328, -20.545814470388, 33.7917225155979, </span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; 67.7353784674779), dim = c(6L, 2L))</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co"># Variable precision: from 100km (0) to 1m (5)</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">mgrs_fwd</span>(pts, <span class="at">precision =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;26RMS&quot;           &quot;59TPJ32&quot;         &quot;11LME9609&quot;       &quot;23KKT296259&quot;    </span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; [5] &quot;02SMC86753907&quot;   &quot;48WWA0232713362&quot;</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co"># Different precisions for each point</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>(code <span class="ot">&lt;-</span> <span class="fu">mgrs_fwd</span>(pts, <span class="at">precision =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">0</span>))</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [1] &quot;26RMS6472335924&quot; &quot;59TPJ32062824&quot;   &quot;11LME961096&quot;     &quot;23KKT2925&quot;      </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; [5] &quot;02SMC83&quot;         &quot;48WWA&quot;</span></span></code></pre></div>
+<h3 id="rich-reverse-conversion-output">Rich reverse conversion
+output</h3>
+<p>The <code>mgrs_rev()</code> function returns a comprehensive data
+frame with 12 columns:</p>
+<ul>
+<li><strong>Geographic coordinates</strong>
+(<code>lon</code>/<code>lat</code> in decimal degrees)</li>
+<li><strong>Projected coordinates</strong>
+(<code>x</code>/<code>y</code> in meters, UTM/UPS)</li>
+<li><strong>Zone information</strong> (<code>zone</code> number,
+<code>northp</code> hemisphere, <code>grid_zone</code> designator,
+<code>square_100km</code> ID)</li>
+<li><strong>Geodetic properties</strong> (<code>convergence</code> angle
+in degrees, <code>scale</code> factor)</li>
+<li><strong>Precision level</strong> (0-5, decoded from MGRS
+string)</li>
+<li><strong>CRS identification</strong> (<code>crs</code> as EPSG codes
+for direct use with spatial packages)</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">mgrs_rev</span>(code)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt;          lon       lat        x       y zone northp precision  convergence</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; 1  -27.35995  28.34907 464723.5 3135924   26   TRUE         5 -0.170920629</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; 2  172.63614  43.59547 632065.0 4828245   59   TRUE         4  1.128383570</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; 3 -117.03571 -14.38539 496150.0 8409650   11  FALSE         3  0.008872274</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; 4  -47.59437 -20.55003 229500.0 7725500   23  FALSE         2  0.911245673</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; 5 -171.16197  33.75497 485000.0 3735000    2   TRUE         1 -0.089995186</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 6  106.19919  68.05965 550000.0 7550000   48   TRUE         0  1.112355276</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;       scale grid_zone square_100km        crs</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 1 0.9996154       26R           MS EPSG:32626</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; 2 0.9998145       59T           PJ EPSG:32659</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 3 0.9996002       11L           ME EPSG:32711</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; 4 1.0005044       23K           KT EPSG:32723</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 5 0.9996028       02S           MC EPSG:32602</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 6 0.9996306       48W           WA EPSG:32648</span></span></code></pre></div>
+<p>The reverse conversion returns the center point of each MGRS grid
+cell.</p>
+<h2 id="utmups---universal-transverse-mercator--universal-polar-stereographic">UTM/UPS
+- Universal Transverse Mercator / Universal Polar Stereographic</h2>
+<p>Direct access to UTM/UPS projections for precise coordinate
+conversion:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Forward: Geographic to UTM/UPS</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">lon =</span> <span class="fu">c</span>(<span class="fl">147.325</span>, <span class="sc">-</span><span class="fl">63.22</span>, <span class="dv">0</span>, <span class="fl">45.67</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>             <span class="at">lat =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">42.881</span>, <span class="fl">17.62</span>, <span class="dv">88</span>, <span class="fl">39.84</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>(utm <span class="ot">&lt;-</span> <span class="fu">utmups_fwd</span>(pts))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt;           x       y zone northp convergence     scale     lon     lat</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 1  526541.3 5252349   55  FALSE -0.22115661 0.9996087 147.325 -42.881</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; 2  476660.8 1948158   20   TRUE -0.06659487 0.9996067 -63.220  17.620</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 3 2000000.0 1777931    0   TRUE  0.00000000 0.9943028   0.000  88.000</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 4  557324.5 4410214   38   TRUE  0.42924443 0.9996405  45.670  39.840</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt;          crs</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 1 EPSG:32755</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 2 EPSG:32620</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 3 EPSG:32661</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 4 EPSG:32638</span></span></code></pre></div>
+<p>The forward conversion automatically selects the appropriate UTM zone
+(or UPS for polar regions) and returns:</p>
+<ul>
+<li>Projected coordinates (x/y in meters)</li>
+<li>Zone and hemisphere information</li>
+<li>Meridian convergence and scale factor</li>
+<li>EPSG CRS codes</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Reverse: UTM/UPS to Geographic</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">utmups_rev</span>(utm<span class="sc">$</span>x, utm<span class="sc">$</span>y, utm<span class="sc">$</span>zone, utm<span class="sc">$</span>northp)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;       lon     lat         x       y zone northp convergence     scale</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; 1 147.325 -42.881  526541.3 5252349   55  FALSE -0.22115661 0.9996087</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; 2 -63.220  17.620  476660.8 1948158   20   TRUE -0.06659487 0.9996067</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; 3   0.000  88.000 2000000.0 1777931    0   TRUE  0.00000000 0.9943028</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; 4  45.670  39.840  557324.5 4410214   38   TRUE  0.42924443 0.9996405</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;          crs</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 1 EPSG:32755</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; 2 EPSG:32620</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 3 EPSG:32661</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; 4 EPSG:32638</span></span></code></pre></div>
+<h2 id="lambert-conformal-conic-projection">Lambert Conformal Conic
+Projection</h2>
+<p>The Lambert Conformal Conic (LCC) projection is widely used for
+aeronautical charts and regional coordinate systems:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Single standard parallel (tangent cone)</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">100</span>, <span class="sc">-</span><span class="dv">99</span>, <span class="sc">-</span><span class="dv">98</span>), <span class="at">lat =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">41</span>, <span class="dv">42</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">lcc_fwd</span>(pts, <span class="at">lon0 =</span> <span class="sc">-</span><span class="dv">100</span>, <span class="at">stdlat =</span> <span class="dv">40</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;           x        y convergence    scale  lon lat</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; 1      0.00      0.0   0.0000000 1.000000 -100  40</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; 2  84146.25 111521.9   0.6427876 1.000152  -99  41</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; 3 165789.24 224013.2   1.2855752 1.000613  -98  42</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co"># Two standard parallels (secant cone) - common for regional systems</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="fu">lcc_fwd</span>(pts, <span class="at">lon0 =</span> <span class="sc">-</span><span class="dv">96</span>, <span class="at">stdlat1 =</span> <span class="dv">33</span>, <span class="at">stdlat2 =</span> <span class="dv">45</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;           x        y convergence     scale  lon lat</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 1 -339643.8 108321.8   -2.521985 0.9946660 -100  40</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 2 -251122.5 215464.1   -1.891489 0.9950973  -99  41</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 3 -164998.9 323691.8   -1.260993 0.9958400  -98  42</span></span></code></pre></div>
+<p>Round-trip conversion:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>fwd <span class="ot">&lt;-</span> <span class="fu">lcc_fwd</span>(pts, <span class="at">lon0 =</span> <span class="sc">-</span><span class="dv">100</span>, <span class="at">stdlat =</span> <span class="dv">40</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">lcc_rev</span>(fwd<span class="sc">$</span>x, fwd<span class="sc">$</span>y, <span class="at">lon0 =</span> <span class="sc">-</span><span class="dv">100</span>, <span class="at">stdlat =</span> <span class="dv">40</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;    lon lat convergence    scale         x        y</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; 1 -100  40   0.0000000 1.000000      0.00      0.0</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 2  -99  41   0.6427876 1.000152  84146.25 111521.9</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 3  -98  42   1.2855752 1.000613 165789.24 224013.2</span></span></code></pre></div>
+<h2 id="geohash">Geohash</h2>
+<p>Convert coordinates to Geohash strings and back:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Single point conversion</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>(gh <span class="ot">&lt;-</span> <span class="fu">geohash_fwd</span>(<span class="fu">c</span>(<span class="fl">147.325</span>, <span class="sc">-</span><span class="fl">42.881</span>)))</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r22u03yb164p&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="fu">geohash_rev</span>(gh)</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt;       lon     lat len lat_resolution lon_resolution</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; 1 147.325 -42.881  12   1.676381e-07   3.352761e-07</span></span></code></pre></div>
+<p>Geohash has a useful property: truncating a code reduces precision
+but still contains the original point:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Full precision</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">geohash_fwd</span>(<span class="fu">c</span>(<span class="fl">147.325</span>, <span class="sc">-</span><span class="fl">42.881</span>), <span class="at">len =</span> <span class="dv">12</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>gh</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r22u03yb164p&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># Truncated versions still contain the original point</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="fu">substr</span>(gh, <span class="dv">1</span>, <span class="dv">8</span>)  <span class="co"># ~19m precision</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r22u03yb&quot;</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="fu">substr</span>(gh, <span class="dv">1</span>, <span class="dv">6</span>)  <span class="co"># ~610m precision</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r22u03&quot;</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="fu">substr</span>(gh, <span class="dv">1</span>, <span class="dv">4</span>)  <span class="co"># ~20km precision</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;r22u&quot;</span></span></code></pre></div>
+<p>Check resolution for different Geohash lengths:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">geohash_resolution</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt;   len lat_resolution lon_resolution</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; 1   4   1.757812e-01   3.515625e-01</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; 2   6   5.493164e-03   1.098633e-02</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; 3   8   1.716614e-04   3.433228e-04</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; 4  10   5.364418e-06   1.072884e-05</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; 5  12   1.676381e-07   3.352761e-07</span></span></code></pre></div>
+<h2 id="geodesic-calculations">Geodesic Calculations</h2>
+<p>Solve geodesic problems on the WGS84 ellipsoid with full
+double-precision accuracy.</p>
+<h3 id="direct-problem">Direct problem</h3>
+<p>Given a starting point, azimuth (bearing), and distance, find the
+destination:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># Where do you end up starting from London, heading east for 1000 km?</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">geodesic_direct</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span>), <span class="at">azi =</span> <span class="dv">90</span>, <span class="at">s =</span> <span class="dv">1000000</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt;   lon1 lat1 azi1   s12     lon2     lat2     azi2    m12       M12       M21</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; 1 -0.1 51.5   90 1e+06 14.12014 50.62607 101.0838 995914 0.9877522 0.9877514</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt;            S12</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; 1 7.838198e+12</span></span></code></pre></div>
+<h3 id="inverse-problem">Inverse problem</h3>
+<p>Given two points, find the distance and azimuths between them:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Distance from London to New York</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">geodesic_inverse</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">74</span>, <span class="fl">40.7</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt;   lon1 lat1 lon2 lat2     s12      azi1      azi2     m12       M12       M21</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt; 1 -0.1 51.5  -74 40.7 5587820 -71.62462 -128.7635 4900877 0.6407216 0.6404073</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt;             S12</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; 1 -4.040644e+13</span></span></code></pre></div>
+<h3 id="geodesic-paths">Geodesic paths</h3>
+<p>Generate points along the shortest path (geodesic) between two
+points:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Great circle path from London to New York</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="fu">geodesic_path</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">51.5</span>), <span class="fu">c</span>(<span class="sc">-</span><span class="dv">74</span>, <span class="fl">40.7</span>), <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>path</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt;           lon      lat        azi         s</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; 1   -0.100000 51.50000  -71.62462       0.0</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; 2   -8.884387 52.93855  -78.57312  620868.8</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; 3  -18.121882 53.69011  -85.98680 1241737.7</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; 4  -27.529365 53.71152  -93.57462 1862606.5</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; 5  -36.785150 53.00151 -101.00705 2483475.3</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; 6  -45.602073 51.60102 -107.98901 3104344.2</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; 7  -53.782959 49.58257 -114.31523 3725213.0</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; 8  -61.236199 47.03438 -119.88570 4346081.8</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; 9  -67.957770 44.04615 -124.68751 4966950.7</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; 10 -74.000000 40.70000 -128.76352 5587819.5</span></span></code></pre></div>
+<h3 id="distance-matrix">Distance matrix</h3>
+<p>Compute distances between sets of points:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="sc">-</span><span class="dv">74</span>, <span class="fl">139.7</span>, <span class="fl">151.2</span>),  <span class="co"># London, NYC, Tokyo, Sydney</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">51.5</span>, <span class="fl">40.7</span>, <span class="fl">35.7</span>, <span class="sc">-</span><span class="fl">33.9</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co"># Distance matrix in kilometers</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="fu">geodesic_distance_matrix</span>(cities) <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;           [,1]     [,2]      [,3]      [,4]</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; [1,]     0.000  5587.82  9581.233 16990.084</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; [2,]  5587.820     0.00 10872.923 15990.627</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; [3,]  9581.233 10872.92     0.000  7797.237</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; [4,] 16990.084 15990.63  7797.237     0.000</span></span></code></pre></div>
+<h2 id="polygon-area---geodesic-area-and-perimeter">Polygon Area -
+Geodesic area and perimeter</h2>
+<p>Compute accurate polygon area and perimeter on the WGS84
+ellipsoid:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Triangle: London - New York - Rio de Janeiro</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">74</span>, <span class="sc">-</span><span class="dv">43</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">41</span>, <span class="sc">-</span><span class="dv">23</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="fu">polygon_area</span>(pts)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; $area</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; [1] 2.653936e+13</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; $perimeter</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; [1] 22634340</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; $n</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span></code></pre></div>
+<p>The area is returned in square meters and the perimeter in meters.
+The area is signed: positive for counter-clockwise polygons, negative
+for clockwise.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Area in square kilometers</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">polygon_area</span>(pts)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="fu">abs</span>(result<span class="sc">$</span>area) <span class="sc">/</span> <span class="fl">1e6</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co">#&gt; [1] 26539358</span></span></code></pre></div>
+<h3 id="multiple-polygons">Multiple polygons</h3>
+<p>Use the <code>id</code> argument to compute area for multiple
+polygons at once:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">74</span>, <span class="sc">-</span><span class="dv">43</span>, <span class="dv">100</span>, <span class="dv">110</span>, <span class="dv">105</span>, <span class="dv">120</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="dv">52</span>, <span class="dv">41</span>, <span class="sc">-</span><span class="dv">23</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">15</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">polygon_area</span>(pts, <span class="at">id =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt;   id          area perimeter n</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 1  1  2.653936e+13  22634340 3</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; 2  2 -4.264720e+11   6253557 4</span></span></code></pre></div>
+<h3 id="polyline-length">Polyline length</h3>
+<p>Set <code>polyline = TRUE</code> to compute the length of a path
+instead of a closed polygon:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co"># Great circle route length</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>route <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="fl">151.2</span>, <span class="sc">-</span><span class="fl">122.4</span>, <span class="sc">-</span><span class="fl">0.1</span>),  <span class="co"># Sydney - San Francisco - London</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">33.9</span>, <span class="fl">37.8</span>, <span class="fl">51.5</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>)</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="fu">polygon_area</span>(route, <span class="at">polyline =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt; $area</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt; [1] 4.665774e-310</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; $perimeter</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; [1] 20577363</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt; $n</span></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span></code></pre></div>
+<h2 id="polar-regions">Polar regions</h2>
+<p>Both MGRS and UTM/UPS automatically handle polar regions using
+UPS:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># North and South pole regions</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>polar_pts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">c</span>(<span class="dv">147</span>, <span class="dv">148</span>, <span class="sc">-</span><span class="dv">100</span>), <span class="fu">c</span>(<span class="dv">88</span>, <span class="sc">-</span><span class="dv">88</span>, <span class="sc">-</span><span class="dv">85</span>))</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co"># MGRS in polar regions</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>polar_mgrs <span class="ot">&lt;-</span> <span class="fu">mgrs_fwd</span>(polar_pts)</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="fu">mgrs_rev</span>(polar_mgrs)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt;         lon lat       x       y zone northp precision convergence     scale</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt; 1  147.0000  88 2120948 2186242    0   TRUE         5    147.0000 0.9943028</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co">#&gt; 2  148.0001 -88 2117678 1811674    0  FALSE         5   -148.0001 0.9943028</span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="co">#&gt; 3 -100.0000 -85 1452982 1903546    0  FALSE         5    100.0000 0.9958948</span></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">#&gt;   grid_zone square_100km        crs</span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt; 1         Z           BJ EPSG:32661</span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="co">#&gt; 2         B           BL EPSG:32761</span></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a><span class="co">#&gt; 3         A           SM EPSG:32761</span></span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a><span class="co"># Direct UTM/UPS conversion</span></span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a><span class="fu">utmups_fwd</span>(polar_pts)</span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="co">#&gt;         x       y zone northp convergence     scale  lon lat        crs</span></span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">#&gt; 1 2120948 2186243    0   TRUE         147 0.9943028  147  88 EPSG:32661</span></span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="co">#&gt; 2 2117679 1811675    0  FALSE        -148 0.9943028  148 -88 EPSG:32761</span></span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a><span class="co">#&gt; 3 1452981 1903546    0  FALSE         100 0.9958948 -100 -85 EPSG:32761</span></span></code></pre></div>
+<p>Note that <code>zone = 0</code> indicates UPS projection, with
+dedicated EPSG codes (32661 for North, 32761 for South).</p>
+<h2 id="performance">Performance</h2>
+<p>It’s fast - process tens of thousands of coordinates in
+milliseconds:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># World cities dataset</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">do.call</span>(cbind, maps<span class="sc">::</span>world.cities[<span class="fu">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;lat&quot;</span>)])</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="fu">dim</span>(x)</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="co">#[1] 43645     2</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="co"># MGRS conversion</span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="fu">system.time</span>(codes <span class="ot">&lt;-</span> <span class="fu">mgrs_fwd</span>(x))</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="co">#   user  system elapsed </span></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="co">#   0.04    0.00    0.04 </span></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="co"># UTM/UPS conversion</span></span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="fu">system.time</span>(utm <span class="ot">&lt;-</span> <span class="fu">utmups_fwd</span>(x))</span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a><span class="co">#   user  system elapsed </span></span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a><span class="co">#   0.03    0.00    0.03</span></span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a><span class="co"># Geohash conversion</span></span>
+<span id="cb21-17"><a href="#cb21-17" tabindex="-1"></a><span class="fu">system.time</span>(gh <span class="ot">&lt;-</span> <span class="fu">geohash_fwd</span>(x))</span>
+<span id="cb21-18"><a href="#cb21-18" tabindex="-1"></a><span class="co">#   user  system elapsed </span></span>
+<span id="cb21-19"><a href="#cb21-19" tabindex="-1"></a><span class="co">#   0.02    0.00    0.02</span></span>
+<span id="cb21-20"><a href="#cb21-20" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" tabindex="-1"></a><span class="co"># Geodesic distances (pairwise)</span></span>
+<span id="cb21-22"><a href="#cb21-22" tabindex="-1"></a><span class="fu">system.time</span>(d <span class="ot">&lt;-</span> <span class="fu">geodesic_distance</span>(x[<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>,], x[<span class="dv">10001</span><span class="sc">:</span><span class="dv">20000</span>,]))</span>
+<span id="cb21-23"><a href="#cb21-23" tabindex="-1"></a><span class="co">#   user  system elapsed </span></span>
+<span id="cb21-24"><a href="#cb21-24" tabindex="-1"></a><span class="co">#   0.02    0.00    0.02</span></span>
+<span id="cb21-25"><a href="#cb21-25" tabindex="-1"></a></span>
+<span id="cb21-26"><a href="#cb21-26" tabindex="-1"></a><span class="fu">sample</span>(codes, <span class="dv">10</span>)</span>
+<span id="cb21-27"><a href="#cb21-27" tabindex="-1"></a><span class="co"># [1] &quot;37NCG3952467839&quot; &quot;31PBK7766746791&quot; &quot;36SWD3827984213&quot; &quot;35ULP9426067305&quot; &quot;45VUC7504263576&quot;</span></span>
+<span id="cb21-28"><a href="#cb21-28" tabindex="-1"></a><span class="co"># [6] &quot;36RXV9463390163&quot; &quot;31UFT6135362533&quot; &quot;11SLT9551050534&quot; &quot;32TQQ0915128552&quot; &quot;32PMT1934289062&quot;</span></span>
+<span id="cb21-29"><a href="#cb21-29" tabindex="-1"></a></span>
+<span id="cb21-30"><a href="#cb21-30" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">nchar</span>(codes))</span>
+<span id="cb21-31"><a href="#cb21-31" tabindex="-1"></a><span class="co">#[1] 654675</span></span></code></pre></div>
+<h2 id="comparison-with-other-packages">Comparison with other
+packages</h2>
+<p>Several R packages provide geodetic functionality, but none provided
+the complete vectorized interface to GeographicLib needed:</p>
+<ul>
+<li><strong>mgrs</strong> - MGRS support but not vectorized, uses older
+GEOTRANS code</li>
+<li><strong>geohash</strong> - Geohash support but not as
+feature-rich</li>
+<li><strong>geosphere</strong> - Miscellaneous geodetic functions
+including polygon area (spherical approximation)</li>
+<li><strong>sf, terra, s2</strong> - Distance and geodetic
+calculations</li>
+<li><strong>geodist</strong> - Fast distance calculations</li>
+<li><strong>nngeo</strong> - Nearest neighbor operations</li>
+<li><strong>googlePolylines, BH, lwgeom</strong> - Other geodetic
+utilities</li>
+</ul>
+<h2 id="development-notes">Development notes</h2>
+<ul>
+<li>No changes made to GeographicLib source files</li>
+<li>Package source code named “000_*_geographiclib.cpp” to differentiate
+from original sources</li>
+<li>See <code>data-raw/GeographicLib.R</code> for source provenance
+(obtained 2025-06-16 from <a href="https://github.com/geographiclib/geographiclib">https://github.com/geographiclib/geographiclib</a>
+commit 0a6067b)</li>
+<li>Note: R CMD check complains about kissfft.hh and
+src/GeographicLib/Makefile (non-package files from upstream)</li>
+</ul>
+<h2 id="code-of-conduct">Code of Conduct</h2>
+<p>Please note that the geographiclib project is released with a <a href="https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html">Contributor
+Code of Conduct</a>. By contributing to this project, you agree to abide
+by its terms.</p>
+
+</body>
+</html>

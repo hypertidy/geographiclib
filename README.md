@@ -18,8 +18,12 @@ precise geodetic calculations in R.
   coordinates in milliseconds
 - **Fully vectorized UTM/UPS conversion** - Direct access to Universal
   Transverse Mercator and Universal Polar Stereographic projections
+- **Lambert Conformal Conic projection** - Configurable LCC with single
+  or two standard parallels
+- **Geohash encoding/decoding** - Fast, vectorized Geohash conversions
+  with precision control
 - **Geodesic calculations** - Exact solutions for direct and inverse
-  geodesic problems on the WGS84 ellipsoid”
+  geodesic problems on the WGS84 ellipsoid
 - **Geodesic polygon area** - Accurate area and perimeter calculations
   on the WGS84 ellipsoid
 - **Rich output** - Get projected coordinates, zones, convergence, scale
@@ -63,20 +67,20 @@ precision:
 ``` r
 pts <- cbind(runif(6, -180, 180), runif(6, -90, 90))
 dput(pts)
-#> structure(c(-135.940789924935, 146.450087428093, -135.992219271138, 
-#> 98.8097724225372, -109.255064958706, -161.520988801494, -84.63214145042, 
-#> -63.0903754150495, -12.7286182204261, -84.0003408305347, 48.6669166339561, 
-#> 27.0200930396095), dim = c(6L, 2L))
+#> structure(c(-27.3599457275122, 172.636080561206, -117.036015512422, 
+#> -47.5933057721704, -171.143041737378, 105.05504976958, 28.349068723619, 
+#> 43.595442851074, -14.3855046434328, -20.545814470388, 33.7917225155979, 
+#> 67.7353784674779), dim = c(6L, 2L))
 
 # Variable precision: from 100km (0) to 1m (5)
 mgrs_fwd(pts, precision = 0:5)
-#> [1] "ATH"             "55EDL70"         "08LLL9292"       "BJL588978"      
-#> [5] "12UXU28479189"   "04RBQ4987691161"
+#> [1] "26RMS"           "59TPJ32"         "11LME9609"       "23KKT296259"    
+#> [5] "02SMC86753907"   "48WWA0232713362"
 
 # Different precisions for each point
 (code <- mgrs_fwd(pts, precision = 5:0))
-#> [1] "ATH8527771429" "55EDL72230422" "08LLL922926"   "BJL5897"      
-#> [5] "12UXU29"       "04RBQ"
+#> [1] "26RMS6472335924" "59TPJ32062824"   "11LME961096"     "23KKT2925"      
+#> [5] "02SMC83"         "48WWA"
 ```
 
 ### Rich reverse conversion output
@@ -96,20 +100,20 @@ columns:
 
 ``` r
 mgrs_rev(code)
-#>          lon       lat       x       y zone northp precision convergence
-#> 1 -135.94079 -84.63214 1585278 1571430    0  FALSE         5 135.9407888
-#> 2  146.45015 -63.09035  472235 3004225   55  FALSE         4   0.4903171
-#> 3 -135.99251 -12.72879  392250 8592650    8  FALSE         3   0.2187079
-#> 4   98.84748 -84.00268 2658500 1897500    0  FALSE         2 -98.8474781
-#> 5 -109.30131  48.69551  625000 5395000   12   TRUE         1   1.2762439
-#> 6 -161.51154  26.64883  250000 2950000    4   TRUE         0  -1.1270625
+#>          lon       lat        x       y zone northp precision  convergence
+#> 1  -27.35995  28.34907 464723.5 3135924   26   TRUE         5 -0.170920629
+#> 2  172.63614  43.59547 632065.0 4828245   59   TRUE         4  1.128383570
+#> 3 -117.03571 -14.38539 496150.0 8409650   11  FALSE         3  0.008872274
+#> 4  -47.59437 -20.55003 229500.0 7725500   23  FALSE         2  0.911245673
+#> 5 -171.16197  33.75497 485000.0 3735000    2   TRUE         1 -0.089995186
+#> 6  106.19919  68.05965 550000.0 7550000   48   TRUE         0  1.112355276
 #>       scale grid_zone square_100km        crs
-#> 1 0.9961843         A           TH EPSG:32761
-#> 2 0.9996094       55E           DL EPSG:32755
-#> 3 0.9997436       08L           LL EPSG:32708
-#> 4 0.9967276         B           JL EPSG:32761
-#> 5 0.9997920       12U           XU EPSG:32612
-#> 6 1.0003717       04R           BQ EPSG:32604
+#> 1 0.9996154       26R           MS EPSG:32626
+#> 2 0.9998145       59T           PJ EPSG:32659
+#> 3 0.9996002       11L           ME EPSG:32711
+#> 4 1.0005044       23K           KT EPSG:32723
+#> 5 0.9996028       02S           MC EPSG:32602
+#> 6 0.9996306       48W           WA EPSG:32648
 ```
 
 The reverse conversion returns the center point of each MGRS grid cell.
@@ -156,6 +160,82 @@ utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
 #> 2 EPSG:32620
 #> 3 EPSG:32661
 #> 4 EPSG:32638
+```
+
+## Lambert Conformal Conic Projection
+
+The Lambert Conformal Conic (LCC) projection is widely used for
+aeronautical charts and regional coordinate systems:
+
+``` r
+# Single standard parallel (tangent cone)
+pts <- cbind(lon = c(-100, -99, -98), lat = c(40, 41, 42))
+lcc_fwd(pts, lon0 = -100, stdlat = 40)
+#>           x        y convergence    scale  lon lat
+#> 1      0.00      0.0   0.0000000 1.000000 -100  40
+#> 2  84146.25 111521.9   0.6427876 1.000152  -99  41
+#> 3 165789.24 224013.2   1.2855752 1.000613  -98  42
+
+# Two standard parallels (secant cone) - common for regional systems
+lcc_fwd(pts, lon0 = -96, stdlat1 = 33, stdlat2 = 45)
+#>           x        y convergence     scale  lon lat
+#> 1 -339643.8 108321.8   -2.521985 0.9946660 -100  40
+#> 2 -251122.5 215464.1   -1.891489 0.9950973  -99  41
+#> 3 -164998.9 323691.8   -1.260993 0.9958400  -98  42
+```
+
+Round-trip conversion:
+
+``` r
+fwd <- lcc_fwd(pts, lon0 = -100, stdlat = 40)
+lcc_rev(fwd$x, fwd$y, lon0 = -100, stdlat = 40)
+#>    lon lat convergence    scale         x        y
+#> 1 -100  40   0.0000000 1.000000      0.00      0.0
+#> 2  -99  41   0.6427876 1.000152  84146.25 111521.9
+#> 3  -98  42   1.2855752 1.000613 165789.24 224013.2
+```
+
+## Geohash
+
+Convert coordinates to Geohash strings and back:
+
+``` r
+# Single point conversion
+(gh <- geohash_fwd(c(147.325, -42.881)))
+#> [1] "r22u03yb164p"
+geohash_rev(gh)
+#>       lon     lat len lat_resolution lon_resolution
+#> 1 147.325 -42.881  12   1.676381e-07   3.352761e-07
+```
+
+Geohash has a useful property: truncating a code reduces precision but
+still contains the original point:
+
+``` r
+# Full precision
+gh <- geohash_fwd(c(147.325, -42.881), len = 12)
+gh
+#> [1] "r22u03yb164p"
+
+# Truncated versions still contain the original point
+substr(gh, 1, 8)  # ~19m precision
+#> [1] "r22u03yb"
+substr(gh, 1, 6)  # ~610m precision
+#> [1] "r22u03"
+substr(gh, 1, 4)  # ~20km precision
+#> [1] "r22u"
+```
+
+Check resolution for different Geohash lengths:
+
+``` r
+geohash_resolution(c(4, 6, 8, 10, 12))
+#>   len lat_resolution lon_resolution
+#> 1   4   1.757812e-01   3.515625e-01
+#> 2   6   5.493164e-03   1.098633e-02
+#> 3   8   1.716614e-04   3.433228e-04
+#> 4  10   5.364418e-06   1.072884e-05
+#> 5  12   1.676381e-07   3.352761e-07
 ```
 
 ## Geodesic Calculations
@@ -285,12 +365,11 @@ closed polygon:
 # Great circle route length
 route <- cbind(
   lon = c(151.2, -122.4, -0.1),  # Sydney - San Francisco - London
-
   lat = c(-33.9, 37.8, 51.5)
 )
 polygon_area(route, polyline = TRUE)
 #> $area
-#> [1] 4.659115e-310
+#> [1] 4.665774e-310
 #> 
 #> $perimeter
 #> [1] 20577363
@@ -299,7 +378,7 @@ polygon_area(route, polyline = TRUE)
 #> [1] 3
 ```
 
-### Polar regions
+## Polar regions
 
 Both MGRS and UTM/UPS automatically handle polar regions using UPS:
 
@@ -330,7 +409,7 @@ utmups_fwd(polar_pts)
 Note that `zone = 0` indicates UPS projection, with dedicated EPSG codes
 (32661 for North, 32761 for South).
 
-### Performance
+## Performance
 
 It’s fast - process tens of thousands of coordinates in milliseconds:
 
@@ -350,6 +429,16 @@ system.time(utm <- utmups_fwd(x))
 #   user  system elapsed 
 #   0.03    0.00    0.03
 
+# Geohash conversion
+system.time(gh <- geohash_fwd(x))
+#   user  system elapsed 
+#   0.02    0.00    0.02
+
+# Geodesic distances (pairwise)
+system.time(d <- geodesic_distance(x[1:10000,], x[10001:20000,]))
+#   user  system elapsed 
+#   0.02    0.00    0.02
+
 sample(codes, 10)
 # [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"
 # [6] "36RXV9463390163" "31UFT6135362533" "11SLT9551050534" "32TQQ0915128552" "32PMT1934289062"
@@ -360,10 +449,11 @@ sum(nchar(codes))
 
 ## Comparison with other packages
 
-Several R packages include GeographicLib source code, but none provided
-the vectorized MGRS, UTM/UPS, and polygon area functionality needed:
+Several R packages provide geodetic functionality, but none provided the
+complete vectorized interface to GeographicLib needed:
 
 - **mgrs** - MGRS support but not vectorized, uses older GEOTRANS code
+- **geohash** - Geohash support but not as feature-rich
 - **geosphere** - Miscellaneous geodetic functions including polygon
   area (spherical approximation)
 - **sf, terra, s2** - Distance and geodetic calculations

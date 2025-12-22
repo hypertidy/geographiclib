@@ -25,6 +25,7 @@ The goal of geographiclib is to wrap the awesome [GeographicLib](https://geograp
 
 * **Fully vectorized MGRS conversion** - Convert thousands of coordinates in milliseconds
 * **Fully vectorized UTM/UPS conversion** - Direct access to Universal Transverse Mercator and Universal Polar Stereographic projections
+* **Lambert Conformal Conic projection** - Configurable LCC with single or two standard parallels
 * **Geohash encoding/decoding** - Fast, vectorized Geohash conversions with precision control
 * **Geodesic calculations** - Exact solutions for direct and inverse geodesic problems on the WGS84 ellipsoid
 * **Geodesic polygon area** - Accurate area and perimeter calculations on the WGS84 ellipsoid
@@ -105,6 +106,25 @@ The forward conversion automatically selects the appropriate UTM zone (or UPS fo
 ```{r utmups-reverse}
 # Reverse: UTM/UPS to Geographic
 utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
+```
+
+## Lambert Conformal Conic Projection
+
+The Lambert Conformal Conic (LCC) projection is widely used for aeronautical charts and regional coordinate systems:
+```{r lcc-example}
+# Single standard parallel (tangent cone)
+pts <- cbind(lon = c(-100, -99, -98), lat = c(40, 41, 42))
+lcc_fwd(pts, lon0 = -100, stdlat = 40)
+
+# Two standard parallels (secant cone) - common for regional systems
+lcc_fwd(pts, lon0 = -96, stdlat1 = 33, stdlat2 = 45)
+```
+
+Round-trip conversion:
+
+```{r lcc-roundtrip}
+fwd <- lcc_fwd(pts, lon0 = -100, stdlat = 40)
+lcc_rev(fwd$x, fwd$y, lon0 = -100, stdlat = 40)
 ```
 
 ## Geohash

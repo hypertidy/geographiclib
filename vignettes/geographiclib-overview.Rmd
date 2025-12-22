@@ -78,6 +78,19 @@ Resolution table for different lengths:
 geohash_resolution(c(4, 6, 8, 10, 12))
 ```
 
+## Lambert Conformal Conic Projection
+
+The LCC projection is widely used for aeronautical charts and regional coordinate systems:
+
+```{r lcc}
+# Single standard parallel (tangent cone)
+pts <- cbind(lon = c(-100, -99, -98), lat = c(40, 41, 42))
+lcc_fwd(pts, lon0 = -100, stdlat = 40)
+
+# Two standard parallels (secant cone)
+lcc_fwd(pts, lon0 = -96, stdlat1 = 33, stdlat2 = 45)
+```
+
 ## Geodesic Calculations
 
 Solve geodesic problems on the WGS84 ellipsoid.

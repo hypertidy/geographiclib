@@ -44,8 +44,20 @@ geohash_length_for_precisions_cpp <- function(lat_resolution, lon_resolution) {
   .Call(`_geographiclib_geohash_length_for_precisions_cpp`, lat_resolution, lon_resolution)
 }
 
-lcc_cpp <- function() {
-  .Call(`_geographiclib_lcc_cpp`)
+lcc_fwd_cpp <- function(lon, lat, lon0, lat0, stdlat, k0) {
+  .Call(`_geographiclib_lcc_fwd_cpp`, lon, lat, lon0, lat0, stdlat, k0)
+}
+
+lcc_fwd2_cpp <- function(lon, lat, lon0, lat0, stdlat1, stdlat2, k1) {
+  .Call(`_geographiclib_lcc_fwd2_cpp`, lon, lat, lon0, lat0, stdlat1, stdlat2, k1)
+}
+
+lcc_rev_cpp <- function(x, y, lon0, lat0, stdlat, k0) {
+  .Call(`_geographiclib_lcc_rev_cpp`, x, y, lon0, lat0, stdlat, k0)
+}
+
+lcc_rev2_cpp <- function(x, y, lon0, lat0, stdlat1, stdlat2, k1) {
+  .Call(`_geographiclib_lcc_rev2_cpp`, x, y, lon0, lat0, stdlat1, stdlat2, k1)
 }
 
 mgrs_fwd_cpp <- function(lon, lat, precision) {

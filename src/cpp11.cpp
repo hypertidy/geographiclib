@@ -83,10 +83,31 @@ extern "C" SEXP _geographiclib_geohash_length_for_precisions_cpp(SEXP lat_resolu
   END_CPP11
 }
 // 000_lcc_geographiclib.cpp
-int lcc_cpp();
-extern "C" SEXP _geographiclib_lcc_cpp() {
+cpp11::writable::data_frame lcc_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, double lon0, double lat0, double stdlat, double k0);
+extern "C" SEXP _geographiclib_lcc_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP lat0, SEXP stdlat, SEXP k0) {
   BEGIN_CPP11
-    return cpp11::as_sexp(lcc_cpp());
+    return cpp11::as_sexp(lcc_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_lcc_geographiclib.cpp
+cpp11::writable::data_frame lcc_fwd2_cpp(cpp11::doubles lon, cpp11::doubles lat, double lon0, double lat0, double stdlat1, double stdlat2, double k1);
+extern "C" SEXP _geographiclib_lcc_fwd2_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP lat0, SEXP stdlat1, SEXP stdlat2, SEXP k1) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(lcc_fwd2_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat1), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat2), cpp11::as_cpp<cpp11::decay_t<double>>(k1)));
+  END_CPP11
+}
+// 000_lcc_geographiclib.cpp
+cpp11::writable::data_frame lcc_rev_cpp(cpp11::doubles x, cpp11::doubles y, double lon0, double lat0, double stdlat, double k0);
+extern "C" SEXP _geographiclib_lcc_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP lat0, SEXP stdlat, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(lcc_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_lcc_geographiclib.cpp
+cpp11::writable::data_frame lcc_rev2_cpp(cpp11::doubles x, cpp11::doubles y, double lon0, double lat0, double stdlat1, double stdlat2, double k1);
+extern "C" SEXP _geographiclib_lcc_rev2_cpp(SEXP x, SEXP y, SEXP lon0, SEXP lat0, SEXP stdlat1, SEXP stdlat2, SEXP k1) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(lcc_rev2_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat1), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat2), cpp11::as_cpp<cpp11::decay_t<double>>(k1)));
   END_CPP11
 }
 // 000_mgrs_geographiclib.cpp
@@ -159,7 +180,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_geohash_length_for_precisions_cpp", (DL_FUNC) &_geographiclib_geohash_length_for_precisions_cpp, 2},
     {"_geographiclib_geohash_resolution_cpp",            (DL_FUNC) &_geographiclib_geohash_resolution_cpp,            1},
     {"_geographiclib_geohash_rev_cpp",                   (DL_FUNC) &_geographiclib_geohash_rev_cpp,                   1},
-    {"_geographiclib_lcc_cpp",                           (DL_FUNC) &_geographiclib_lcc_cpp,                           0},
+    {"_geographiclib_lcc_fwd2_cpp",                      (DL_FUNC) &_geographiclib_lcc_fwd2_cpp,                      7},
+    {"_geographiclib_lcc_fwd_cpp",                       (DL_FUNC) &_geographiclib_lcc_fwd_cpp,                       6},
+    {"_geographiclib_lcc_rev2_cpp",                      (DL_FUNC) &_geographiclib_lcc_rev2_cpp,                      7},
+    {"_geographiclib_lcc_rev_cpp",                       (DL_FUNC) &_geographiclib_lcc_rev_cpp,                       6},
     {"_geographiclib_mgrs_decode_cpp",                   (DL_FUNC) &_geographiclib_mgrs_decode_cpp,                   1},
     {"_geographiclib_mgrs_fwd_cpp",                      (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,                      3},
     {"_geographiclib_mgrs_rev_cpp",                      (DL_FUNC) &_geographiclib_mgrs_rev_cpp,                      1},
