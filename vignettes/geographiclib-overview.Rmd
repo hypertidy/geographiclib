@@ -128,6 +128,50 @@ result
 sqrt(result$x^2 + result$y^2) / 1000
 ```
 
+## Cassini-Soldner Projection
+
+Historical projection used for large-scale topographic mapping:
+
+```{r cassini}
+pts <- cbind(lon = c(-100, -99, -101), lat = c(40, 41, 39))
+cassini_fwd(pts, lon0 = -100, lat0 = 40)
+```
+
+## Gnomonic Projection
+
+Geodesics appear as straight lines - useful for great circle route planning:
+
+```{r gnomonic}
+# Project relative to a center point
+gnomonic_fwd(cbind(lon = c(-74, 2.3), lat = c(40.7, 48.9)), lon0 = -37, lat0 = 46)
+```
+
+## OSGB - Ordnance Survey National Grid
+
+Grid reference system for Great Britain (requires OSGB36 datum coordinates):
+
+```{r osgb}
+# Convert OSGB36 coordinates to grid
+london <- c(-0.127, 51.507)
+osgb_fwd(london)
+
+# Get alphanumeric grid reference
+osgb_gridref(london, precision = 3)  # 100m precision
+
+# Parse a grid reference
+osgb_gridref_rev("TQ308080")
+```
+
+## Local Cartesian (ENU) Coordinates
+
+Convert to East-North-Up coordinates relative to a local origin:
+
+```{r localcartesian}
+# Set up local system centered on London
+pts <- cbind(lon = c(-0.1, -0.2, 0.0), lat = c(51.5, 51.6, 51.4))
+localcartesian_fwd(pts, lon0 = -0.1, lat0 = 51.5)
+```
+
 ## Geocentric (ECEF) Coordinates
 
 Convert between geodetic and Earth-Centered Earth-Fixed coordinates:

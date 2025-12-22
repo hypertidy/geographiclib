@@ -27,13 +27,17 @@ R interface to [GeographicLib](https://geographiclib.sourceforge.io/) for precis
 * **UTM/UPS** - Universal Transverse Mercator and Universal Polar Stereographic projections
 * **Lambert Conformal Conic** - Configurable LCC projection
 * **Azimuthal Equidistant** - Projection centered on any point
+* **Cassini-Soldner** - Historical transverse cylindrical projection
+* **Gnomonic** - Geodesics appear as straight lines
+* **OSGB** - Ordnance Survey National Grid (Great Britain)
 * **Geohash** - Geohash encoding/decoding with precision control
 * **GARS** - Global Area Reference System (military)
 * **Georef** - World Geographic Reference System (aviation)
-* **Geodesic calculations** - Distance, bearing, paths on the ellipsoid
+* **Geodesic calculations** - Distance, bearing, paths on the ellipsoid (exact and fast)
 * **Rhumb lines** - Constant-bearing paths (loxodromes)
 * **Polygon area** - Accurate area/perimeter on the ellipsoid
 * **Geocentric** - ECEF (Earth-Centered Earth-Fixed) coordinates
+* **Local Cartesian** - East-North-Up (ENU) local coordinates
 * **Ellipsoid** - WGS84 parameters, curvature, auxiliary latitudes
 
 All functions are fully vectorized with rich metadata output.

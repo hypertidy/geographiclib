@@ -8,6 +8,14 @@ azimuthaleq_rev_cpp <- function(x, y, lon0, lat0) {
   .Call(`_geographiclib_azimuthaleq_rev_cpp`, x, y, lon0, lat0)
 }
 
+cassini_fwd_cpp <- function(lon, lat, lon0, lat0) {
+  .Call(`_geographiclib_cassini_fwd_cpp`, lon, lat, lon0, lat0)
+}
+
+cassini_rev_cpp <- function(x, y, lon0, lat0) {
+  .Call(`_geographiclib_cassini_rev_cpp`, x, y, lon0, lat0)
+}
+
 ellipsoid_params_cpp <- function() {
   .Call(`_geographiclib_ellipsoid_params_cpp`)
 }
@@ -42,6 +50,26 @@ geocentric_fwd_cpp <- function(lon, lat, h) {
 
 geocentric_rev_cpp <- function(X, Y, Z) {
   .Call(`_geographiclib_geocentric_rev_cpp`, X, Y, Z)
+}
+
+geodesic_direct_fast_cpp <- function(lon1, lat1, azi1, s12) {
+  .Call(`_geographiclib_geodesic_direct_fast_cpp`, lon1, lat1, azi1, s12)
+}
+
+geodesic_inverse_fast_cpp <- function(lon1, lat1, lon2, lat2) {
+  .Call(`_geographiclib_geodesic_inverse_fast_cpp`, lon1, lat1, lon2, lat2)
+}
+
+geodesic_path_fast_cpp <- function(lon1, lat1, lon2, lat2, n_points) {
+  .Call(`_geographiclib_geodesic_path_fast_cpp`, lon1, lat1, lon2, lat2, n_points)
+}
+
+geodesic_distance_fast_cpp <- function(lon1, lat1, lon2, lat2) {
+  .Call(`_geographiclib_geodesic_distance_fast_cpp`, lon1, lat1, lon2, lat2)
+}
+
+geodesic_distance_matrix_fast_cpp <- function(lon1, lat1, lon2, lat2) {
+  .Call(`_geographiclib_geodesic_distance_matrix_fast_cpp`, lon1, lat1, lon2, lat2)
 }
 
 geodesic_direct_cpp <- function(lon1, lat1, azi1, s12) {
@@ -96,6 +124,14 @@ georef_rev_cpp <- function(georef) {
   .Call(`_geographiclib_georef_rev_cpp`, georef)
 }
 
+gnomonic_fwd_cpp <- function(lon, lat, lon0, lat0) {
+  .Call(`_geographiclib_gnomonic_fwd_cpp`, lon, lat, lon0, lat0)
+}
+
+gnomonic_rev_cpp <- function(x, y, lon0, lat0) {
+  .Call(`_geographiclib_gnomonic_rev_cpp`, x, y, lon0, lat0)
+}
+
 lcc_fwd_cpp <- function(lon, lat, lon0, lat0, stdlat, k0) {
   .Call(`_geographiclib_lcc_fwd_cpp`, lon, lat, lon0, lat0, stdlat, k0)
 }
@@ -112,6 +148,14 @@ lcc_rev2_cpp <- function(x, y, lon0, lat0, stdlat1, stdlat2, k1) {
   .Call(`_geographiclib_lcc_rev2_cpp`, x, y, lon0, lat0, stdlat1, stdlat2, k1)
 }
 
+localcartesian_fwd_cpp <- function(lon, lat, h, lon0, lat0, h0) {
+  .Call(`_geographiclib_localcartesian_fwd_cpp`, lon, lat, h, lon0, lat0, h0)
+}
+
+localcartesian_rev_cpp <- function(x, y, z, lon0, lat0, h0) {
+  .Call(`_geographiclib_localcartesian_rev_cpp`, x, y, z, lon0, lat0, h0)
+}
+
 mgrs_fwd_cpp <- function(lon, lat, precision) {
   .Call(`_geographiclib_mgrs_fwd_cpp`, lon, lat, precision)
 }
@@ -122,6 +166,22 @@ mgrs_rev_cpp <- function(mgrs) {
 
 mgrs_decode_cpp <- function(mgrs) {
   .Call(`_geographiclib_mgrs_decode_cpp`, mgrs)
+}
+
+osgb_fwd_cpp <- function(lon, lat) {
+  .Call(`_geographiclib_osgb_fwd_cpp`, lon, lat)
+}
+
+osgb_rev_cpp <- function(easting, northing) {
+  .Call(`_geographiclib_osgb_rev_cpp`, easting, northing)
+}
+
+osgb_gridref_cpp <- function(lon, lat, precision) {
+  .Call(`_geographiclib_osgb_gridref_cpp`, lon, lat, precision)
+}
+
+osgb_gridref_rev_cpp <- function(gridref) {
+  .Call(`_geographiclib_osgb_gridref_rev_cpp`, gridref)
 }
 
 polygonarea_cpp <- function(lon, lat, id, polyline) {

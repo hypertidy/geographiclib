@@ -2,6 +2,33 @@
 
 ## New features
 
+### Fast geodesic calculations (series approximation)
+* `geodesic_direct_fast()`, `geodesic_inverse_fast()`, `geodesic_path_fast()`
+* `geodesic_distance_fast()`, `geodesic_distance_matrix_fast()`
+* Slightly faster than exact versions, accurate to ~15 nanometers
+
+### Local Cartesian (ENU) coordinates
+* `localcartesian_fwd()` - Convert geographic to local East-North-Up coordinates
+* `localcartesian_rev()` - Convert local coordinates back to geographic
+* Useful for local surveys and robotics applications
+
+### Cassini-Soldner projection
+* `cassini_fwd()` - Convert geographic to Cassini-Soldner projection
+* `cassini_rev()` - Convert back to geographic
+* Historical projection used for large-scale topographic mapping
+
+### Gnomonic projection
+* `gnomonic_fwd()` - Convert geographic to gnomonic projection
+* `gnomonic_rev()` - Convert back to geographic
+* Geodesics appear as straight lines - useful for great circle route planning
+
+### OSGB - Ordnance Survey National Grid (Great Britain)
+* `osgb_fwd()` - Convert WGS84 to OSGB grid coordinates
+* `osgb_rev()` - Convert OSGB grid to WGS84
+* `osgb_gridref()` - Convert to alphanumeric grid reference strings
+* `osgb_gridref_rev()` - Parse grid reference strings
+* Includes automatic WGS84/OSGB36 datum transformation
+
 ### Geocentric (ECEF) coordinates
 * `geocentric_fwd()` - Convert geodetic (lon/lat/height) to geocentric (X/Y/Z) coordinates
 * `geocentric_rev()` - Convert geocentric (X/Y/Z) to geodetic coordinates
