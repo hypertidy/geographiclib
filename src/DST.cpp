@@ -10,7 +10,7 @@
 #include <GeographicLib/DST.hpp>
 #include <vector>
 
-#include "kissfft.hh"
+#include "kissfft.hpp"
 
 namespace GeographicLib {
 

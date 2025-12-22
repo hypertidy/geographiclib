@@ -7,7 +7,7 @@
  * https://geographiclib.sourceforge.io/
  **********************************************************************/
 
-#include <iostream>
+// #include <iostream>  // R package: removed for R CMD check
 #include <iomanip>
 // Needed by zsetsdiag
 #include <sstream>
@@ -217,23 +217,23 @@ namespace GeographicLib {
       if (!( fabs(DxA) <= Dx && fabs(DyA) <= Dy ))
         throw GeographicLib::GeographicErr("Bad Dx/Dy");
       if (!( fA <= 0 && gA <= 0 )) {
-        cout << scientific << "midA " << fA << " " << gA << "\n";
-        cout << "DA " <<  Dx << " " << DxA << " " << Dy << " " << DyA << "\n";
+        // cout << scientific << "midA " << fA << " " << gA << "\n";
+        // cout << "DA " <<  Dx << " " << DxA << " " << Dy << " " << DyA << "\n";
         throw GeographicLib::GeographicErr
           ("Bad initial midpoints A GeodesicLine3::newt2");
       }
       if (!( fB >= 0 && gB <= 0 )) {
-        cout << scientific << "midB " << fB << " " << gB << "\n";
+        // cout << scientific << "midB " << fB << " " << gB << "\n";
         throw GeographicLib::GeographicErr
           ("Bad initial midpoints B GeodesicLine3::newt2");
       }
       if (!( fC >= 0 && gC >= 0 )) {
-        cout << scientific << "midC " << fC << " " << gC << "\n";
+        // cout << scientific << "midC " << fC << " " << gC << "\n";
         throw GeographicLib::GeographicErr
           ("Bad initial midpoints C GeodesicLine3::newt2");
       }
       if (!( fD <= 0 && gD >= 0 )) {
-        cout << scientific << "midD " << fD << " " << gD << "\n";
+        // cout << scientific << "midD " << fD << " " << gD << "\n";
         throw GeographicLib::GeographicErr
           ("Bad initial midpoints D GeodesicLine3::newt2");
       }
@@ -381,7 +381,8 @@ namespace GeographicLib {
       real f = (xv.fz - yv.fz) - f0, g = (xv.gz + yv.gz) - g0;
       if ((fabs(f) <= ftol && fabs(g) <= gtol) || isnan(f) || isnan(g)) {
         if constexpr (debug)
-          cout << "break0 " << scientific << f << " " << g << "\n";
+          (void)0; // R package: no-op for empty if block
+          // cout << "break0 " << scientific << f << " " << g << "\n";
         break;
       }
       real
@@ -397,16 +398,16 @@ namespace GeographicLib {
       if constexpr (debug) {
         bool bb = gyp == 0 &&
           nextafter(xset.min().z, xset.max().z) == xset.max().z;
-        cout << "DERIV " << i << " " << fxp << " " << fyp << " " << gxp << " " << gyp << " " << bb << "\n";
-        cout << "DY " << i << " " << -gxp * f << " " << fxp * g << "\n";
-        cout << "FG " << i << " " << f << " " << g << "\n";
-        cout << "DXY " << i << " " << degen << " " << dx << " " << dy << "\n";
+        // cout << "DERIV " << i << " " << fxp << " " << fyp << " " << gxp << " " << gyp << " " << bb << "\n";
+        // cout << "DY " << i << " " << -gxp * f << " " << fxp * g << "\n";
+        // cout << "FG " << i << " " << f << " " << g << "\n";
+        // cout << "DXY " << i << " " << degen << " " << dx << " " << dy << "\n";
       }
       if constexpr (check) {
         if (!( fxp >= 0 && fyp >= 0 && gxp >= 0 && gyp >= 0 && den > 0 )) {
-          cout << "DERIVS " << x << " " << y << " "
-               << fxp << " " << fyp << " "
-               << gxp << " " << gyp << " " << den << "\n";
+          // cout << "DERIVS " << x << " " << y << " "
+               // << fxp << " " << fyp << " "
+               // << gxp << " " << gyp << " " << den << "\n";
           throw GeographicLib::GeographicErr
             ("Bad derivatives GeodesicLine3::newt2");
         }
@@ -423,8 +424,9 @@ namespace GeographicLib {
         bis = false;
         if (!(fabs(dx) > xtol || fabs(dy) > ytol)) {
           if constexpr (debug)
-            cout << "break1 " << scientific << dx << " " << dy << " "
-                 << f << " " << g << "\n";
+            (void)0; // R package: no-op for empty if block
+            // cout << "break1 " << scientific << dx << " " << dy << " "
+                 // << f << " " << g << "\n";
           break;
         }
       } else {
@@ -434,7 +436,8 @@ namespace GeographicLib {
         ++cntb;
         if (x == xn && y == yn) {
           if constexpr (debug)
-            cout << "break2 " << f << " " << g << "\n";
+            (void)0; // R package: no-op for empty if block
+            // cout << "break2 " << f << " " << g << "\n";
           break;
         }
         dxa = xn - x; dya = yn - y;
@@ -444,29 +447,32 @@ namespace GeographicLib {
       }
       (void) bis;
       if constexpr (debug)
-        cout << "AA " << scientific << setprecision(4)
-             << x-xa << " " << xb-x << " "
-             << y-ya << " " << yb-y << "\n";
+        (void)0; // R package: no-op for empty if block
+        // cout << "AA " << scientific << setprecision(4)
+             // << x-xa << " " << xb-x << " "
+             // << y-ya << " " << yb-y << "\n";
       if constexpr (debug)
-        cout << "CC " << i << " "
-             << bis << " " << cond1 << " " << cond2 << " "
-             << scientific << setprecision(2) << f << " " << g << " "
-             << dx << " " << dy << " " << dxa << " " << dya << " "
-             << xb-xa << " " << yb-ya << "\n";
+        (void)0; // R package: no-op for empty if block
+        // cout << "CC " << i << " "
+             // << bis << " " << cond1 << " " << cond2 << " "
+             // << scientific << setprecision(2) << f << " " << g << " "
+             // << dx << " " << dy << " " << dxa << " " << dya << " "
+             // << xb-xa << " " << yb-ya << "\n";
       if constexpr (debug)
-        cout << "BOX " << i << " " << bis << " "
-             << xset.num() << " " << yset.num() << " "
-             << scientific << setprecision(3)
-             << xset.max().z - xset.min().z << " "
-             << yset.max().z - yset.min().z << "\n";
+        (void)0; // R package: no-op for empty if block
+        // cout << "BOX " << i << " " << bis << " "
+             // << xset.num() << " " << yset.num() << " "
+             // << scientific << setprecision(3)
+             // << xset.max().z - xset.min().z << " "
+             // << yset.max().z - yset.min().z << "\n";
     }
     if (countn)
       *countn += cntn;
     if (countb)
       *countb += cntb;
     if constexpr (debug) {
-      cout << "CNT " << cntn << " " << cntb << "\n";
-      cout << "XY " << setprecision(18) << x << " " << y << "\n";
+      // cout << "CNT " << cntn << " " << cntb << "\n";
+      // cout << "XY " << setprecision(18) << x << " " << y << "\n";
     }
   }
 
@@ -544,12 +550,12 @@ namespace GeographicLib {
     real x0 = 0, y0 = 0;
     int xind = xset.insert(xfg), yind = yset.insert(yfg);
     if constexpr (debug) {
-      cout << "BOXA " << xset.num() << " " << yset.num() << " "
-           << xind << " " << yind << " "
-           << xset.min().z - x0 << " " << xset.max().z - x0 << " "
-           << yset.min().z - y0 << " " << yset.max().z - y0 << " "
-           << xset.max().z - xset.min().z << " "
-           << yset.max().z - yset.min().z << "\n";
+      // cout << "BOXA " << xset.num() << " " << yset.num() << " "
+           // << xind << " " << yind << " "
+           // << xset.min().z - x0 << " " << xset.max().z - x0 << " "
+           // << yset.min().z - y0 << " " << yset.max().z - y0 << " "
+           // << xset.max().z - xset.min().z << " "
+           // << yset.max().z - yset.min().z << "\n";
       zsetsdiag(xset, yset, f0, g0);
     }
     if (xind < 0 && yind < 0) return;
@@ -637,17 +643,18 @@ namespace GeographicLib {
     }
     int kk = min(k, 1);
     if constexpr (debug)
-      cout << "BOXK " << k << " " << xind << " " << yind << "\n";
+      (void)0; // R package: no-op for empty if block
+      // cout << "BOXK " << k << " " << xind << " " << yind << "\n";
     xset.insert(xa[kk], -1);
     xset.insert(xb[kk], +1);
     yset.insert(ya[kk], -1);
     yset.insert(yb[kk], +1);
     if constexpr (debug) {
-      cout << "BOXB " << xset.num() << " " << yset.num() << " "
-           << xset.min().z - x0 << " " << xset.max().z - x0 << " "
-           << yset.min().z - y0 << " " << yset.max().z - y0 << " "
-           << xa[kk].z - x0 << " " << xb[kk].z - x0 << " "
-           << ya[kk].z - y0 << " " << yb[kk].z - y0 << "\n";
+      // cout << "BOXB " << xset.num() << " " << yset.num() << " "
+           // << xset.min().z - x0 << " " << xset.max().z - x0 << " "
+           // << yset.min().z - y0 << " " << yset.max().z - y0 << " "
+           // << xa[kk].z - x0 << " " << xb[kk].z - x0 << " "
+           // << ya[kk].z - y0 << " " << yb[kk].z - y0 << "\n";
       zsetsdiag(xset, yset, f0, g0);
     }
     if (k == 2)
@@ -671,7 +678,7 @@ namespace GeographicLib {
       fs << "\n";
       gs << "\n";
     }
-    cout << fs.str() << gs.str();
+    // cout << fs.str() << gs.str();
   }
 
   pair<Math::real, Math::real>
