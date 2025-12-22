@@ -25,6 +25,16 @@
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/geographiclib-overview.html">Introduction to geographiclib</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -48,9 +58,74 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.1" id="geographiclib-001">geographiclib 0.0.1<a class="anchor" aria-label="anchor" href="#geographiclib-001"></a></h2>
-<ul><li><p>Vectorized mgrs_fwd on coordinate input and precision.</p></li>
-<li><p>First pass at MGRS.</p></li>
+<h2 class="page-header" data-toc-text="0.2.0" id="geographiclib-020">geographiclib 0.2.0<a class="anchor" aria-label="anchor" href="#geographiclib-020"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<div class="section level4">
+<h4 id="geohash-support-0-2-0">Geohash support<a class="anchor" aria-label="anchor" href="#geohash-support-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/geohash_fwd.html">geohash_fwd()</a></code> - Convert geographic coordinates to Geohash strings</li>
+<li>
+<code><a href="../reference/geohash_fwd.html">geohash_rev()</a></code> - Convert Geohash strings back to coordinates with resolution information</li>
+<li>
+<code><a href="../reference/geohash_fwd.html">geohash_resolution()</a></code> - Get lat/lon resolution for a given Geohash length</li>
+<li>
+<code><a href="../reference/geohash_fwd.html">geohash_length()</a></code> - Find minimum length needed for desired precision</li>
+</ul></div>
+<div class="section level4">
+<h4 id="geodesic-calculations-geodesicexact-0-2-0">Geodesic calculations (GeodesicExact)<a class="anchor" aria-label="anchor" href="#geodesic-calculations-geodesicexact-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/geodesic_direct.html">geodesic_direct()</a></code> - Solve the direct geodesic problem (find destination given start, azimuth, distance)</li>
+<li>
+<code><a href="../reference/geodesic_direct.html">geodesic_inverse()</a></code> - Solve the inverse geodesic problem (find distance and azimuths between two points)</li>
+<li>
+<code><a href="../reference/geodesic_direct.html">geodesic_path()</a></code> - Generate points along a geodesic path between two points</li>
+<li>
+<code><a href="../reference/geodesic_direct.html">geodesic_line()</a></code> - Generate points at specified distances along a geodesic from a starting point</li>
+<li>
+<code><a href="../reference/geodesic_direct.html">geodesic_distance()</a></code> - Compute pairwise geodesic distances</li>
+<li>
+<code><a href="../reference/geodesic_direct.html">geodesic_distance_matrix()</a></code> - Compute distance matrix between sets of points</li>
+</ul></div>
+<div class="section level4">
+<h4 id="polygon-area-0-2-0">Polygon area<a class="anchor" aria-label="anchor" href="#polygon-area-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/polygon_area.html">polygon_area()</a></code> - Compute geodesic polygon area and perimeter on WGS84 ellipsoid</li>
+<li>
+<code><a href="../reference/polygon_area_cumulative.html">polygon_area_cumulative()</a></code> - Compute cumulative area/perimeter as vertices are added</li>
+</ul></div>
+<div class="section level4">
+<h4 id="utmups-conversions-0-2-0">UTM/UPS conversions<a class="anchor" aria-label="anchor" href="#utmups-conversions-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/utmups_fwd.html">utmups_fwd()</a></code> - Convert geographic coordinates to UTM/UPS with full metadata</li>
+<li>
+<code><a href="../reference/utmups_fwd.html">utmups_rev()</a></code> - Convert UTM/UPS coordinates back to geographic</li>
+</ul></div>
+<div class="section level4">
+<h4 id="mgrs-enhancements-0-2-0">MGRS enhancements<a class="anchor" aria-label="anchor" href="#mgrs-enhancements-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/mgrs_fwd.html">mgrs_rev()</a></code> now returns 12 columns including:
+<ul><li>Convergence angle and scale factor</li>
+<li>Grid zone designator and 100km square ID</li>
+<li>Precision level decoded from MGRS string</li>
+<li>EPSG CRS codes for direct use with spatial packages</li>
+</ul></li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="internal-changes-0-2-0">Internal changes<a class="anchor" aria-label="anchor" href="#internal-changes-0-2-0"></a></h3>
+<ul><li>All functions now use cpp11 interface (replacing Rcpp-style SEXP code)</li>
+<li>Full vectorization on all coordinate inputs</li>
+<li>Consistent data frame output with rich metadata</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.0" id="geographiclib-010">geographiclib 0.1.0<a class="anchor" aria-label="anchor" href="#geographiclib-010"></a></h2>
+<ul><li>Initial release with basic MGRS support</li>
+<li>
+<code><a href="../reference/mgrs_fwd.html">mgrs_fwd()</a></code> - Convert coordinates to MGRS</li>
+<li>
+<code><a href="../reference/mgrs_fwd.html">mgrs_rev()</a></code> - Convert MGRS to coordinates</li>
 </ul></div>
   </div>
 
