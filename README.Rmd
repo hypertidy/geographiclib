@@ -25,7 +25,8 @@ The goal of geographiclib is to wrap the awesome [GeographicLib](https://geograp
 
 * **Fully vectorized MGRS conversion** - Convert thousands of coordinates in milliseconds
 * **Fully vectorized UTM/UPS conversion** - Direct access to Universal Transverse Mercator and Universal Polar Stereographic projections
-* **Geodesic calculations** - Exact solutions for direct and inverse geodesic problems on the WGS84 ellipsoid"
+* **Geohash encoding/decoding** - Fast, vectorized Geohash conversions with precision control
+* **Geodesic calculations** - Exact solutions for direct and inverse geodesic problems on the WGS84 ellipsoid
 * **Geodesic polygon area** - Accurate area and perimeter calculations on the WGS84 ellipsoid
 * **Rich output** - Get projected coordinates, zones, convergence, scale factors, grid designators, and EPSG codes
 * **Variable precision support** - Generate MGRS codes from 100km to 1m precision
@@ -106,6 +107,35 @@ The forward conversion automatically selects the appropriate UTM zone (or UPS fo
 utmups_rev(utm$x, utm$y, utm$zone, utm$northp)
 ```
 
+## Geohash
+
+Convert coordinates to Geohash strings and back:
+
+```{r geohash-example}
+# Single point conversion
+(gh <- geohash_fwd(c(147.325, -42.881)))
+geohash_rev(gh)
+```
+
+Geohash has a useful property: truncating a code reduces precision but still contains the original point:
+
+```{r geohash-truncate}
+# Full precision
+gh <- geohash_fwd(c(147.325, -42.881), len = 12)
+gh
+
+# Truncated versions still contain the original point
+substr(gh, 1, 8)  # ~19m precision
+substr(gh, 1, 6)  # ~610m precision
+substr(gh, 1, 4)  # ~20km precision
+```
+
+Check resolution for different Geohash lengths:
+
+```{r geohash-resolution}
+geohash_resolution(c(4, 6, 8, 10, 12))
+```
+
 ## Geodesic Calculations
 
 Solve geodesic problems on the WGS84 ellipsoid with full double-precision accuracy.
@@ -137,6 +167,7 @@ Generate points along the shortest path (geodesic) between two points:
 path <- geodesic_path(c(-0.1, 51.5), c(-74, 40.7), n = 10)
 path
 ```
+
 ### Distance matrix
 
 Compute distances between sets of points:
@@ -191,13 +222,12 @@ Set `polyline = TRUE` to compute the length of a path instead of a closed polygo
 # Great circle route length
 route <- cbind(
   lon = c(151.2, -122.4, -0.1),  # Sydney - San Francisco - London
-
   lat = c(-33.9, 37.8, 51.5)
 )
 polygon_area(route, polyline = TRUE)
 ```
 
-### Polar regions
+## Polar regions
 
 Both MGRS and UTM/UPS automatically handle polar regions using UPS:
 
@@ -215,7 +245,7 @@ utmups_fwd(polar_pts)
 
 Note that `zone = 0` indicates UPS projection, with dedicated EPSG codes (32661 for North, 32761 for South).
 
-### Performance
+## Performance
 
 It's fast - process tens of thousands of coordinates in milliseconds:
 
@@ -235,6 +265,16 @@ system.time(utm <- utmups_fwd(x))
 #   user  system elapsed 
 #   0.03    0.00    0.03
 
+# Geohash conversion
+system.time(gh <- geohash_fwd(x))
+#   user  system elapsed 
+#   0.02    0.00    0.02
+
+# Geodesic distances (pairwise)
+system.time(d <- geodesic_distance(x[1:10000,], x[10001:20000,]))
+#   user  system elapsed 
+#   0.02    0.00    0.02
+
 sample(codes, 10)
 # [1] "37NCG3952467839" "31PBK7766746791" "36SWD3827984213" "35ULP9426067305" "45VUC7504263576"
 # [6] "36RXV9463390163" "31UFT6135362533" "11SLT9551050534" "32TQQ0915128552" "32PMT1934289062"
@@ -245,9 +285,10 @@ sum(nchar(codes))
 
 ## Comparison with other packages
 
-Several R packages include GeographicLib source code, but none provided the vectorized MGRS, UTM/UPS, and polygon area functionality needed:
+Several R packages provide geodetic functionality, but none provided the complete vectorized interface to GeographicLib needed:
 
 * **mgrs** - MGRS support but not vectorized, uses older GEOTRANS code
+* **geohash** - Geohash support but not as feature-rich
 * **geosphere** - Miscellaneous geodetic functions including polygon area (spherical approximation)
 * **sf, terra, s2** - Distance and geodetic calculations
 * **geodist** - Fast distance calculations
