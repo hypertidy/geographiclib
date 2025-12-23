@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -32,7 +32,19 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/geodesics.html">Geodesic Calculations: Distance, Bearing, and Paths</a>
+    </li>
+    <li>
       <a href="../articles/geographiclib-overview.html">Introduction to geographiclib</a>
+    </li>
+    <li>
+      <a href="../articles/grid-reference-systems.html">Grid Reference Systems: MGRS, Geohash, GARS, and Georef</a>
+    </li>
+    <li>
+      <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
+    </li>
+    <li>
+      <a href="../articles/projections.html">Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant</a>
     </li>
   </ul></li>
 <li>
@@ -61,21 +73,61 @@
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
+          <p><code><a href="azeq_fwd.html">azeq_fwd()</a></code> <code><a href="azeq_fwd.html">azeq_rev()</a></code> </p>
+        </td>
+        <td><p>Azimuthal Equidistant projection</p></td>
+      </tr><tr><td>
+          <p><code><a href="cassini_fwd.html">cassini_fwd()</a></code> <code><a href="cassini_fwd.html">cassini_rev()</a></code> </p>
+        </td>
+        <td><p>Cassini-Soldner projection</p></td>
+      </tr><tr><td>
+          <p><code><a href="ellipsoid_params.html">ellipsoid_params()</a></code> <code><a href="ellipsoid_params.html">ellipsoid_circle()</a></code> <code><a href="ellipsoid_params.html">ellipsoid_latitudes()</a></code> <code><a href="ellipsoid_params.html">ellipsoid_latitudes_inv()</a></code> <code><a href="ellipsoid_params.html">ellipsoid_curvature()</a></code> </p>
+        </td>
+        <td><p>WGS84 Ellipsoid parameters and calculations</p></td>
+      </tr><tr><td>
+          <p><code><a href="gars_fwd.html">gars_fwd()</a></code> <code><a href="gars_fwd.html">gars_rev()</a></code> </p>
+        </td>
+        <td><p>Global Area Reference System (GARS)</p></td>
+      </tr><tr><td>
+          <p><code><a href="geocentric_fwd.html">geocentric_fwd()</a></code> <code><a href="geocentric_fwd.html">geocentric_rev()</a></code> </p>
+        </td>
+        <td><p>Convert between geodetic and geocentric (ECEF) coordinates</p></td>
+      </tr><tr><td>
           <p><code><a href="geodesic_direct.html">geodesic_direct()</a></code> <code><a href="geodesic_direct.html">geodesic_inverse()</a></code> <code><a href="geodesic_direct.html">geodesic_path()</a></code> <code><a href="geodesic_direct.html">geodesic_line()</a></code> <code><a href="geodesic_direct.html">geodesic_distance()</a></code> <code><a href="geodesic_direct.html">geodesic_distance_matrix()</a></code> </p>
         </td>
         <td><p>Geodesic calculations on the WGS84 ellipsoid</p></td>
+      </tr><tr><td>
+          <p><code><a href="geodesic_direct_fast.html">geodesic_direct_fast()</a></code> <code><a href="geodesic_direct_fast.html">geodesic_inverse_fast()</a></code> <code><a href="geodesic_direct_fast.html">geodesic_path_fast()</a></code> <code><a href="geodesic_direct_fast.html">geodesic_distance_fast()</a></code> <code><a href="geodesic_direct_fast.html">geodesic_distance_matrix_fast()</a></code> </p>
+        </td>
+        <td><p>Fast geodesic calculations (series approximation)</p></td>
       </tr><tr><td>
           <p><code><a href="geohash_fwd.html">geohash_fwd()</a></code> <code><a href="geohash_fwd.html">geohash_rev()</a></code> <code><a href="geohash_fwd.html">geohash_resolution()</a></code> <code><a href="geohash_fwd.html">geohash_length()</a></code> </p>
         </td>
         <td><p>Convert coordinates to/from Geohash</p></td>
       </tr><tr><td>
+          <p><code><a href="georef_fwd.html">georef_fwd()</a></code> <code><a href="georef_fwd.html">georef_rev()</a></code> </p>
+        </td>
+        <td><p>World Geographic Reference System (Georef)</p></td>
+      </tr><tr><td>
+          <p><code><a href="gnomonic_fwd.html">gnomonic_fwd()</a></code> <code><a href="gnomonic_fwd.html">gnomonic_rev()</a></code> </p>
+        </td>
+        <td><p>Gnomonic projection</p></td>
+      </tr><tr><td>
           <p><code><a href="lcc_fwd.html">lcc_fwd()</a></code> <code><a href="lcc_fwd.html">lcc_rev()</a></code> </p>
         </td>
         <td><p>Lambert Conformal Conic projection</p></td>
       </tr><tr><td>
+          <p><code><a href="localcartesian_fwd.html">localcartesian_fwd()</a></code> <code><a href="localcartesian_fwd.html">localcartesian_rev()</a></code> </p>
+        </td>
+        <td><p>Local Cartesian (ENU) coordinate system</p></td>
+      </tr><tr><td>
           <p><code><a href="mgrs_fwd.html">mgrs_fwd()</a></code> <code><a href="mgrs_fwd.html">mgrs_rev()</a></code> </p>
         </td>
         <td><p>Convert coordinates to/from Military Grid Reference System (MGRS)</p></td>
+      </tr><tr><td>
+          <p><code><a href="osgb_fwd.html">osgb_fwd()</a></code> <code><a href="osgb_fwd.html">osgb_rev()</a></code> <code><a href="osgb_fwd.html">osgb_gridref()</a></code> <code><a href="osgb_fwd.html">osgb_gridref_rev()</a></code> </p>
+        </td>
+        <td><p>Ordnance Survey National Grid (Great Britain)</p></td>
       </tr><tr><td>
           <p><code><a href="polygon_area.html">polygon_area()</a></code> </p>
         </td>

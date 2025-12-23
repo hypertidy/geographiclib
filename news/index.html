@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -32,7 +32,19 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/geodesics.html">Geodesic Calculations: Distance, Bearing, and Paths</a>
+    </li>
+    <li>
       <a href="../articles/geographiclib-overview.html">Introduction to geographiclib</a>
+    </li>
+    <li>
+      <a href="../articles/grid-reference-systems.html">Grid Reference Systems: MGRS, Geohash, GARS, and Georef</a>
+    </li>
+    <li>
+      <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
+    </li>
+    <li>
+      <a href="../articles/projections.html">Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant</a>
     </li>
   </ul></li>
 <li>
@@ -58,9 +70,110 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.0" id="geographiclib-030">geographiclib 0.3.0<a class="anchor" aria-label="anchor" href="#geographiclib-030"></a></h2>
+<div class="section level3">
+<h3 id="new-vignettes-0-3-0">New vignettes<a class="anchor" aria-label="anchor" href="#new-vignettes-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../articles/grid-reference-systems.html">vignette("grid-reference-systems")</a></code> - Detailed guide to MGRS, Geohash, GARS, and Georef with Southern Hemisphere and Antarctic examples</li>
+<li>
+<code><a href="../articles/projections.html">vignette("projections")</a></code> - Comprehensive coverage of UTM/UPS, LCC, Cassini-Soldner, Gnomonic, Azimuthal Equidistant, and OSGB</li>
+<li>
+<code><a href="../articles/geodesics.html">vignette("geodesics")</a></code> - Distance, bearing, path, and polygon area calculations with Antarctic examples</li>
+<li>
+<code><a href="../articles/local-coordinates.html">vignette("local-coordinates")</a></code> - Geocentric (ECEF), Local Cartesian (ENU), and ellipsoid properties for GNSS and surveying</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="geographiclib-020">geographiclib 0.2.0<a class="anchor" aria-label="anchor" href="#geographiclib-020"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<div class="section level4">
+<h4 id="fast-geodesic-calculations-series-approximation-0-2-0">Fast geodesic calculations (series approximation)<a class="anchor" aria-label="anchor" href="#fast-geodesic-calculations-series-approximation-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/geodesic_direct_fast.html">geodesic_direct_fast()</a></code>, <code><a href="../reference/geodesic_direct_fast.html">geodesic_inverse_fast()</a></code>, <code><a href="../reference/geodesic_direct_fast.html">geodesic_path_fast()</a></code>
+</li>
+<li>
+<code><a href="../reference/geodesic_direct_fast.html">geodesic_distance_fast()</a></code>, <code><a href="../reference/geodesic_direct_fast.html">geodesic_distance_matrix_fast()</a></code>
+</li>
+<li>Slightly faster than exact versions, accurate to ~15 nanometers</li>
+</ul></div>
+<div class="section level4">
+<h4 id="local-cartesian-enu-coordinates-0-2-0">Local Cartesian (ENU) coordinates<a class="anchor" aria-label="anchor" href="#local-cartesian-enu-coordinates-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/localcartesian_fwd.html">localcartesian_fwd()</a></code> - Convert geographic to local East-North-Up coordinates</li>
+<li>
+<code><a href="../reference/localcartesian_fwd.html">localcartesian_rev()</a></code> - Convert local coordinates back to geographic</li>
+<li>Useful for local surveys and robotics applications</li>
+</ul></div>
+<div class="section level4">
+<h4 id="cassini-soldner-projection-0-2-0">Cassini-Soldner projection<a class="anchor" aria-label="anchor" href="#cassini-soldner-projection-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/cassini_fwd.html">cassini_fwd()</a></code> - Convert geographic to Cassini-Soldner projection</li>
+<li>
+<code><a href="../reference/cassini_fwd.html">cassini_rev()</a></code> - Convert back to geographic</li>
+<li>Historical projection used for large-scale topographic mapping</li>
+</ul></div>
+<div class="section level4">
+<h4 id="gnomonic-projection-0-2-0">Gnomonic projection<a class="anchor" aria-label="anchor" href="#gnomonic-projection-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/gnomonic_fwd.html">gnomonic_fwd()</a></code> - Convert geographic to gnomonic projection</li>
+<li>
+<code><a href="../reference/gnomonic_fwd.html">gnomonic_rev()</a></code> - Convert back to geographic</li>
+<li>Geodesics appear as straight lines - useful for great circle route planning</li>
+</ul></div>
+<div class="section level4">
+<h4 id="osgb---ordnance-survey-national-grid-great-britain-0-2-0">OSGB - Ordnance Survey National Grid (Great Britain)<a class="anchor" aria-label="anchor" href="#osgb---ordnance-survey-national-grid-great-britain-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/osgb_fwd.html">osgb_fwd()</a></code> - Convert WGS84 to OSGB grid coordinates</li>
+<li>
+<code><a href="../reference/osgb_fwd.html">osgb_rev()</a></code> - Convert OSGB grid to WGS84</li>
+<li>
+<code><a href="../reference/osgb_fwd.html">osgb_gridref()</a></code> - Convert to alphanumeric grid reference strings</li>
+<li>
+<code><a href="../reference/osgb_fwd.html">osgb_gridref_rev()</a></code> - Parse grid reference strings</li>
+<li>Includes automatic WGS84/OSGB36 datum transformation</li>
+</ul></div>
+<div class="section level4">
+<h4 id="geocentric-ecef-coordinates-0-2-0">Geocentric (ECEF) coordinates<a class="anchor" aria-label="anchor" href="#geocentric-ecef-coordinates-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/geocentric_fwd.html">geocentric_fwd()</a></code> - Convert geodetic (lon/lat/height) to geocentric (X/Y/Z) coordinates</li>
+<li>
+<code><a href="../reference/geocentric_fwd.html">geocentric_rev()</a></code> - Convert geocentric (X/Y/Z) to geodetic coordinates</li>
+</ul></div>
+<div class="section level4">
+<h4 id="wgs84-ellipsoid-parameters-0-2-0">WGS84 Ellipsoid parameters<a class="anchor" aria-label="anchor" href="#wgs84-ellipsoid-parameters-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/ellipsoid_params.html">ellipsoid_params()</a></code> - Get WGS84 ellipsoid parameters (a, f, b, e², etc.)</li>
+<li>
+<code><a href="../reference/ellipsoid_params.html">ellipsoid_circle()</a></code> - Get circle of latitude radius and meridian distance</li>
+<li>
+<code><a href="../reference/ellipsoid_params.html">ellipsoid_latitudes()</a></code> - Convert to auxiliary latitudes (parametric, geocentric, rectifying, authalic, conformal, isometric)</li>
+<li>
+<code><a href="../reference/ellipsoid_params.html">ellipsoid_latitudes_inv()</a></code> - Convert auxiliary latitudes back to geographic</li>
+<li>
+<code><a href="../reference/ellipsoid_params.html">ellipsoid_curvature()</a></code> - Get meridional and transverse radii of curvature</li>
+</ul></div>
+<div class="section level4">
+<h4 id="azimuthal-equidistant-projection-0-2-0">Azimuthal Equidistant projection<a class="anchor" aria-label="anchor" href="#azimuthal-equidistant-projection-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/azeq_fwd.html">azeq_fwd()</a></code> - Convert geographic to azimuthal equidistant projection</li>
+<li>
+<code><a href="../reference/azeq_fwd.html">azeq_rev()</a></code> - Convert azimuthal equidistant to geographic coordinates</li>
+</ul></div>
+<div class="section level4">
+<h4 id="gars-global-area-reference-system-0-2-0">GARS (Global Area Reference System)<a class="anchor" aria-label="anchor" href="#gars-global-area-reference-system-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/gars_fwd.html">gars_fwd()</a></code> - Convert geographic coordinates to GARS codes</li>
+<li>
+<code><a href="../reference/gars_fwd.html">gars_rev()</a></code> - Convert GARS codes to geographic coordinates</li>
+</ul></div>
+<div class="section level4">
+<h4 id="georef-world-geographic-reference-system-0-2-0">Georef (World Geographic Reference System)<a class="anchor" aria-label="anchor" href="#georef-world-geographic-reference-system-0-2-0"></a></h4>
+<ul><li>
+<code><a href="../reference/georef_fwd.html">georef_fwd()</a></code> - Convert geographic coordinates to Georef codes</li>
+<li>
+<code><a href="../reference/georef_fwd.html">georef_rev()</a></code> - Convert Georef codes to geographic coordinates</li>
+</ul></div>
 <div class="section level4">
 <h4 id="rhumb-line-loxodrome-calculations-0-2-0">Rhumb line (loxodrome) calculations<a class="anchor" aria-label="anchor" href="#rhumb-line-loxodrome-calculations-0-2-0"></a></h4>
 <ul><li>
