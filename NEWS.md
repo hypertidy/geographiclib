@@ -1,3 +1,12 @@
+# geographiclib 0.3.0
+
+## New vignettes
+
+* `vignette("grid-reference-systems")` - Detailed guide to MGRS, Geohash, GARS, and Georef with Southern Hemisphere and Antarctic examples
+* `vignette("projections")` - Comprehensive coverage of UTM/UPS, LCC, Cassini-Soldner, Gnomonic, Azimuthal Equidistant, and OSGB
+* `vignette("geodesics")` - Distance, bearing, path, and polygon area calculations with Antarctic examples
+* `vignette("local-coordinates")` - Geocentric (ECEF), Local Cartesian (ENU), and ellipsoid properties for GNSS and surveying
+
 # geographiclib 0.2.0
 
 ## New features

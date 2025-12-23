@@ -1,0 +1,401 @@
+---
+title: "Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(geographiclib)
+```
+
+This vignette covers coordinate transformations between geodetic coordinates
+and 3D Cartesian systems, as well as ellipsoid properties. These are
+essential for GNSS/GPS applications, satellite tracking, robotics, and
+surveying.
+
+## Example Locations
+
+```{r locations}
+# Locations at various latitudes
+world_pts <- cbind(
+  lon = c(151.21, 0, -74.01, 0, 0),
+  lat = c(-33.87, 51.51, 40.71, 0, -90)
+)
+rownames(world_pts) <- c("Sydney", "London", "New York", "Equator/Prime", "South Pole")
+
+# Antarctic stations
+antarctic <- cbind(
+  lon = c(166.67, 77.85, -68.13, 39.58, 0),
+  lat = c(-77.85, -67.60, -67.57, -69.41, -90)
+)
+rownames(antarctic) <- c("McMurdo", "Davis", "Palmer", "Progress", "South Pole")
+```
+
+## Geocentric (ECEF) Coordinates
+
+Earth-Centered Earth-Fixed (ECEF) coordinates express positions as X, Y, Z
+relative to the Earth's center:
+
+- **X-axis**: Points toward 0°N, 0°E (intersection of equator and prime meridian)
+- **Y-axis**: Points toward 0°N, 90°E (intersection of equator and 90°E)
+- **Z-axis**: Points toward the North Pole
+
+### Basic Conversion
+
+```{r geocentric-basic}
+geocentric_fwd(world_pts)
+```
+
+### Understanding ECEF
+
+```{r geocentric-structure}
+# Points on the equator have Z ≈ 0
+equator_pts <- cbind(
+  lon = c(0, 90, 180, -90),
+  lat = c(0, 0, 0, 0)
+)
+geocentric_fwd(equator_pts)
+
+# Points at poles have X ≈ 0, Y ≈ 0
+pole_pts <- cbind(lon = c(0, 0), lat = c(90, -90))
+geocentric_fwd(pole_pts)
+```
+
+### Height Above Ellipsoid
+
+ECEF can include height above the WGS84 ellipsoid:
+
+```{r geocentric-height}
+# Ground level vs airplane altitude (10km) vs satellite (400km)
+pt <- c(151.21, -33.87)
+
+data.frame(
+  location = c("Ground", "Aircraft (10km)", "ISS (~400km)", "GPS satellite (~20200km)"),
+  h = c(0, 10000, 400000, 20200000),
+  geocentric_fwd(cbind(rep(pt[1], 4), rep(pt[2], 4)), 
+                 h = c(0, 10000, 400000, 20200000))
+)
+```
+
+### Antarctic Stations in ECEF
+
+```{r geocentric-antarctic}
+# Antarctic stations are all near the "bottom" of the coordinate system
+geocentric_fwd(antarctic)
+
+# Note the large negative Z values (Southern Hemisphere)
+# and relatively small X, Y values (near the axis)
+```
+ 
+### Round-trip Conversion
+
+```{r geocentric-roundtrip}
+fwd <- geocentric_fwd(world_pts)
+rev <- geocentric_rev(fwd$X, fwd$Y, fwd$Z)
+
+# Verify accuracy
+max(abs(rev$lon - world_pts[,1]))
+max(abs(rev$lat - world_pts[,2]))
+max(abs(rev$h))  # Height should be ~0
+```
+
+### GPS Applications
+
+ECEF is the native coordinate system for GPS satellites:
+
+```{r geocentric-gps}
+# Convert GPS receiver position to geodetic
+# (Example: receiver at Sydney at ~100m altitude)
+X <- 4648241   # meters
+Y <- -2560342
+Z <- -3526276
+
+geocentric_rev(X, Y, Z)
+```
+
+## Local Cartesian (ENU) Coordinates
+
+Local Cartesian, also called ENU (East-North-Up), creates a local coordinate
+system with:
+
+- **East**: Positive X direction
+- **North**: Positive Y direction  
+- **Up**: Positive Z direction
+
+This is ideal for local surveys, robotics, and navigation.
+
+### Basic Conversion
+
+```{r local-basic}
+# Set up local system centered on Sydney
+sydney <- c(151.21, -33.87)
+
+nearby_pts <- cbind(
+  lon = c(151.21, 151.31, 151.11, 151.21, 151.21),
+  lat = c(-33.87, -33.87, -33.87, -33.77, -33.97)
+)
+rownames(nearby_pts) <- c("Origin", "East 10km", "West 10km", "North 10km", "South 10km")
+
+localcartesian_fwd(nearby_pts, lon0 = sydney[1], lat0 = sydney[2])
+```
+
+### Local Survey Application
+
+```{r local-survey}
+# Survey points around McMurdo Station
+mcmurdo <- c(166.67, -77.85)
+
+survey_pts <- cbind(
+  lon = c(166.67, 166.70, 166.64, 166.67, 166.73),
+  lat = c(-77.85, -77.85, -77.85, -77.84, -77.86)
+)
+rownames(survey_pts) <- c("Base", "Point A", "Point B", "Point C", "Point D")
+
+result <- localcartesian_fwd(survey_pts, lon0 = mcmurdo[1], lat0 = mcmurdo[2])
+result
+
+# Distances from base in meters
+data.frame(
+  point = rownames(survey_pts),
+  east_m = round(result$x),
+  north_m = round(result$y),
+  distance_m = round(sqrt(result$x^2 + result$y^2))
+)
+```
+
+### Including Height
+
+```{r local-height}
+# Local system with height differences
+# Simulating a hill near Sydney
+pts_with_height <- cbind(
+  lon = c(151.21, 151.22, 151.20),
+  lat = c(-33.87, -33.87, -33.86)
+)
+heights <- c(0, 50, 100)  # meters above ellipsoid
+
+result <- localcartesian_fwd(pts_with_height, 
+                              lon0 = 151.21, lat0 = -33.87, h0 = 0,
+                              h = heights)
+result
+```
+
+### Round-trip Conversion
+
+```{r local-roundtrip}
+pts <- cbind(
+  lon = c(166.67, 166.70, 166.64),
+  lat = c(-77.85, -77.84, -77.86)
+)
+
+fwd <- localcartesian_fwd(pts, lon0 = 166.67, lat0 = -77.85)
+rev <- localcartesian_rev(fwd$x, fwd$y, fwd$z, lon0 = 166.67, lat0 = -77.85)
+
+max(abs(rev$lon - pts[,1]))
+max(abs(rev$lat - pts[,2]))
+```
+
+### Robotics/Navigation Application
+
+```{r local-robotics}
+# Robot path planning at Davis Station
+davis <- c(77.85, -67.60)
+
+# Waypoints for a robot traverse
+waypoints_enu <- data.frame(
+  name = c("Start", "WP1", "WP2", "WP3", "End"),
+  x = c(0, 100, 200, 250, 300),    # East (meters)
+  y = c(0, 50, 100, 100, 150),     # North (meters)
+  z = c(0, 0, 0, 0, 0)             # Up (meters)
+)
+
+# Convert to geographic coordinates for GPS navigation
+result <- localcartesian_rev(
+  waypoints_enu$x, waypoints_enu$y, waypoints_enu$z,
+  lon0 = davis[1], lat0 = davis[2]
+)
+
+data.frame(
+  waypoint = waypoints_enu$name,
+  lon = round(result$lon, 6),
+  lat = round(result$lat, 6)
+)
+```
+
+## WGS84 Ellipsoid Properties
+
+The WGS84 ellipsoid is the reference surface for GPS and most modern mapping.
+
+### Basic Parameters
+
+```{r ellipsoid-params}
+ellipsoid_params()
+```
+
+Key parameters:
+- `a`: Semi-major axis (equatorial radius) ≈ 6,378,137 m
+- `b`: Semi-minor axis (polar radius) ≈ 6,356,752 m
+- `f`: Flattening ≈ 1/298.257
+- `e2`: First eccentricity squared
+- `area`: Total surface area
+- `volume`: Total volume
+
+### Earth's Shape
+
+```{r ellipsoid-shape}
+params <- ellipsoid_params()
+
+# Equatorial vs polar radius difference
+equatorial_radius <- params$a
+polar_radius <- params$b
+
+cat("Equatorial radius:", equatorial_radius, "m\n")
+cat("Polar radius:", polar_radius, "m\n")
+cat("Difference:", equatorial_radius - polar_radius, "m\n")
+cat("Flattening:", 1/params$f, "(1/f)\n")
+```
+
+### Radii of Curvature
+
+The Earth's curvature varies with latitude:
+
+```{r ellipsoid-curvature}
+# Curvature at various latitudes
+lats <- c(0, -33.87, -42.88, -67.60, -77.85, -90)
+names_lat <- c("Equator", "Sydney", "Hobart", "Davis", "McMurdo", "South Pole")
+
+result <- ellipsoid_curvature(lats)
+
+data.frame(
+  location = names_lat,
+  latitude = lats,
+  meridional_km = round(result$meridional / 1000, 2),
+  transverse_km = round(result$transverse / 1000, 2)
+)
+```
+
+### Circle of Latitude Properties
+
+```{r ellipsoid-circle}
+# Properties of circles at different latitudes
+lats <- c(0, -30, -45, -60, -75, -90)
+
+result <- ellipsoid_circle(lats)
+
+data.frame(
+  latitude = lats,
+  circle_radius_km = round(result$radius / 1000, 2),
+  meridian_dist_km = round(result$meridian_distance / 1000, 2)
+)
+```
+
+### Auxiliary Latitudes
+
+For advanced geodetic calculations, various auxiliary latitudes are used:
+
+```{r ellipsoid-auxiliary}
+# Compare different latitude types at 45°S
+lats <- c(0, -30, -45, -60, -90)
+
+result <- ellipsoid_latitudes(lats)
+result
+
+# The differences are small but matter for precise calculations
+```
+
+## Combining Coordinate Systems
+
+### GNSS Data Processing
+
+```{r combined-gnss}
+# Typical GNSS workflow:
+# 1. Receive ECEF coordinates from GPS
+# 2. Convert to geodetic (lat/lon/height)
+# 3. Convert to local for navigation
+
+# Example GPS receiver data (ECEF, meters)
+gps_ecef <- data.frame(
+  time = 1:5,
+  X = c(4648241, 4648242, 4648240, 4648243, 4648241),
+  Y = c(-2560342, -2560340, -2560343, -2560341, -2560342),
+  Z = c(-3526276, -3526275, -3526277, -3526274, -3526276)
+)
+
+# Convert to geodetic
+geodetic <- geocentric_rev(gps_ecef$X, gps_ecef$Y, gps_ecef$Z)
+
+# Convert to local (relative to first point)
+local <- localcartesian_fwd(
+  cbind(geodetic$lon, geodetic$lat),
+  lon0 = geodetic$lon[1], lat0 = geodetic$lat[1], h0 = geodetic$h[1],
+  h = geodetic$h
+)
+
+data.frame(
+  time = gps_ecef$time,
+  east_m = round(local$x, 2),
+  north_m = round(local$y, 2),
+  up_m = round(local$z, 2)
+)
+```
+
+### Antarctic Field Survey
+
+```{r combined-antarctic}
+# Simulated survey data at McMurdo
+mcmurdo <- c(166.67, -77.85, 10)  # lon, lat, height
+
+# Survey points in local coordinates
+survey_local <- data.frame(
+  point = c("Control", "P1", "P2", "P3", "P4"),
+  east = c(0, 500, -300, 200, -100),
+  north = c(0, 200, 400, -150, -300),
+  up = c(0, 5, -2, 8, -5)
+)
+
+# Convert to geodetic for GPS upload
+geodetic <- localcartesian_rev(
+  survey_local$east, survey_local$north, survey_local$up,
+  lon0 = mcmurdo[1], lat0 = mcmurdo[2], h0 = mcmurdo[3]
+)
+
+# Convert to ECEF for satellite positioning
+ecef <- geocentric_fwd(
+  cbind(geodetic$lon, geodetic$lat),
+  h = geodetic$h
+)
+
+data.frame(
+  point = survey_local$point,
+  lon = round(geodetic$lon, 5),
+  lat = round(geodetic$lat, 5),
+  X = round(ecef$X),
+  Y = round(ecef$Y),
+  Z = round(ecef$Z)
+)
+```
+
+## Coordinate System Summary
+
+| System | Description | Use Case |
+|--------|-------------|----------|
+| Geodetic (lon/lat/h) | Geographic coordinates | Maps, GIS, human communication |
+| ECEF (X/Y/Z) | Earth-centered Cartesian | GPS satellites, orbit calculations |
+| ENU (E/N/U) | Local tangent plane | Robotics, local surveys, navigation |
+
+## See Also
+
+- `vignette("projections")` for map projections
+- `vignette("geodesics")` for distance and bearing calculations
+- [ECEF on Wikipedia](https://en.wikipedia.org/wiki/Earth-centered,_Earth-fixed_coordinate_system)
+- [Local tangent plane coordinates](https://en.wikipedia.org/wiki/Local_tangent_plane_coordinates)

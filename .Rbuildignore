@@ -6,3 +6,5 @@
 ^CODE_OF_CONDUCT\.md$
 ^\.github$
 ^todo-Geohash.md$
+^doc$
+^Meta$

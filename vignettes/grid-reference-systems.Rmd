@@ -1,0 +1,280 @@
+---
+title: "Grid Reference Systems: MGRS, Geohash, GARS, and Georef"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Grid Reference Systems: MGRS, Geohash, GARS, and Georef}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(geographiclib)
+```
+
+This vignette covers the grid reference systems available in geographiclib:
+MGRS, Geohash, GARS, and Georef. These systems encode geographic coordinates
+as alphanumeric strings, useful for human communication and data storage.
+ 
+## Example Locations
+
+We'll use locations from both hemispheres throughout this vignette:
+
+```{r locations}
+locations <- data.frame(
+  name = c("Sydney", "Hobart", "McMurdo Station", "South Pole",
+           "London", "New York", "Tokyo", "Ushuaia"),
+  lon = c(151.21, 147.32, 166.67, 0, -0.13, -74.01, 139.69, -68.30),
+  lat = c(-33.87, -42.88, -77.85, -90, 51.51, 40.71, 35.69, -54.80)
+)
+locations
+```
+
+## MGRS - Military Grid Reference System
+
+MGRS is used by NATO militaries and provides unambiguous location references
+worldwide. It's based on UTM zones (or UPS for polar regions).
+
+### Basic Conversion
+
+```{r mgrs-basic}
+# Convert all locations to MGRS
+pts <- cbind(locations$lon, locations$lat)
+codes <- mgrs_fwd(pts)
+data.frame(name = locations$name, mgrs = codes)
+```
+
+### Understanding MGRS Codes
+
+An MGRS code has several components:
+
+- **Grid Zone Designator** (e.g., "56H"): UTM zone number + latitude band letter
+- **100km Square ID** (e.g., "LU"): Two letters identifying the 100km square
+- **Numerical Location**: Easting and northing within the square
+
+```{r mgrs-structure}
+# Sydney's MGRS code broken down
+sydney_mgrs <- mgrs_fwd(c(151.21, -33.87))
+sydney_mgrs
+
+# Get full metadata from reverse conversion
+mgrs_rev(sydney_mgrs)
+```
+
+### Precision Levels
+
+MGRS precision ranges from 100km (precision 0) to 1m (precision 5):
+
+```{r mgrs-precision}
+hobart <- c(147.32, -42.88)
+
+precisions <- data.frame(
+  precision = 0:5,
+  resolution = c("100 km", "10 km", "1 km", "100 m", "10 m", "1 m"),
+  code = sapply(0:5, function(p) mgrs_fwd(hobart, precision = p))
+)
+precisions
+```
+
+### Polar Regions (UPS)
+
+For polar regions (>84°N or <80°S), MGRS uses Universal Polar Stereographic:
+
+```{r mgrs-polar}
+# Antarctic locations
+antarctic <- cbind(
+  lon = c(166.67, 0, 77.85, -60),
+  lat = c(-77.85, -90, -85, -82)
+)
+
+antarctic_mgrs <- mgrs_fwd(antarctic)
+antarctic_mgrs
+
+# Note zone = 0 indicates UPS
+mgrs_rev(antarctic_mgrs)
+```
+
+### Vectorized Operations
+
+All MGRS functions are fully vectorized:
+
+```{r mgrs-vectorized}
+# Different precisions for different points
+varied_precision <- mgrs_fwd(pts, precision = c(5, 4, 3, 2, 1, 0, 5, 4))
+data.frame(name = locations$name, mgrs = varied_precision)
+```
+
+## Geohash
+
+Geohash encodes locations as base-32 strings with a useful property:
+truncating a geohash reduces precision but still contains the original point.
+
+### Basic Conversion
+
+```{r geohash-basic}
+codes <- geohash_fwd(pts, len = 8)
+data.frame(name = locations$name, geohash = codes)
+```
+
+### The Truncation Property
+
+This is Geohash's key feature - shorter codes are valid parent cells:
+
+```{r geohash-truncation}
+# Full precision for Sydney
+sydney_gh <- geohash_fwd(c(151.21, -33.87), len = 12)
+sydney_gh
+
+# Truncate to see parent cells
+data.frame(
+  length = 12:4,
+  geohash = substr(sydney_gh, 1, 12:4)
+)
+```
+
+### Resolution by Length
+
+```{r geohash-resolution}
+geohash_resolution(1:12)
+```
+
+### Finding Required Length for Precision
+
+```{r geohash-length}
+# What length for ~1km precision?
+geohash_length(resolution = 1/111)  # ~1 degree / 111 km
+
+# What length for ~10m precision?
+geohash_length(resolution = 10/111000)
+```
+
+### Southern Hemisphere Examples
+
+```{r geohash-southern}
+southern <- cbind(
+  lon = c(151.21, 147.32, 166.67, -68.30, 77.85),
+  lat = c(-33.87, -42.88, -77.85, -54.80, -85)
+)
+rownames(southern) <- c("Sydney", "Hobart", "McMurdo", "Ushuaia", "Amundsen-Scott area")
+
+# Convert and reverse
+gh_codes <- geohash_fwd(southern, len = 8)
+gh_codes
+
+geohash_rev(gh_codes)
+```
+
+## GARS - Global Area Reference System
+
+GARS is a military grid system with three precision levels: 30-minute,
+15-minute, and 5-minute cells.
+
+### Basic Conversion
+
+```{r gars-basic}
+codes <- gars_fwd(pts, precision = 2)  # 5-minute precision
+data.frame(name = locations$name, gars = codes)
+```
+
+### Precision Levels
+
+```{r gars-precision}
+sydney <- c(151.21, -33.87)
+
+gars_codes <- data.frame(
+  precision = 0:2,
+  resolution = c("30 minute", "15 minute", "5 minute"),
+  code = sapply(0:2, function(p) gars_fwd(sydney, precision = p))
+)
+gars_codes
+```
+
+### GARS for Antarctic Locations
+
+```{r gars-antarctic}
+antarctic_pts <- cbind(
+  lon = c(166.67, 0, 77.85),
+  lat = c(-77.85, -85, -82)
+)
+
+gars_fwd(antarctic_pts, precision = 2)
+```
+
+## Georef - World Geographic Reference System
+
+Georef is used primarily in aviation. It divides the world into 15° × 15° tiles
+then subdivides progressively.
+
+### Basic Conversion
+
+```{r georef-basic}
+codes <- georef_fwd(pts, precision = 2)
+data.frame(name = locations$name, georef = codes)
+```
+
+### Precision Levels
+
+```{r georef-precision}
+sydney <- c(151.21, -33.87)
+
+georef_codes <- data.frame(
+  precision = c(-1, 0, 2, 3),
+  resolution = c("15 degree", "1 degree", "0.01 minute", "0.001 minute"),
+  code = sapply(c(-1, 0, 2, 3), function(p) georef_fwd(sydney, precision = p))
+)
+georef_codes
+```
+
+### Georef for Flight Planning
+
+Georef is particularly useful for aviation across hemispheres:
+
+```{r georef-flight}
+# Flight path: Sydney to Santiago via Antarctica
+flight_pts <- cbind(
+  lon = c(151.21, 166.67, -70, -70.67),
+  lat = c(-33.87, -77.85, -85, -33.45)
+)
+rownames(flight_pts) <- c("Sydney", "McMurdo", "Over Antarctica", "Santiago")
+
+georef_fwd(flight_pts, precision = 2)
+```
+
+## Comparison of Systems
+
+Each system has different strengths:
+
+| System | Best For | Precision Range | Key Feature |
+|--------|----------|-----------------|-------------|
+| MGRS | Military, hiking | 100km - 1m | Unambiguous worldwide |
+| Geohash | Databases, URLs | ~5000km - 1mm | Truncation preserves containment |
+| GARS | Military aviation | 30min - 5min | Simple, easy to read |
+| Georef | Aviation | 15° - 0.001min | Used in flight planning |
+
+```{r comparison}
+# Same location in all systems
+pt <- c(147.32, -42.88)  # Hobart
+
+data.frame(
+  system = c("MGRS", "Geohash", "GARS", "Georef"),
+  code = c(
+    mgrs_fwd(pt, precision = 3),
+    geohash_fwd(pt, len = 8),
+    gars_fwd(pt, precision = 2),
+    georef_fwd(pt, precision = 2)
+  )
+)
+```
+
+## See Also
+
+- `vignette("projections")` for map projections (UTM/UPS, LCC, etc.)
+- `vignette("geodesics")` for distance and bearing calculations
+- [MGRS on Wikipedia](https://en.wikipedia.org/wiki/Military_Grid_Reference_System)
+- [Geohash on Wikipedia](https://en.wikipedia.org/wiki/Geohash)

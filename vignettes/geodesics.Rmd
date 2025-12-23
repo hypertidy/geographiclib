@@ -1,0 +1,404 @@
+---
+title: "Geodesic Calculations: Distance, Bearing, and Paths"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Geodesic Calculations: Distance, Bearing, and Paths}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(geographiclib)
+```
+
+This vignette covers geodesic calculations on the WGS84 ellipsoid: distances,
+bearings, paths, and polygon areas. These are "exact" in the sense that they
+account for the Earth's ellipsoidal shape, not just a sphere.
+
+## Example Locations
+
+```{r locations}
+# Major cities including Southern Hemisphere
+cities <- cbind(
+  lon = c(151.21, 147.32, -0.13, -74.01, 139.69, -43.17, -68.30, 166.67),
+  lat = c(-33.87, -42.88, 51.51, 40.71, 35.69, -22.91, -54.80, -77.85)
+)
+rownames(cities) <- c("Sydney", "Hobart", "London", "New York", 
+                       "Tokyo", "Rio", "Ushuaia", "McMurdo")
+
+# Antarctic stations
+antarctic <- cbind(
+  lon = c(166.67, 77.85, -68.13, 39.58, 0),
+  lat = c(-77.85, -67.60, -67.57, -69.41, -90)
+)
+rownames(antarctic) <- c("McMurdo", "Davis", "Palmer", "Progress", "South Pole")
+```
+
+## The Inverse Problem: Distance and Bearing
+
+Given two points, find the distance and azimuths between them.
+
+### Basic Distance Calculation
+
+```{r inverse-basic}
+# Sydney to London
+geodesic_inverse(c(151.21, -33.87), c(-0.13, 51.51))
+```
+
+The output includes:
+- `s12`: Distance in meters
+- `azi1`: Azimuth at start (bearing to depart on)
+- `azi2`: Azimuth at end (bearing of arrival)
+- `m12`, `M12`, `M21`: Geodesic scale factors
+- `S12`: Area under the geodesic
+
+### Understanding Azimuth
+
+Azimuth is measured in degrees from north (-180° to 180°):
+- 0° = North
+- 90° = East
+- ±180° = South
+- -90° = West
+
+```{r azimuth-examples}
+# Various directions from Sydney
+destinations <- rbind(
+  "Due North" = c(151.21, -23),     # Same longitude, further north
+  "Due East" = c(170, -33.87),      # Same latitude, further east
+  "Due South" = c(151.21, -50),     # Same longitude, further south
+  "Due West" = c(130, -33.87)       # Same latitude, further west
+)
+
+sydney <- c(151.21, -33.87)
+results <- geodesic_inverse(
+  cbind(rep(sydney[1], 4), rep(sydney[2], 4)),
+  destinations
+)
+
+data.frame(
+  destination = rownames(destinations),
+  azimuth = round(results$azi1, 1),
+  distance_km = round(results$s12 / 1000)
+)
+```
+
+### Distances Between Cities
+
+```{r inverse-cities}
+# Distances from Sydney to other cities
+sydney_idx <- 1
+results <- geodesic_inverse(
+  cbind(rep(cities[sydney_idx, 1], nrow(cities) - 1), 
+        rep(cities[sydney_idx, 2], nrow(cities) - 1)),
+  cities[-sydney_idx, ]
+)
+
+data.frame(
+  from = "Sydney",
+  to = rownames(cities)[-sydney_idx],
+  distance_km = round(results$s12 / 1000),
+  bearing = round(results$azi1, 1)
+)
+```
+
+### Antarctic Distances
+
+```{r inverse-antarctic}
+# Distances from South Pole to Antarctic stations
+pole <- c(0, -90)
+results <- geodesic_inverse(
+  cbind(rep(pole[1], nrow(antarctic) - 1),
+        rep(pole[2], nrow(antarctic) - 1)),
+  antarctic[-5, ]  # Exclude South Pole itself
+)
+
+data.frame(
+  station = rownames(antarctic)[-5],
+  distance_from_pole_km = round(results$s12 / 1000),
+  bearing = round(results$azi1, 1)
+)
+```
+
+## The Direct Problem: Finding Destinations
+
+Given a starting point, bearing, and distance, find the destination.
+
+### Basic Direct Calculation
+
+```{r direct-basic}
+# Travel 1000 km due north from Sydney
+geodesic_direct(c(151.21, -33.87), azi = 0, s = 1000000)
+```
+
+### Creating a "Circle" of Destinations
+
+```{r direct-circle}
+# Points 1000 km from Sydney in all directions
+bearings <- seq(0, 330, by = 30)
+results <- geodesic_direct(c(151.21, -33.87), azi = bearings, s = 1000000)
+
+data.frame(
+  bearing = bearings,
+  direction = c("N", "NNE", "ENE", "E", "ESE", "SSE", 
+                "S", "SSW", "WSW", "W", "WNW", "NNW"),
+  lon = round(results$lon2, 2),
+  lat = round(results$lat2, 2)
+)
+```
+
+### Antarctic Traverse Planning
+
+```{r direct-antarctic}
+# Plan traverse from McMurdo heading inland
+mcmurdo <- c(166.67, -77.85)
+
+# Head south-southwest at 195° bearing
+waypoints <- geodesic_direct(
+  mcmurdo, 
+  azi = 195, 
+  s = c(0, 100000, 200000, 300000, 400000, 500000)
+)
+
+data.frame(
+  distance_km = waypoints$s12 / 1000,
+  lon = round(waypoints$lon2, 2),
+  lat = round(waypoints$lat2, 2)
+)
+```
+
+## Geodesic Paths
+
+Generate points along the shortest path between two locations.
+
+### Sydney to London Great Circle
+
+```{r path-basic}
+path <- geodesic_path(c(151.21, -33.87), c(-0.13, 51.51), n = 12)
+path
+
+# The path crosses into the Northern Hemisphere via Asia
+```
+
+### Antarctic Circle Path
+
+```{r path-antarctic}
+# Path around Antarctica at 70°S
+start <- c(0, -70)
+end <- c(180, -70)  # Go halfway around
+
+# This will follow a geodesic, not a parallel of latitude!
+path <- geodesic_path(start, end, n = 10)
+path
+
+# Note: lat varies slightly - geodesics don't follow parallels
+```
+
+### Trans-Antarctic Path
+
+```{r path-transantarctic}
+# McMurdo to Palmer Station (across the continent)
+path <- geodesic_path(c(166.67, -77.85), c(-68.13, -67.57), n = 10)
+path
+```
+
+## Distance Matrices
+
+Compute all pairwise distances between sets of points.
+
+### City Distance Matrix
+
+```{r matrix-cities}
+# Distance matrix for all cities (km)
+dist_matrix <- geodesic_distance_matrix(cities) / 1000
+round(dist_matrix)
+```
+
+### Antarctic Station Distances
+
+```{r matrix-antarctic}
+# Distances between Antarctic stations
+dist_matrix <- geodesic_distance_matrix(antarctic) / 1000
+round(dist_matrix)
+```
+
+### Cross-Matrix: Cities to Antarctic Stations
+
+```{r matrix-cross}
+# Distance from each city to each Antarctic station
+dist_matrix <- geodesic_distance_matrix(cities, antarctic) / 1000
+rownames(dist_matrix) <- rownames(cities)
+colnames(dist_matrix) <- rownames(antarctic)
+round(dist_matrix)
+```
+
+## Rhumb Lines (Loxodromes)
+
+Rhumb lines maintain constant bearing. They're longer than geodesics but
+easier to navigate.
+
+### Geodesic vs Rhumb
+
+```{r rhumb-compare}
+# Sydney to London: geodesic vs rhumb
+start <- c(151.21, -33.87)
+end <- c(-0.13, 51.51)
+
+geo_result <- geodesic_inverse(start, end)
+rhumb_result <- rhumb_inverse(start, end)
+
+data.frame(
+  method = c("Geodesic", "Rhumb"),
+  distance_km = round(c(geo_result$s12, rhumb_result$s12) / 1000),
+  starting_bearing = round(c(geo_result$azi1, rhumb_result$azi12), 1),
+  extra_distance_km = c(0, round((rhumb_result$s12 - geo_result$s12) / 1000))
+)
+```
+
+### East-West Travel
+
+For east-west travel along a parallel, rhumb = geodesic:
+
+```{r rhumb-eastwest}
+# Due east from Sydney (along parallel)
+start <- c(151.21, -33.87)
+end <- c(170, -33.87)
+
+geo <- geodesic_inverse(start, end)
+rhumb <- rhumb_inverse(start, end)
+
+data.frame(
+  method = c("Geodesic", "Rhumb"),
+  distance_km = round(c(geo$s12, rhumb$s12) / 1000, 3),
+  bearing = round(c(geo$azi1, rhumb$azi12), 3)
+)
+# Nearly identical for E-W travel
+```
+
+### Rhumb Path
+
+```{r rhumb-path}
+# Rhumb path vs geodesic path: Sydney to Cape Town
+start <- c(151.21, -33.87)
+end <- c(18.42, -33.92)
+
+geo_path <- geodesic_path(start, end, n = 6)
+rhumb_path_result <- rhumb_path(start, end, n = 6)
+
+data.frame(
+  type = rep(c("Geodesic", "Rhumb"), each = 6),
+  point = rep(1:6, 2),
+  lon = c(geo_path$lon, rhumb_path_result$lon),
+  lat = round(c(geo_path$lat, rhumb_path_result$lat), 2)
+)
+# Note: rhumb line maintains more constant latitude
+```
+
+## Polygon Area
+
+Calculate the area of polygons on the ellipsoid.
+
+### Antarctic Ice Shelf Area
+
+```{r polygon-area}
+# Approximate Ross Ice Shelf boundary
+ross_ice_shelf <- cbind(
+  lon = c(158, 170, -175, -160, -150, -158, -170, 170, 158),
+  lat = c(-77, -78, -78.5, -79, -78, -77.5, -77, -77, -77)
+)
+
+result <- polygon_area(ross_ice_shelf)
+result
+
+# Area in km²
+abs(result$area) / 1e6
+```
+
+### Multiple Polygons
+
+```{r polygon-multi}
+# Compare areas of different regions
+pts <- cbind(
+  lon = c(
+    # Tasmania (approximate)
+    144, 148, 148, 144, 144,
+    # South Island NZ (approximate)
+    166, 174, 174, 166, 166
+  ),
+  lat = c(
+    -40, -40, -44, -44, -40,
+    -41, -41, -47, -47, -41
+  )
+)
+
+result <- polygon_area(pts, id = c(rep(1, 5), rep(2, 5)))
+data.frame(
+  region = c("Tasmania", "South Island NZ"),
+  area_km2 = round(abs(result$area) / 1e6)
+)
+```
+
+### Winding Direction Matters
+
+```{r polygon-winding}
+# Counter-clockwise vs clockwise
+ccw <- cbind(lon = c(0, 1, 1, 0), lat = c(0, 0, 1, 1))
+cw <- cbind(lon = c(0, 0, 1, 1), lat = c(0, 1, 1, 0))
+
+data.frame(
+  winding = c("Counter-clockwise", "Clockwise"),
+  area_km2 = c(polygon_area(ccw)$area, polygon_area(cw)$area) / 1e6
+)
+# Areas have opposite signs
+```
+
+## Exact vs Fast Geodesic
+
+geographiclib provides both exact and fast (series approximation) versions:
+
+```{r exact-vs-fast}
+# Compare accuracy and speed
+start <- c(151.21, -33.87)
+end <- c(-0.13, 51.51)
+
+exact <- geodesic_inverse(start, end)
+fast <- geodesic_inverse_fast(start, end)
+
+data.frame(
+  version = c("Exact", "Fast"),
+  distance_m = c(exact$s12, fast$s12),
+  difference_mm = c(0, (fast$s12 - exact$s12) * 1000)
+)
+# Difference is typically nanometers - negligible for most uses
+```
+
+### Performance Comparison
+
+```{r performance, eval=FALSE}
+# Generate 10,000 random point pairs
+n <- 10000
+pts1 <- cbind(runif(n, -180, 180), runif(n, -90, 90))
+pts2 <- cbind(runif(n, -180, 180), runif(n, -90, 90))
+
+system.time(geodesic_inverse(pts1, pts2))
+#>  user  system elapsed 
+#>  0.05    0.00    0.05
+
+system.time(geodesic_inverse_fast(pts1, pts2))
+#>  user  system elapsed 
+#>  0.04    0.00    0.04
+```
+
+## See Also
+
+- `vignette("grid-reference-systems")` for MGRS, Geohash, etc.
+- `vignette("projections")` for map projections
+- `vignette("local-coordinates")` for Local Cartesian and Geocentric
+- [Geodesics on an ellipsoid (Wikipedia)](https://en.wikipedia.org/wiki/Geodesics_on_an_ellipsoid)
+- [GeographicLib geodesic documentation](https://geographiclib.sourceforge.io/C++/doc/geodesic.html)
