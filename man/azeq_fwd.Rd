@@ -14,69 +14,72 @@ azeq_rev(x, y, lon0, lat0)
 coordinates (longitude, latitude) in decimal degrees.
 For reverse conversion: numeric vector of x coordinates in meters.}
 
-\item{lon0}{Longitude of the projection center in decimal degrees.}
+\item{lon0}{Longitude of projection center in decimal degrees. Can be a
+vector to specify different centers for each point.}
 
-\item{lat0}{Latitude of the projection center in decimal degrees.}
+\item{lat0}{Latitude of projection center in decimal degrees. Can be a
+vector to specify different centers for each point.}
 
-\item{y}{Numeric vector of y coordinates in meters for reverse conversion.}
+\item{y}{Numeric vector of y coordinates in meters (for reverse conversion).}
 }
 \value{
 Data frame with columns:
 \itemize{
 \item For forward conversion:
 \itemize{
-\item \code{x}, \code{y}: Projected coordinates in meters
+\item \code{x}: Easting in meters from center
+\item \code{y}: Northing in meters from center
 \item \code{azi}: Azimuth from center to point (degrees)
 \item \code{scale}: Scale factor at the point
 \item \code{lon}, \code{lat}: Input coordinates (echoed)
+\item \code{lon0}, \code{lat0}: Center coordinates (echoed)
 }
 \item For reverse conversion:
 \itemize{
-\item \code{lon}, \code{lat}: Geographic coordinates in decimal degrees
+\item \code{lon}: Longitude in decimal degrees
+\item \code{lat}: Latitude in decimal degrees
 \item \code{azi}: Azimuth from center to point (degrees)
 \item \code{scale}: Scale factor at the point
 \item \code{x}, \code{y}: Input coordinates (echoed)
+\item \code{lon0}, \code{lat0}: Center coordinates (echoed)
 }
 }
 }
 \description{
-Convert geographic coordinates (longitude/latitude) to Azimuthal Equidistant
-projected coordinates, or convert projected coordinates back to geographic
-coordinates. The projection is centered on a specified point.
+Convert geographic coordinates to/from Azimuthal Equidistant projection
+centered on a specified point. This projection preserves distances from
+the center point.
 }
 \details{
-The Azimuthal Equidistant projection preserves distances and directions
-from the center point. Key properties:
+The Azimuthal Equidistant projection shows all points at their true distance
+and direction from the center point. It is commonly used for:
 \itemize{
-\item All points at the same distance from the center lie on a circle
-\item All directions from the center are correct
-\item Scale is 1 along radial lines from the center
-\item Scale increases perpendicular to radial lines
+\item Radio/telecommunications range maps
+\item Seismic wave propagation studies
+\item Air route distance calculations
+\item UN emblem (centered on North Pole)
 }
 
-This projection is commonly used for:
-\itemize{
-\item Airline route maps centered on a hub city
-\item Seismic monitoring (distances from epicenter)
-\item Radio/communications coverage maps
-\item UN emblem (polar aspect)
-}
+The projection is neither conformal nor equal-area, but distances from the
+center are preserved exactly.
 
-All calculations use the WGS84 ellipsoid with exact geodesic calculations.
+All parameters (\code{x}, \code{lon0}, \code{lat0}) are vectorized and recycled to a
+common length, allowing different projection centers for each point.
 }
 \examples{
-# Project points relative to London
-pts <- cbind(lon = c(-74, 139.7, 151.2), lat = c(40.7, 35.7, -33.9))
-azeq_fwd(pts, lon0 = -0.1, lat0 = 51.5)
+# Project cities relative to Sydney
+cities <- cbind(
+  lon = c(-74, 139.7, 0),
+  lat = c(40.7, 35.7, 51.5)
+)
+azeq_fwd(cities, lon0 = 151.2, lat0 = -33.9)
 
-# Distance from center equals sqrt(x^2 + y^2)
-result <- azeq_fwd(c(-74, 40.7), lon0 = -0.1, lat0 = 51.5)
-sqrt(result$x^2 + result$y^2)  # Distance in meters
+# Distance from Sydney = sqrt(x^2 + y^2)
+result <- azeq_fwd(cities, lon0 = 151.2, lat0 = -33.9)
+sqrt(result$x^2 + result$y^2) / 1000  # km
 
-# Round-trip conversion
-fwd <- azeq_fwd(pts, lon0 = -0.1, lat0 = 51.5)
-azeq_rev(fwd$x, fwd$y, lon0 = -0.1, lat0 = 51.5)
-}
-\seealso{
-\code{\link[=geodesic_direct]{geodesic_direct()}} for calculating destinations along azimuths.
+# Different center for each point (e.g., distance from home city)
+homes <- cbind(lon = c(151.2, 139.7, -0.1), lat = c(-33.9, 35.7, 51.5))
+destinations <- cbind(lon = c(-74, -74, -74), lat = c(40.7, 40.7, 40.7))
+azeq_fwd(destinations, lon0 = homes[,1], lat0 = homes[,2])
 }

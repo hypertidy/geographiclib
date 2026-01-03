@@ -6,17 +6,17 @@
 #include <R_ext/Visibility.h>
 
 // 000_azimuthaleq_geographiclib.cpp
-cpp11::writable::data_frame azimuthaleq_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, double lon0, double lat0);
+cpp11::writable::data_frame azimuthaleq_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles lon0, cpp11::doubles lat0);
 extern "C" SEXP _geographiclib_azimuthaleq_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP lat0) {
   BEGIN_CPP11
-    return cpp11::as_sexp(azimuthaleq_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0)));
+    return cpp11::as_sexp(azimuthaleq_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat0)));
   END_CPP11
 }
 // 000_azimuthaleq_geographiclib.cpp
-cpp11::writable::data_frame azimuthaleq_rev_cpp(cpp11::doubles x, cpp11::doubles y, double lon0, double lat0);
+cpp11::writable::data_frame azimuthaleq_rev_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::doubles lon0, cpp11::doubles lat0);
 extern "C" SEXP _geographiclib_azimuthaleq_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP lat0) {
   BEGIN_CPP11
-    return cpp11::as_sexp(azimuthaleq_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0)));
+    return cpp11::as_sexp(azimuthaleq_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat0)));
   END_CPP11
 }
 // 000_cassinisoldner_geographiclib.cpp
