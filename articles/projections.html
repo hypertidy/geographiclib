@@ -315,15 +315,15 @@ showing distances from a specific location.</p>
 <span><span class="va">sydney</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="op">-</span><span class="fl">33.87</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_fwd</a></span><span class="op">(</span><span class="va">world_pts</span>, lon0 <span class="op">=</span> <span class="va">sydney</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, lat0 <span class="op">=</span> <span class="va">sydney</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt;             x        y        azi     scale    lon    lat</span></span>
-<span><span class="co">#&gt; 1         0.0        0    0.00000 1.0000000 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 2   -319024.0 -1006658 -159.99285 0.9954306 147.32 -42.88</span></span>
-<span><span class="co">#&gt; 3    397699.6 -4937895  161.57776 0.9026699 166.67 -77.85</span></span>
-<span><span class="co">#&gt; 4   3490312.8 -8814999   31.98150 0.6714824 -68.30 -54.80</span></span>
-<span><span class="co">#&gt; 5 -11079223.9 12879887 -119.64500 0.1711505  -0.13  51.51</span></span>
-<span><span class="co">#&gt; 6  14570027.7  6581725   86.24134 0.2338675 -74.01  40.71</span></span>
-<span><span class="co">#&gt; 7  -1348790.6  7675580  -10.19020 0.7678612 139.69  35.69</span></span>
-<span><span class="co">#&gt; 8         0.0 -6252724  -28.79000 0.8478398   0.00 -90.00</span></span>
+<span><span class="co">#&gt;             x        y        azi     scale    lon    lat   lon0   lat0</span></span>
+<span><span class="co">#&gt; 1         0.0        0    0.00000 1.0000000 151.21 -33.87 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 2   -319024.0 -1006658 -159.99285 0.9954306 147.32 -42.88 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 3    397699.6 -4937895  161.57776 0.9026699 166.67 -77.85 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 4   3490312.8 -8814999   31.98150 0.6714824 -68.30 -54.80 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 5 -11079223.9 12879887 -119.64500 0.1711505  -0.13  51.51 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 6  14570027.7  6581725   86.24134 0.2338675 -74.01  40.71 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 7  -1348790.6  7675580  -10.19020 0.7678612 139.69  35.69 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 8         0.0 -6252724  -28.79000 0.8478398   0.00 -90.00 151.21 -33.87</span></span>
 <span></span>
 <span><span class="co"># Distance from Sydney (in km) = sqrt(x² + y²) / 1000</span></span>
 <span><span class="va">distances</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">result</span><span class="op">$</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1000</span></span>

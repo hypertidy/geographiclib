@@ -236,10 +236,10 @@ center:</p>
 <code class="sourceCode R"><span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74</span>, <span class="fl">139.7</span>, <span class="fl">151.2</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40.7</span>, <span class="fl">35.7</span>, <span class="op">-</span><span class="fl">33.9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_fwd</a></span><span class="op">(</span><span class="va">pts</span>, lon0 <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, lat0 <span class="op">=</span> <span class="fl">51.5</span><span class="op">)</span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt;          x       y       azi     scale   lon   lat</span></span>
-<span><span class="co">#&gt; 1 -5302905 1761511 -128.7635 0.8770643 -74.0  40.7</span></span>
-<span><span class="co">#&gt; 2  5029432 8155050  156.2494 0.6652729 139.7  35.7</span></span>
-<span><span class="co">#&gt; 3 14783025 8374075  139.2137 0.1711044 151.2 -33.9</span></span>
+<span><span class="co">#&gt;          x       y       azi     scale   lon   lat lon0 lat0</span></span>
+<span><span class="co">#&gt; 1 -5302905 1761511 -128.7635 0.8770643 -74.0  40.7 -0.1 51.5</span></span>
+<span><span class="co">#&gt; 2  5029432 8155050  156.2494 0.6652729 139.7  35.7 -0.1 51.5</span></span>
+<span><span class="co">#&gt; 3 14783025 8374075  139.2137 0.1711044 151.2 -33.9 -0.1 51.5</span></span>
 <span></span>
 <span><span class="co"># Distance from London = sqrt(x^2 + y^2)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">result</span><span class="op">$</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1000</span></span>
@@ -507,15 +507,15 @@ Polar Stereographic) when appropriate:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.033   0.000   0.033</span></span>
+<span><span class="co">#&gt;   0.035   0.000   0.035</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geohash_fwd.html">geohash_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.012   0.000   0.012</span></span>
+<span><span class="co">#&gt;   0.012   0.000   0.013</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic_direct.html">geodesic_distance_matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.060   0.000   0.059</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.046   0.000   0.046</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further Reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
