@@ -1,3 +1,11 @@
+# geographiclib 0.3.1
+
+## Improvements
+
+* `azeq_fwd()` and `azeq_rev()` are now fully vectorized on `lon0` and `lat0`
+  parameters, allowing different projection centers for each point. Output now
+  includes `lon0` and `lat0` columns to track which center was used.
+
 # geographiclib 0.3.0
 
 ## New vignettes
