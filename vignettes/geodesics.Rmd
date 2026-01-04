@@ -1,8 +1,8 @@
 ---
-title: "Geodesic Calculations: Distance, Bearing, and Paths"
+title: "Geodesic Calculations"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Geodesic Calculations: Distance, Bearing, and Paths}
+  %\VignetteIndexEntry{Geodesic Calculations}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,9 +18,19 @@ knitr::opts_chunk$set(
 library(geographiclib)
 ```
 
-This vignette covers geodesic calculations on the WGS84 ellipsoid: distances,
-bearings, paths, and polygon areas. These are "exact" in the sense that they
-account for the Earth's ellipsoidal shape, not just a sphere.
+## Contents
+
+- [Example Locations](#example-locations)
+- [The Inverse Problem: Distance and Bearing](#the-inverse-problem-distance-and-bearing)
+- [The Direct Problem: Finding Destinations](#the-direct-problem-finding-destinations)
+- [Geodesic Paths](#geodesic-paths)
+- [Distance Matrices](#distance-matrices)
+- [Rhumb Lines (Loxodromes)](#rhumb-lines-loxodromes)
+- [Polygon Area](#polygon-area)
+- [Exact vs Fast Geodesic](#exact-vs-fast-geodesic)
+- [Geodesic Intersections](#geodesic-intersections)
+- [Nearest Neighbor Search](#nearest-neighbor-search)
+- [See Also](#see-also)
 
 ## Example Locations
 

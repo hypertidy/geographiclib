@@ -18,7 +18,29 @@ knitr::opts_chunk$set(
 library(geographiclib)
 ```
 
-The **geographiclib** package provides R bindings to the 
+## Contents
+
+- [MGRS - Military Grid Reference System](#mgrs---military-grid-reference-system)
+- [UTM/UPS - Universal Transverse Mercator](#utmups---universal-transverse-mercator)
+- [Geohash](#geohash)
+- [GARS - Global Area Reference System](#gars---global-area-reference-system)
+- [Georef - World Geographic Reference System](#georef---world-geographic-reference-system)
+- [Lambert Conformal Conic Projection](#lambert-conformal-conic-projection)
+- [Azimuthal Equidistant Projection](#azimuthal-equidistant-projection)
+- [Cassini-Soldner Projection](#cassini-soldner-projection)
+- [Gnomonic Projection](#gnomonic-projection)
+- [OSGB - Ordnance Survey National Grid](#osgb---ordnance-survey-national-grid)
+- [Local Cartesian (ENU) Coordinates](#local-cartesian-enu-coordinates)
+- [Geocentric (ECEF) Coordinates](#geocentric-ecef-coordinates)
+- [WGS84 Ellipsoid](#wgs84-ellipsoid)
+- [Geodesic Calculations](#geodesic-calculations)
+- [Rhumb Lines (Loxodromes)](#rhumb-lines-loxodromes)
+- [Polygon Area](#polygon-area)
+- [Polar Regions](#polar-regions)
+- [Performance](#performance)
+- [Further Reading](#further-reading)
+
+## MGRS - Military Grid Reference System package provides R bindings to the 
 [GeographicLib](https://geographiclib.sourceforge.io/) C++ library for precise 
 geodetic calculations. All functions are fully vectorized and return rich 
 metadata.

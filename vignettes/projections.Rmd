@@ -21,6 +21,21 @@ library(geographiclib)
 This vignette covers the map projections available in geographiclib. Each
 projection has different properties making it suitable for different purposes.
 
+## Contents
+
+- [Example Locations](#example-locations)
+- [UTM/UPS - Universal Transverse Mercator](#utmups---universal-transverse-mercator)
+- [Transverse Mercator (Custom)](#transverse-mercator-custom)
+- [Lambert Conformal Conic (LCC)](#lambert-conformal-conic-lcc)
+- [Albers Equal Area](#albers-equal-area)
+- [Polar Stereographic](#polar-stereographic)
+- [Azimuthal Equidistant](#azimuthal-equidistant)
+- [Cassini-Soldner Projection](#cassini-soldner-projection)
+- [Gnomonic Projection](#gnomonic-projection)
+- [OSGB - Ordnance Survey National Grid](#osgb---ordnance-survey-national-grid)
+- [Projection Comparison](#projection-comparison)
+- [See Also](#see-also)
+
 ## Example Locations
 
 We'll use a mix of Northern and Southern Hemisphere locations:

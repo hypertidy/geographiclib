@@ -18,6 +18,18 @@ knitr::opts_chunk$set(
 library(geographiclib)
 ```
 
+## Contents
+
+- [Example Locations](#example-locations)
+- [MGRS - Military Grid Reference System](#mgrs---military-grid-reference-system)
+- [Geohash](#geohash)
+- [GARS - Global Area Reference System](#gars---global-area-reference-system)
+- [Georef - World Geographic Reference System](#georef---world-geographic-reference-system)
+- [Comparison of Systems](#comparison-of-systems)
+- [GeoCoords - Universal Coordinate Parsing](#geocoords---universal-coordinate-parsing)
+- [DMS - Degrees, Minutes, Seconds Conversion](#dms---degrees-minutes-seconds-conversion)
+- [See Also](#see-also)
+
 This vignette covers the grid reference systems available in geographiclib:
 MGRS, Geohash, GARS, and Georef. These systems encode geographic coordinates
 as alphanumeric strings, useful for human communication and data storage.

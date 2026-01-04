@@ -1,8 +1,8 @@
 ---
-title: "Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties"
+title: "Local Coordinates and the Ellipsoid"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties}
+  %\VignetteIndexEntry{Local Coordinates and the Ellipsoid}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,12 +18,19 @@ knitr::opts_chunk$set(
 library(geographiclib)
 ```
 
-This vignette covers coordinate transformations between geodetic coordinates
-and 3D Cartesian systems, as well as ellipsoid properties. These are
-essential for GNSS/GPS applications, satellite tracking, robotics, and
-surveying.
+## Contents
+
+- [Example Locations](#example-locations)
+- [Geocentric (ECEF) Coordinates](#geocentric-ecef-coordinates)
+- [Local Cartesian (ENU) Coordinates](#local-cartesian-enu-coordinates)
+- [WGS84 Ellipsoid Properties](#wgs84-ellipsoid-properties)
+- [Combining Coordinate Systems](#combining-coordinate-systems)
+- [Coordinate System Summary](#coordinate-system-summary)
+- [See Also](#see-also)
 
 ## Example Locations
+
+<!-- ...existing code... -->
 
 ```{r locations}
 # Locations at various latitudes
