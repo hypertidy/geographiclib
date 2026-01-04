@@ -36,6 +36,8 @@ R interface to [GeographicLib](https://geographiclib.sourceforge.io/) for precis
 * **Geohash** - Geohash encoding/decoding with precision control
 * **GARS** - Global Area Reference System (military)
 * **Georef** - World Geographic Reference System (aviation)
+* **GeoCoords** - Universal coordinate parsing (MGRS, UTM, DMS, decimal)
+* **DMS** - Degrees-minutes-seconds parsing and formatting
 * **Geodesic calculations** - Distance, bearing, paths on the ellipsoid (exact and fast)
 * **Rhumb lines** - Constant-bearing paths (loxodromes)
 * **Polygon area** - Accurate area/perimeter on the ellipsoid

@@ -32,6 +32,42 @@ cassini_rev_cpp <- function(x, y, lon0, lat0) {
   .Call(`_geographiclib_cassini_rev_cpp`, x, y, lon0, lat0)
 }
 
+dms_decode_cpp <- function(input) {
+  .Call(`_geographiclib_dms_decode_cpp`, input)
+}
+
+dms_decode_latlon_cpp <- function(dmsa, dmsb, longfirst) {
+  .Call(`_geographiclib_dms_decode_latlon_cpp`, dmsa, dmsb, longfirst)
+}
+
+dms_decode_angle_cpp <- function(input) {
+  .Call(`_geographiclib_dms_decode_angle_cpp`, input)
+}
+
+dms_decode_azimuth_cpp <- function(input) {
+  .Call(`_geographiclib_dms_decode_azimuth_cpp`, input)
+}
+
+dms_encode_cpp <- function(angle, component, prec, indicator, dmssep) {
+  .Call(`_geographiclib_dms_encode_cpp`, angle, component, prec, indicator, dmssep)
+}
+
+dms_encode_auto_cpp <- function(angle, prec, indicator, dmssep) {
+  .Call(`_geographiclib_dms_encode_auto_cpp`, angle, prec, indicator, dmssep)
+}
+
+dms_split_dm_cpp <- function(angle) {
+  .Call(`_geographiclib_dms_split_dm_cpp`, angle)
+}
+
+dms_split_dms_cpp <- function(angle) {
+  .Call(`_geographiclib_dms_split_dms_cpp`, angle)
+}
+
+dms_combine_cpp <- function(d, m, s) {
+  .Call(`_geographiclib_dms_combine_cpp`, d, m, s)
+}
+
 ellipsoid_params_cpp <- function() {
   .Call(`_geographiclib_ellipsoid_params_cpp`)
 }

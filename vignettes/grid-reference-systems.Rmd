@@ -21,8 +21,8 @@ library(geographiclib)
 This vignette covers the grid reference systems available in geographiclib:
 MGRS, Geohash, GARS, and Georef. These systems encode geographic coordinates
 as alphanumeric strings, useful for human communication and data storage.
-It also covers GeoCoords, which provides universal coordinate parsing and
-conversion between formats.
+It also covers GeoCoords for universal coordinate parsing and conversion,
+and DMS functions for degrees-minutes-seconds formatting.
  
 ## Example Locations
 
@@ -259,18 +259,23 @@ Each system has different strengths:
 | GARS | Military aviation | 30min - 5min | Simple, easy to read |
 | Georef | Aviation | 15° - 0.001min | Used in flight planning |
 | GeoCoords | Format conversion | N/A | Parses multiple input formats |
+| DMS | Human-readable | Variable | Degrees, minutes, seconds notation |
 
 ```{r comparison}
 # Same location in all systems
 pt <- c(147.32, -42.88)  # Hobart
 
 data.frame(
-  system = c("MGRS", "Geohash", "GARS", "Georef"),
+  system = c("MGRS", "Geohash", "GARS", "Georef", "DMS"),
   code = c(
     mgrs_fwd(pt, precision = 3),
     geohash_fwd(pt, len = 8),
     gars_fwd(pt, precision = 2),
-    georef_fwd(pt, precision = 2)
+    georef_fwd(pt, precision = 2),
+    paste(
+      dms_encode(pt[2], prec = 4, indicator = "latitude"),
+      dms_encode(pt[1], prec = 4, indicator = "longitude")
+    )
   )
 )
 ```
@@ -386,6 +391,167 @@ data.frame(
   geohash = geohash_fwd(pt, len = 8),
   gars = gars_fwd(pt, precision = 2),
   georef = georef_fwd(pt, precision = 2)
+)
+```
+
+## DMS - Degrees, Minutes, Seconds Conversion
+
+The DMS functions provide flexible parsing and formatting of angles in
+degrees-minutes-seconds notation. This is useful for working with coordinate
+data from various sources that use different formats.
+
+### Parsing DMS Strings
+
+`dms_decode()` parses DMS strings and returns the angle in decimal degrees:
+
+```{r dms-decode}
+# Parse with hemisphere indicator
+dms_decode("40d26'47\"N")
+
+# Parse various formats
+dms_decode(c(
+  "40:26:47",           # Colon-separated
+  "-74d0'21.5\"",       # Negative with d-'-" separators
+  "51d30'N",            # Degrees and minutes only
+  "40.446S"             # Decimal with hemisphere
+))
+```
+
+The function returns both the angle and an indicator showing whether a
+hemisphere designator was present (0=none, 1=latitude N/S, 2=longitude E/W).
+
+### Parsing Coordinate Pairs
+
+For latitude/longitude pairs, `dms_decode_latlon()` handles the hemisphere
+logic automatically:
+  
+```{r dms-latlon}
+# Parse a coordinate pair
+dms_decode_latlon("40d26'47\"N", "74d0'21.5\"W")
+
+# Vectorized for multiple coordinates
+dms_decode_latlon(
+  c("40d26'47\"N", "51d30'0\"N", "-33d52'10\""),
+  c("74d0'21.5\"W", "0d7'0\"W", "151d12'30\"")
+)
+```
+
+### Parsing Angles and Azimuths
+
+For angles without coordinates (like bearings or field-of-view):
+
+```{r dms-angle-azimuth}
+# Parse angles (no hemisphere designators allowed)
+dms_decode_angle(c("45:30:0", "123d45'6\"", "90.5"))
+
+# Parse azimuths (E/W allowed, result in [-180, 180])
+dms_decode_azimuth(c("45:30:0", "90W", "135E"))
+```
+
+### Encoding to DMS Strings
+
+Convert decimal degrees to formatted DMS strings:
+
+```{r dms-encode}
+# Basic encoding with automatic component selection
+dms_encode(40.446195, prec = 5)
+dms_encode(c(40.446, -74.006), prec = 3)
+
+# With hemisphere indicators
+dms_encode(40.446195, prec = 5, indicator = "latitude")
+dms_encode(-74.006328, prec = 5, indicator = "longitude")
+
+# Azimuth format (always positive, 0-360)
+dms_encode(-45.5, indicator = "azimuth", prec = 4)
+```
+
+### Output Formats
+
+Control the output format with precision and separator options:
+
+```{r dms-format}
+angle <- 40.446195
+
+# Different precisions
+data.frame(
+  prec = 0:6,
+  output = sapply(0:6, function(p) dms_encode(angle, prec = p))
+)
+
+# Colon separator (ISO 6709 style)
+dms_encode(angle, prec = 5, sep = ":")
+
+# Force specific trailing component
+dms_encode(angle, component = "minute", prec = 4)
+dms_encode(angle, component = "second", prec = 2)
+```
+
+### Splitting and Combining Components
+
+Work with individual degree, minute, second components:
+
+```{r dms-split-combine}
+# Split into degrees and minutes
+dms_split(c(40.446, -74.256))
+
+# Split into degrees, minutes, and seconds
+dms_split(c(40.446195, -74.006328), seconds = TRUE)
+
+# Combine components back to decimal
+dms_combine(40, 26, 47)
+dms_combine(
+  d = c(40, -74, 51),
+  m = c(26, 0, 30),
+  s = c(47, 21.5, 0)
+)
+```
+
+### Round-Trip Conversion
+
+DMS encoding and decoding are inverses (within precision limits):
+
+```{r dms-roundtrip}
+# Original coordinates
+original <- c(40.446195, -74.006328, 51.507351)
+
+# Encode to DMS
+encoded <- dms_encode(original, prec = 6, indicator = "latitude")
+encoded
+
+# Decode back
+decoded <- dms_decode(encoded)
+data.frame(
+  original = original,
+  encoded = encoded,
+  decoded = decoded$angle,
+  diff = abs(original - decoded$angle)
+)
+```
+
+### Integration with GeoCoords
+
+DMS functions complement GeoCoords for complete coordinate handling:
+
+```{r dms-geocoords}
+# Parse mixed-format input with GeoCoords
+input <- "40d26'47\"N 74d0'21.5\"W"
+coords <- geocoords_parse(input)
+
+# Format output in different styles
+data.frame(
+  format = c("decimal", "DMS", "DMS-colon", "MGRS"),
+  value = c(
+    sprintf("%.6f, %.6f", coords$lat, coords$lon),
+    paste(
+      dms_encode(coords$lat, prec = 5, indicator = "latitude"),
+      dms_encode(coords$lon, prec = 5, indicator = "longitude")
+    ),
+    paste(
+      dms_encode(coords$lat, prec = 5, sep = ":"),
+      dms_encode(coords$lon, prec = 5, sep = ":")
+    ),
+    geocoords_to_mgrs(c(coords$lon, coords$lat), precision = 4)
+  )
 )
 ```
 

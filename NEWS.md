@@ -1,3 +1,20 @@
+# geographiclib 0.3.5
+
+## New features
+
+### DMS (Degrees, Minutes, Seconds) conversion
+* `dms_decode()` - Parse DMS strings in various formats to decimal degrees
+* `dms_decode_latlon()` - Parse coordinate pairs with automatic hemisphere handling
+* `dms_decode_angle()` - Parse angles (no hemisphere designators)
+* `dms_decode_azimuth()` - Parse azimuths (E/W allowed, result in [-180, 180])
+* `dms_encode()` - Format decimal degrees to DMS strings with configurable precision
+* `dms_split()` - Split angles into degree, minute, second components
+* `dms_combine()` - Combine d/m/s components to decimal degrees
+
+## Documentation
+
+* Expanded `vignette("grid-reference-systems")` with GeoCoords and DMS sections
+
 # geographiclib 0.3.4
 
 ## New features

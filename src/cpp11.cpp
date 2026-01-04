@@ -61,6 +61,69 @@ extern "C" SEXP _geographiclib_cassini_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP l
     return cpp11::as_sexp(cassini_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0)));
   END_CPP11
 }
+// 000_dms_geographiclib.cpp
+cpp11::writable::data_frame dms_decode_cpp(cpp11::strings input);
+extern "C" SEXP _geographiclib_dms_decode_cpp(SEXP input) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_decode_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(input)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::data_frame dms_decode_latlon_cpp(cpp11::strings dmsa, cpp11::strings dmsb, cpp11::logicals longfirst);
+extern "C" SEXP _geographiclib_dms_decode_latlon_cpp(SEXP dmsa, SEXP dmsb, SEXP longfirst) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_decode_latlon_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(dmsa), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(dmsb), cpp11::as_cpp<cpp11::decay_t<cpp11::logicals>>(longfirst)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::doubles dms_decode_angle_cpp(cpp11::strings input);
+extern "C" SEXP _geographiclib_dms_decode_angle_cpp(SEXP input) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_decode_angle_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(input)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::doubles dms_decode_azimuth_cpp(cpp11::strings input);
+extern "C" SEXP _geographiclib_dms_decode_azimuth_cpp(SEXP input) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_decode_azimuth_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(input)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::strings dms_encode_cpp(cpp11::doubles angle, cpp11::integers component, cpp11::integers prec, cpp11::integers indicator, cpp11::strings dmssep);
+extern "C" SEXP _geographiclib_dms_encode_cpp(SEXP angle, SEXP component, SEXP prec, SEXP indicator, SEXP dmssep) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_encode_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(angle), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(component), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(prec), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(indicator), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(dmssep)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::strings dms_encode_auto_cpp(cpp11::doubles angle, cpp11::integers prec, cpp11::integers indicator, cpp11::strings dmssep);
+extern "C" SEXP _geographiclib_dms_encode_auto_cpp(SEXP angle, SEXP prec, SEXP indicator, SEXP dmssep) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_encode_auto_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(angle), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(prec), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(indicator), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(dmssep)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::data_frame dms_split_dm_cpp(cpp11::doubles angle);
+extern "C" SEXP _geographiclib_dms_split_dm_cpp(SEXP angle) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_split_dm_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(angle)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::data_frame dms_split_dms_cpp(cpp11::doubles angle);
+extern "C" SEXP _geographiclib_dms_split_dms_cpp(SEXP angle) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_split_dms_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(angle)));
+  END_CPP11
+}
+// 000_dms_geographiclib.cpp
+cpp11::writable::doubles dms_combine_cpp(cpp11::doubles d, cpp11::doubles m, cpp11::doubles s);
+extern "C" SEXP _geographiclib_dms_combine_cpp(SEXP d, SEXP m, SEXP s) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(dms_combine_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(d), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(m), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(s)));
+  END_CPP11
+}
 // 000_ellipsoid_geographiclib.cpp
 cpp11::writable::list ellipsoid_params_cpp();
 extern "C" SEXP _geographiclib_ellipsoid_params_cpp() {
@@ -520,6 +583,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_azimuthaleq_rev_cpp",               (DL_FUNC) &_geographiclib_azimuthaleq_rev_cpp,               4},
     {"_geographiclib_cassini_fwd_cpp",                   (DL_FUNC) &_geographiclib_cassini_fwd_cpp,                   4},
     {"_geographiclib_cassini_rev_cpp",                   (DL_FUNC) &_geographiclib_cassini_rev_cpp,                   4},
+    {"_geographiclib_dms_combine_cpp",                   (DL_FUNC) &_geographiclib_dms_combine_cpp,                   3},
+    {"_geographiclib_dms_decode_angle_cpp",              (DL_FUNC) &_geographiclib_dms_decode_angle_cpp,              1},
+    {"_geographiclib_dms_decode_azimuth_cpp",            (DL_FUNC) &_geographiclib_dms_decode_azimuth_cpp,            1},
+    {"_geographiclib_dms_decode_cpp",                    (DL_FUNC) &_geographiclib_dms_decode_cpp,                    1},
+    {"_geographiclib_dms_decode_latlon_cpp",             (DL_FUNC) &_geographiclib_dms_decode_latlon_cpp,             3},
+    {"_geographiclib_dms_encode_auto_cpp",               (DL_FUNC) &_geographiclib_dms_encode_auto_cpp,               4},
+    {"_geographiclib_dms_encode_cpp",                    (DL_FUNC) &_geographiclib_dms_encode_cpp,                    5},
+    {"_geographiclib_dms_split_dm_cpp",                  (DL_FUNC) &_geographiclib_dms_split_dm_cpp,                  1},
+    {"_geographiclib_dms_split_dms_cpp",                 (DL_FUNC) &_geographiclib_dms_split_dms_cpp,                 1},
     {"_geographiclib_ellipsoid_circle_cpp",              (DL_FUNC) &_geographiclib_ellipsoid_circle_cpp,              1},
     {"_geographiclib_ellipsoid_curvature_cpp",           (DL_FUNC) &_geographiclib_ellipsoid_curvature_cpp,           1},
     {"_geographiclib_ellipsoid_latitudes_cpp",           (DL_FUNC) &_geographiclib_ellipsoid_latitudes_cpp,           1},

@@ -29,6 +29,8 @@ for precise geodetic calculations on the WGS84 ellipsoid.
 - **Geohash** - Geohash encoding/decoding with precision control
 - **GARS** - Global Area Reference System (military)
 - **Georef** - World Geographic Reference System (aviation)
+- **GeoCoords** - Universal coordinate parsing (MGRS, UTM, DMS, decimal)
+- **DMS** - Degrees-minutes-seconds parsing and formatting
 - **Geodesic calculations** - Distance, bearing, paths on the ellipsoid
   (exact and fast)
 - **Rhumb lines** - Constant-bearing paths (loxodromes)
