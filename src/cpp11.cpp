@@ -390,6 +390,34 @@ extern "C" SEXP _geographiclib_rhumb_distance_matrix_cpp(SEXP lon1, SEXP lat1, S
     return cpp11::as_sexp(rhumb_distance_matrix_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat2)));
   END_CPP11
 }
+// 000_tm_geographiclib.cpp
+cpp11::writable::data_frame tm_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles lon0, double k0);
+extern "C" SEXP _geographiclib_tm_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(tm_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_tm_geographiclib.cpp
+cpp11::writable::data_frame tm_rev_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::doubles lon0, double k0);
+extern "C" SEXP _geographiclib_tm_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(tm_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_tm_geographiclib.cpp
+cpp11::writable::data_frame tm_exact_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles lon0, double k0);
+extern "C" SEXP _geographiclib_tm_exact_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(tm_exact_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_tm_geographiclib.cpp
+cpp11::writable::data_frame tm_exact_rev_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::doubles lon0, double k0);
+extern "C" SEXP _geographiclib_tm_exact_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(tm_exact_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
 // 000_utm_ups.cpp
 cpp11::writable::data_frame utmups_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat);
 extern "C" SEXP _geographiclib_utmups_fwd_cpp(SEXP lon, SEXP lat) {
@@ -462,6 +490,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_rhumb_inverse_cpp",                 (DL_FUNC) &_geographiclib_rhumb_inverse_cpp,                 4},
     {"_geographiclib_rhumb_line_cpp",                    (DL_FUNC) &_geographiclib_rhumb_line_cpp,                    4},
     {"_geographiclib_rhumb_path_cpp",                    (DL_FUNC) &_geographiclib_rhumb_path_cpp,                    5},
+    {"_geographiclib_tm_exact_fwd_cpp",                  (DL_FUNC) &_geographiclib_tm_exact_fwd_cpp,                  4},
+    {"_geographiclib_tm_exact_rev_cpp",                  (DL_FUNC) &_geographiclib_tm_exact_rev_cpp,                  4},
+    {"_geographiclib_tm_fwd_cpp",                        (DL_FUNC) &_geographiclib_tm_fwd_cpp,                        4},
+    {"_geographiclib_tm_rev_cpp",                        (DL_FUNC) &_geographiclib_tm_rev_cpp,                        4},
     {"_geographiclib_utmups_fwd_cpp",                    (DL_FUNC) &_geographiclib_utmups_fwd_cpp,                    2},
     {"_geographiclib_utmups_rev_cpp",                    (DL_FUNC) &_geographiclib_utmups_rev_cpp,                    4},
     {NULL, NULL, 0}

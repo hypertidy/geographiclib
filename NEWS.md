@@ -1,3 +1,13 @@
+# geographiclib 0.3.2
+
+## New features
+
+* `tm_fwd()` and `tm_rev()` - Transverse Mercator projection with user-defined 
+  central meridian and scale factor (series approximation, fast, ~5nm accuracy)
+* `tm_exact_fwd()` and `tm_exact_rev()` - Transverse Mercator with exact
+  formulation (slower but accurate everywhere)
+* All TM functions are vectorized on `lon0` parameter
+
 # geographiclib 0.3.1
 
 ## Improvements

@@ -16,6 +16,8 @@ for precise geodetic calculations on the WGS84 ellipsoid.
 - **MGRS** - Military Grid Reference System encoding/decoding
 - **UTM/UPS** - Universal Transverse Mercator and Universal Polar
   Stereographic projections
+- **Transverse Mercator** - Custom TM projections with user-defined
+  parameters
 - **Lambert Conformal Conic** - Configurable LCC projection
 - **Azimuthal Equidistant** - Projection centered on any point
 - **Cassini-Soldner** - Historical transverse cylindrical projection

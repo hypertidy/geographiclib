@@ -220,6 +220,22 @@ rhumb_distance_matrix_cpp <- function(lon1, lat1, lon2, lat2) {
   .Call(`_geographiclib_rhumb_distance_matrix_cpp`, lon1, lat1, lon2, lat2)
 }
 
+tm_fwd_cpp <- function(lon, lat, lon0, k0) {
+  .Call(`_geographiclib_tm_fwd_cpp`, lon, lat, lon0, k0)
+}
+
+tm_rev_cpp <- function(x, y, lon0, k0) {
+  .Call(`_geographiclib_tm_rev_cpp`, x, y, lon0, k0)
+}
+
+tm_exact_fwd_cpp <- function(lon, lat, lon0, k0) {
+  .Call(`_geographiclib_tm_exact_fwd_cpp`, lon, lat, lon0, k0)
+}
+
+tm_exact_rev_cpp <- function(x, y, lon0, k0) {
+  .Call(`_geographiclib_tm_exact_rev_cpp`, x, y, lon0, k0)
+}
+
 utmups_fwd_cpp <- function(lon, lat) {
   .Call(`_geographiclib_utmups_fwd_cpp`, lon, lat)
 }
