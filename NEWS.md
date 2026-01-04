@@ -1,3 +1,11 @@
+# geographiclib 0.3.4
+
+## New features
+
+* `geocoords_parse()` - Parse coordinate strings in various formats (MGRS, UTM, DMS)
+* `geocoords_to_mgrs()` - Convert lat/lon to MGRS strings
+* `geocoords_to_utm()` - Convert lat/lon to UTM strings
+
 # geographiclib 0.3.3
 
 ## New features

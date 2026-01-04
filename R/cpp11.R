@@ -68,6 +68,18 @@ geocentric_rev_cpp <- function(X, Y, Z) {
   .Call(`_geographiclib_geocentric_rev_cpp`, X, Y, Z)
 }
 
+geocoords_parse_cpp <- function(input) {
+  .Call(`_geographiclib_geocoords_parse_cpp`, input)
+}
+
+geocoords_to_mgrs_cpp <- function(lat, lon, precision) {
+  .Call(`_geographiclib_geocoords_to_mgrs_cpp`, lat, lon, precision)
+}
+
+geocoords_to_utm_cpp <- function(lat, lon, precision) {
+  .Call(`_geographiclib_geocoords_to_utm_cpp`, lat, lon, precision)
+}
+
 geodesic_direct_fast_cpp <- function(lon1, lat1, azi1, s12) {
   .Call(`_geographiclib_geodesic_direct_fast_cpp`, lon1, lat1, azi1, s12)
 }
