@@ -49,7 +49,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/geodesics.html">Geodesic Calculations: Distance, Bearing, and Paths</a>
+      <a href="../articles/geodesics.html">Geodesic Calculations</a>
     </li>
     <li>
       <a href="../articles/geographiclib-overview.html">Introduction to geographiclib</a>
@@ -58,7 +58,7 @@
       <a href="../articles/grid-reference-systems.html">Grid Reference Systems: MGRS, Geohash, GARS, and Georef</a>
     </li>
     <li>
-      <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
+      <a href="../articles/local-coordinates.html">Local Coordinates and the Ellipsoid</a>
     </li>
     <li>
       <a href="../articles/projections.html">Map Projections</a>
@@ -101,10 +101,49 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hypertidy/geographiclib" class="external-link">geographiclib</a></span><span class="op">)</span></span></code></pre></div>
-<p>The <strong>geographiclib</strong> package provides R bindings to the
-<a href="https://geographiclib.sourceforge.io/" class="external-link">GeographicLib</a> C++
+<div class="section level2">
+<h2 id="contents">Contents<a class="anchor" aria-label="anchor" href="#contents"></a>
+</h2>
+<ul>
+<li><a href="#mgrs---military-grid-reference-system">MGRS - Military
+Grid Reference System</a></li>
+<li><a href="#utmups---universal-transverse-mercator">UTM/UPS -
+Universal Transverse Mercator</a></li>
+<li><a href="#geohash">Geohash</a></li>
+<li><a href="#gars---global-area-reference-system">GARS - Global Area
+Reference System</a></li>
+<li><a href="#georef---world-geographic-reference-system">Georef - World
+Geographic Reference System</a></li>
+<li><a href="#lambert-conformal-conic-projection">Lambert Conformal
+Conic Projection</a></li>
+<li><a href="#azimuthal-equidistant-projection">Azimuthal Equidistant
+Projection</a></li>
+<li><a href="#cassini-soldner-projection">Cassini-Soldner
+Projection</a></li>
+<li><a href="#gnomonic-projection">Gnomonic Projection</a></li>
+<li><a href="#osgb---ordnance-survey-national-grid">OSGB - Ordnance
+Survey National Grid</a></li>
+<li><a href="#local-cartesian-enu-coordinates">Local Cartesian (ENU)
+Coordinates</a></li>
+<li><a href="#geocentric-ecef-coordinates">Geocentric (ECEF)
+Coordinates</a></li>
+<li><a href="#wgs84-ellipsoid">WGS84 Ellipsoid</a></li>
+<li><a href="#geodesic-calculations">Geodesic Calculations</a></li>
+<li><a href="#rhumb-lines-loxodromes">Rhumb Lines (Loxodromes)</a></li>
+<li><a href="#polygon-area">Polygon Area</a></li>
+<li><a href="#polar-regions">Polar Regions</a></li>
+<li><a href="#performance">Performance</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="mgrs---military-grid-reference-system-package-provides-r-bindings-to-the">MGRS - Military Grid Reference System package provides R bindings to
+the<a class="anchor" aria-label="anchor" href="#mgrs---military-grid-reference-system-package-provides-r-bindings-to-the"></a>
+</h2>
+<p><a href="https://geographiclib.sourceforge.io/" class="external-link">GeographicLib</a> C++
 library for precise geodetic calculations. All functions are fully
 vectorized and return rich metadata.</p>
+</div>
 <div class="section level2">
 <h2 id="mgrs---military-grid-reference-system">MGRS - Military Grid Reference System<a class="anchor" aria-label="anchor" href="#mgrs---military-grid-reference-system"></a>
 </h2>
@@ -507,15 +546,15 @@ Polar Stereographic) when appropriate:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.033   0.001   0.034</span></span>
+<span><span class="co">#&gt;   0.034   0.001   0.036</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geohash_fwd.html">geohash_fwd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.012   0.000   0.012</span></span>
+<span><span class="co">#&gt;   0.013   0.000   0.013</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic_direct.html">geodesic_distance_matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;    0.06    0.00    0.06</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.060   0.000   0.059</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further Reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>

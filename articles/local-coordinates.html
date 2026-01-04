@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties • geographiclib</title>
+<title>Local Coordinates and the Ellipsoid • geographiclib</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Local Coordinates and the Ellipsoid">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -49,7 +49,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/geodesics.html">Geodesic Calculations: Distance, Bearing, and Paths</a>
+      <a href="../articles/geodesics.html">Geodesic Calculations</a>
     </li>
     <li>
       <a href="../articles/geographiclib-overview.html">Introduction to geographiclib</a>
@@ -58,7 +58,7 @@
       <a href="../articles/grid-reference-systems.html">Grid Reference Systems: MGRS, Geohash, GARS, and Georef</a>
     </li>
     <li>
-      <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
+      <a href="../articles/local-coordinates.html">Local Coordinates and the Ellipsoid</a>
     </li>
     <li>
       <a href="../articles/projections.html">Map Projections</a>
@@ -89,8 +89,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Local Coordinates: Geocentric (ECEF), Local
-Cartesian (ENU), and Ellipsoid Properties</h1>
+      <h1 data-toc-skip>Local Coordinates and the Ellipsoid</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/hypertidy/geographiclib/blob/main/vignettes/local-coordinates.Rmd" class="external-link"><code>vignettes/local-coordinates.Rmd</code></a></small>
@@ -102,13 +101,28 @@ Cartesian (ENU), and Ellipsoid Properties</h1>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hypertidy/geographiclib" class="external-link">geographiclib</a></span><span class="op">)</span></span></code></pre></div>
-<p>This vignette covers coordinate transformations between geodetic
-coordinates and 3D Cartesian systems, as well as ellipsoid properties.
-These are essential for GNSS/GPS applications, satellite tracking,
-robotics, and surveying.</p>
+<div class="section level2">
+<h2 id="contents">Contents<a class="anchor" aria-label="anchor" href="#contents"></a>
+</h2>
+<ul>
+<li><a href="#example-locations">Example Locations</a></li>
+<li><a href="#geocentric-ecef-coordinates">Geocentric (ECEF)
+Coordinates</a></li>
+<li><a href="#local-cartesian-enu-coordinates">Local Cartesian (ENU)
+Coordinates</a></li>
+<li><a href="#wgs84-ellipsoid-properties">WGS84 Ellipsoid
+Properties</a></li>
+<li><a href="#combining-coordinate-systems">Combining Coordinate
+Systems</a></li>
+<li><a href="#coordinate-system-summary">Coordinate System
+Summary</a></li>
+<li><a href="#see-also">See Also</a></li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="example-locations">Example Locations<a class="anchor" aria-label="anchor" href="#example-locations"></a>
 </h2>
+<!-- ...existing code... -->
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Locations at various latitudes</span></span>
 <span><span class="va">world_pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>

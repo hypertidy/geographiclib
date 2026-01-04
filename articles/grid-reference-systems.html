@@ -49,7 +49,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/geodesics.html">Geodesic Calculations: Distance, Bearing, and Paths</a>
+      <a href="../articles/geodesics.html">Geodesic Calculations</a>
     </li>
     <li>
       <a href="../articles/geographiclib-overview.html">Introduction to geographiclib</a>
@@ -58,7 +58,7 @@
       <a href="../articles/grid-reference-systems.html">Grid Reference Systems: MGRS, Geohash, GARS, and Georef</a>
     </li>
     <li>
-      <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
+      <a href="../articles/local-coordinates.html">Local Coordinates and the Ellipsoid</a>
     </li>
     <li>
       <a href="../articles/projections.html">Map Projections</a>
@@ -102,12 +102,32 @@ Georef</h1>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hypertidy/geographiclib" class="external-link">geographiclib</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="contents">Contents<a class="anchor" aria-label="anchor" href="#contents"></a>
+</h2>
+<ul>
+<li><a href="#example-locations">Example Locations</a></li>
+<li><a href="#mgrs---military-grid-reference-system">MGRS - Military
+Grid Reference System</a></li>
+<li><a href="#geohash">Geohash</a></li>
+<li><a href="#gars---global-area-reference-system">GARS - Global Area
+Reference System</a></li>
+<li><a href="#georef---world-geographic-reference-system">Georef - World
+Geographic Reference System</a></li>
+<li><a href="#comparison-of-systems">Comparison of Systems</a></li>
+<li><a href="#geocoords---universal-coordinate-parsing">GeoCoords -
+Universal Coordinate Parsing</a></li>
+<li><a href="#dms---degrees-minutes-seconds-conversion">DMS - Degrees,
+Minutes, Seconds Conversion</a></li>
+<li><a href="#see-also">See Also</a></li>
+</ul>
 <p>This vignette covers the grid reference systems available in
 geographiclib: MGRS, Geohash, GARS, and Georef. These systems encode
 geographic coordinates as alphanumeric strings, useful for human
 communication and data storage. It also covers GeoCoords for universal
 coordinate parsing and conversion, and DMS functions for
 degrees-minutes-seconds formatting.</p>
+</div>
 <div class="section level2">
 <h2 id="example-locations">Example Locations<a class="anchor" aria-label="anchor" href="#example-locations"></a>
 </h2>
