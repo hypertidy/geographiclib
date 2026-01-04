@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.6</span>
       </span>
     </div>
 
@@ -69,6 +69,55 @@
       <small>Source: <a href="https://github.com/hypertidy/geographiclib/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.6" id="geographiclib-036">geographiclib 0.3.6<a class="anchor" aria-label="anchor" href="#geographiclib-036"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-6">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-6"></a></h3>
+<div class="section level4">
+<h4 id="geodesic-intersections-0-3-6">Geodesic intersections<a class="anchor" aria-label="anchor" href="#geodesic-intersections-0-3-6"></a></h4>
+<ul><li>
+<code><a href="../reference/geodesic_intersect.html">geodesic_intersect()</a></code> - Find the closest intersection of two geodesics defined by starting points and azimuths</li>
+<li>
+<code><a href="../reference/geodesic_intersect.html">geodesic_intersect_segment()</a></code> - Find the intersection of two geodesic segments defined by their endpoints</li>
+<li>
+<code><a href="../reference/geodesic_intersect.html">geodesic_intersect_next()</a></code> - Find the next closest intersection from a known intersection point</li>
+<li>
+<code><a href="../reference/geodesic_intersect.html">geodesic_intersect_all()</a></code> - Find all intersections within a maximum distance</li>
+</ul><p>All functions return the displacement along each geodesic, a coincidence indicator, and the latitude/longitude of the intersection point.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="documentation-0-3-6">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-6"></a></h3>
+<ul><li>Expanded <code><a href="../articles/geodesics.html">vignette("geodesics")</a></code> with a new section on geodesic intersections</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.5" id="geographiclib-035">geographiclib 0.3.5<a class="anchor" aria-label="anchor" href="#geographiclib-035"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-5">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-5"></a></h3>
+<div class="section level4">
+<h4 id="dms-degrees-minutes-seconds-conversion-0-3-5">DMS (Degrees, Minutes, Seconds) conversion<a class="anchor" aria-label="anchor" href="#dms-degrees-minutes-seconds-conversion-0-3-5"></a></h4>
+<ul><li>
+<code><a href="../reference/dms_decode.html">dms_decode()</a></code> - Parse DMS strings in various formats to decimal degrees</li>
+<li>
+<code><a href="../reference/dms_decode.html">dms_decode_latlon()</a></code> - Parse coordinate pairs with automatic hemisphere handling</li>
+<li>
+<code><a href="../reference/dms_decode.html">dms_decode_angle()</a></code> - Parse angles (no hemisphere designators)</li>
+<li>
+<code><a href="../reference/dms_decode.html">dms_decode_azimuth()</a></code> - Parse azimuths (E/W allowed, result in [-180, 180])</li>
+<li>
+<code><a href="../reference/dms_decode.html">dms_encode()</a></code> - Format decimal degrees to DMS strings with configurable precision</li>
+<li>
+<code><a href="../reference/dms_decode.html">dms_split()</a></code> - Split angles into degree, minute, second components</li>
+<li>
+<code><a href="../reference/dms_decode.html">dms_combine()</a></code> - Combine d/m/s components to decimal degrees</li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="documentation-0-3-5">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-5"></a></h3>
+<ul><li>Expanded <code><a href="../articles/grid-reference-systems.html">vignette("grid-reference-systems")</a></code> with GeoCoords and DMS sections</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="geographiclib-034">geographiclib 0.3.4<a class="anchor" aria-label="anchor" href="#geographiclib-034"></a></h2>
 <div class="section level3">

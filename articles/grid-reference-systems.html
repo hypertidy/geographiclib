@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.6</span>
       </span>
     </div>
 
@@ -105,8 +105,9 @@ Georef</h1>
 <p>This vignette covers the grid reference systems available in
 geographiclib: MGRS, Geohash, GARS, and Georef. These systems encode
 geographic coordinates as alphanumeric strings, useful for human
-communication and data storage. It also covers GeoCoords, which provides
-universal coordinate parsing and conversion between formats.</p>
+communication and data storage. It also covers GeoCoords for universal
+coordinate parsing and conversion, and DMS functions for
+degrees-minutes-seconds formatting.</p>
 <div class="section level2">
 <h2 id="example-locations">Example Locations<a class="anchor" aria-label="anchor" href="#example-locations"></a>
 </h2>
@@ -510,6 +511,12 @@ cells:</p>
 <td>N/A</td>
 <td>Parses multiple input formats</td>
 </tr>
+<tr class="even">
+<td>DMS</td>
+<td>Human-readable</td>
+<td>Variable</td>
+<td>Degrees, minutes, seconds notation</td>
+</tr>
 </tbody>
 </table>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -517,19 +524,24 @@ cells:</p>
 <span><span class="va">pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">147.32</span>, <span class="op">-</span><span class="fl">42.88</span><span class="op">)</span>  <span class="co"># Hobart</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MGRS"</span>, <span class="st">"Geohash"</span>, <span class="st">"GARS"</span>, <span class="st">"Georef"</span><span class="op">)</span>,</span>
+<span>  system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MGRS"</span>, <span class="st">"Geohash"</span>, <span class="st">"GARS"</span>, <span class="st">"Georef"</span>, <span class="st">"DMS"</span><span class="op">)</span>,</span>
 <span>  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="va">pt</span>, precision <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/geohash_fwd.html">geohash_fwd</a></span><span class="op">(</span><span class="va">pt</span>, len <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/gars_fwd.html">gars_fwd</a></span><span class="op">(</span><span class="va">pt</span>, precision <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="../reference/georef_fwd.html">georef_fwd</a></span><span class="op">(</span><span class="va">pt</span>, precision <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/georef_fwd.html">georef_fwd</a></span><span class="op">(</span><span class="va">pt</span>, precision <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">pt</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, prec <span class="op">=</span> <span class="fl">4</span>, indicator <span class="op">=</span> <span class="st">"latitude"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">pt</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, prec <span class="op">=</span> <span class="fl">4</span>, indicator <span class="op">=</span> <span class="st">"longitude"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;    system        code</span></span>
-<span><span class="co">#&gt; 1    MGRS 55GEN261524</span></span>
-<span><span class="co">#&gt; 2 Geohash    r22u03gj</span></span>
-<span><span class="co">#&gt; 3    GARS     655DY44</span></span>
-<span><span class="co">#&gt; 4  Georef    XDNC1907</span></span></code></pre></div>
+<span><span class="co">#&gt;    system                   code</span></span>
+<span><span class="co">#&gt; 1    MGRS            55GEN261524</span></span>
+<span><span class="co">#&gt; 2 Geohash               r22u03gj</span></span>
+<span><span class="co">#&gt; 3    GARS                655DY44</span></span>
+<span><span class="co">#&gt; 4  Georef               XDNC1907</span></span>
+<span><span class="co">#&gt; 5     DMS 42d52'48"S 147d19'12"E</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="geocoords---universal-coordinate-parsing">GeoCoords - Universal Coordinate Parsing<a class="anchor" aria-label="anchor" href="#geocoords---universal-coordinate-parsing"></a>
@@ -680,6 +692,211 @@ providing a universal parser:</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;             input      lat      lon  geohash    gars   georef</span></span>
 <span><span class="co">#&gt; 1 33TWN0500049000 47.39444 15.06626 u26twgfu 391ML14 PKAC0323</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="dms---degrees-minutes-seconds-conversion">DMS - Degrees, Minutes, Seconds Conversion<a class="anchor" aria-label="anchor" href="#dms---degrees-minutes-seconds-conversion"></a>
+</h2>
+<p>The DMS functions provide flexible parsing and formatting of angles
+in degrees-minutes-seconds notation. This is useful for working with
+coordinate data from various sources that use different formats.</p>
+<div class="section level3">
+<h3 id="parsing-dms-strings">Parsing DMS Strings<a class="anchor" aria-label="anchor" href="#parsing-dms-strings"></a>
+</h3>
+<p><code><a href="../reference/dms_decode.html">dms_decode()</a></code> parses DMS strings and returns the angle in
+decimal degrees:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Parse with hemisphere indicator</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_decode</a></span><span class="op">(</span><span class="st">"40d26'47\"N"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      angle indicator</span></span>
+<span><span class="co">#&gt; 1 40.44639         1</span></span>
+<span></span>
+<span><span class="co"># Parse various formats</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_decode</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"40:26:47"</span>,           <span class="co"># Colon-separated</span></span>
+<span>  <span class="st">"-74d0'21.5\""</span>,       <span class="co"># Negative with d-'-" separators</span></span>
+<span>  <span class="st">"51d30'N"</span>,            <span class="co"># Degrees and minutes only</span></span>
+<span>  <span class="st">"40.446S"</span>             <span class="co"># Decimal with hemisphere</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       angle indicator</span></span>
+<span><span class="co">#&gt; 1  40.44639         0</span></span>
+<span><span class="co">#&gt; 2 -74.00597         0</span></span>
+<span><span class="co">#&gt; 3  51.50000         1</span></span>
+<span><span class="co">#&gt; 4 -40.44600         1</span></span></code></pre></div>
+<p>The function returns both the angle and an indicator showing whether
+a hemisphere designator was present (0=none, 1=latitude N/S, 2=longitude
+E/W).</p>
+</div>
+<div class="section level3">
+<h3 id="parsing-coordinate-pairs">Parsing Coordinate Pairs<a class="anchor" aria-label="anchor" href="#parsing-coordinate-pairs"></a>
+</h3>
+<p>For latitude/longitude pairs, <code><a href="../reference/dms_decode.html">dms_decode_latlon()</a></code>
+handles the hemisphere logic automatically:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Parse a coordinate pair</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_decode_latlon</a></span><span class="op">(</span><span class="st">"40d26'47\"N"</span>, <span class="st">"74d0'21.5\"W"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        lat       lon</span></span>
+<span><span class="co">#&gt; 1 40.44639 -74.00597</span></span>
+<span></span>
+<span><span class="co"># Vectorized for multiple coordinates</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_decode_latlon</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"40d26'47\"N"</span>, <span class="st">"51d30'0\"N"</span>, <span class="st">"-33d52'10\""</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"74d0'21.5\"W"</span>, <span class="st">"0d7'0\"W"</span>, <span class="st">"151d12'30\""</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;         lat         lon</span></span>
+<span><span class="co">#&gt; 1  40.44639 -74.0059722</span></span>
+<span><span class="co">#&gt; 2  51.50000  -0.1166667</span></span>
+<span><span class="co">#&gt; 3 -33.86944 151.2083333</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="parsing-angles-and-azimuths">Parsing Angles and Azimuths<a class="anchor" aria-label="anchor" href="#parsing-angles-and-azimuths"></a>
+</h3>
+<p>For angles without coordinates (like bearings or field-of-view):</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Parse angles (no hemisphere designators allowed)</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_decode_angle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"45:30:0"</span>, <span class="st">"123d45'6\""</span>, <span class="st">"90.5"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  45.5000 123.7517  90.5000</span></span>
+<span></span>
+<span><span class="co"># Parse azimuths (E/W allowed, result in [-180, 180])</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_decode_azimuth</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"45:30:0"</span>, <span class="st">"90W"</span>, <span class="st">"135E"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  45.5 -90.0 135.0</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="encoding-to-dms-strings">Encoding to DMS Strings<a class="anchor" aria-label="anchor" href="#encoding-to-dms-strings"></a>
+</h3>
+<p>Convert decimal degrees to formatted DMS strings:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Basic encoding with automatic component selection</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="fl">40.446195</span>, prec <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "40d26'46.3\""</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40.446</span>, <span class="op">-</span><span class="fl">74.006</span><span class="op">)</span>, prec <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "40d26.8'"  "-74d00.4'"</span></span>
+<span></span>
+<span><span class="co"># With hemisphere indicators</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="fl">40.446195</span>, prec <span class="op">=</span> <span class="fl">5</span>, indicator <span class="op">=</span> <span class="st">"latitude"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "40d26'46.3\"N"</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74.006328</span>, prec <span class="op">=</span> <span class="fl">5</span>, indicator <span class="op">=</span> <span class="st">"longitude"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "074d00'22.8\"W"</span></span>
+<span></span>
+<span><span class="co"># Azimuth format (always positive, 0-360)</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="op">-</span><span class="fl">45.5</span>, indicator <span class="op">=</span> <span class="st">"azimuth"</span>, prec <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "314d30'00\""</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="output-formats">Output Formats<a class="anchor" aria-label="anchor" href="#output-formats"></a>
+</h3>
+<p>Control the output format with precision and separator options:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">angle</span> <span class="op">&lt;-</span> <span class="fl">40.446195</span></span>
+<span></span>
+<span><span class="co"># Different precisions</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  prec <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">6</span>,</span>
+<span>  output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">6</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">angle</span>, prec <span class="op">=</span> <span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;   prec       output</span></span>
+<span><span class="co">#&gt; 1    0           40</span></span>
+<span><span class="co">#&gt; 2    1         40.4</span></span>
+<span><span class="co">#&gt; 3    2       40d27'</span></span>
+<span><span class="co">#&gt; 4    3     40d26.8'</span></span>
+<span><span class="co">#&gt; 5    4    40d26'46"</span></span>
+<span><span class="co">#&gt; 6    5  40d26'46.3"</span></span>
+<span><span class="co">#&gt; 7    6 40d26'46.30"</span></span>
+<span></span>
+<span><span class="co"># Colon separator (ISO 6709 style)</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">angle</span>, prec <span class="op">=</span> <span class="fl">5</span>, sep <span class="op">=</span> <span class="st">":"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "40:26:46.3"</span></span>
+<span></span>
+<span><span class="co"># Force specific trailing component</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">angle</span>, component <span class="op">=</span> <span class="st">"minute"</span>, prec <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "40d26.7717'"</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">angle</span>, component <span class="op">=</span> <span class="st">"second"</span>, prec <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "40d26'46.30\""</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="splitting-and-combining-components">Splitting and Combining Components<a class="anchor" aria-label="anchor" href="#splitting-and-combining-components"></a>
+</h3>
+<p>Work with individual degree, minute, second components:</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Split into degrees and minutes</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_split</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40.446</span>, <span class="op">-</span><span class="fl">74.256</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     d      m</span></span>
+<span><span class="co">#&gt; 1  40  26.76</span></span>
+<span><span class="co">#&gt; 2 -74 -15.36</span></span>
+<span></span>
+<span><span class="co"># Split into degrees, minutes, and seconds</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_split</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40.446195</span>, <span class="op">-</span><span class="fl">74.006328</span><span class="op">)</span>, seconds <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     d  m        s</span></span>
+<span><span class="co">#&gt; 1  40 26  46.3020</span></span>
+<span><span class="co">#&gt; 2 -74  0 -22.7808</span></span>
+<span></span>
+<span><span class="co"># Combine components back to decimal</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_combine</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">26</span>, <span class="fl">47</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 40.44639</span></span>
+<span><span class="fu"><a href="../reference/dms_decode.html">dms_combine</a></span><span class="op">(</span></span>
+<span>  d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="op">-</span><span class="fl">74</span>, <span class="fl">51</span><span class="op">)</span>,</span>
+<span>  m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">26</span>, <span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>,</span>
+<span>  s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">47</span>, <span class="fl">21.5</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  40.44639 -73.99403  51.50000</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="round-trip-conversion-1">Round-Trip Conversion<a class="anchor" aria-label="anchor" href="#round-trip-conversion-1"></a>
+</h3>
+<p>DMS encoding and decoding are inverses (within precision limits):</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Original coordinates</span></span>
+<span><span class="va">original</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40.446195</span>, <span class="op">-</span><span class="fl">74.006328</span>, <span class="fl">51.507351</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Encode to DMS</span></span>
+<span><span class="va">encoded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">original</span>, prec <span class="op">=</span> <span class="fl">6</span>, indicator <span class="op">=</span> <span class="st">"latitude"</span><span class="op">)</span></span>
+<span><span class="va">encoded</span></span>
+<span><span class="co">#&gt; [1] "40d26'46.30\"N" "74d00'22.78\"S" "51d30'26.46\"N"</span></span>
+<span></span>
+<span><span class="co"># Decode back</span></span>
+<span><span class="va">decoded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dms_decode.html">dms_decode</a></span><span class="op">(</span><span class="va">encoded</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  original <span class="op">=</span> <span class="va">original</span>,</span>
+<span>  encoded <span class="op">=</span> <span class="va">encoded</span>,</span>
+<span>  decoded <span class="op">=</span> <span class="va">decoded</span><span class="op">$</span><span class="va">angle</span>,</span>
+<span>  diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">original</span> <span class="op">-</span> <span class="va">decoded</span><span class="op">$</span><span class="va">angle</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;    original       encoded   decoded         diff</span></span>
+<span><span class="co">#&gt; 1  40.44620 40d26'46.30"N  40.44619 5.555556e-07</span></span>
+<span><span class="co">#&gt; 2 -74.00633 74d00'22.78"S -74.00633 2.222222e-07</span></span>
+<span><span class="co">#&gt; 3  51.50735 51d30'26.46"N  51.50735 1.000000e-06</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="integration-with-geocoords">Integration with GeoCoords<a class="anchor" aria-label="anchor" href="#integration-with-geocoords"></a>
+</h3>
+<p>DMS functions complement GeoCoords for complete coordinate
+handling:</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Parse mixed-format input with GeoCoords</span></span>
+<span><span class="va">input</span> <span class="op">&lt;-</span> <span class="st">"40d26'47\"N 74d0'21.5\"W"</span></span>
+<span><span class="va">coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geocoords_parse.html">geocoords_parse</a></span><span class="op">(</span><span class="va">input</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Format output in different styles</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"decimal"</span>, <span class="st">"DMS"</span>, <span class="st">"DMS-colon"</span>, <span class="st">"MGRS"</span><span class="op">)</span>,</span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.6f, %.6f"</span>, <span class="va">coords</span><span class="op">$</span><span class="va">lat</span>, <span class="va">coords</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">coords</span><span class="op">$</span><span class="va">lat</span>, prec <span class="op">=</span> <span class="fl">5</span>, indicator <span class="op">=</span> <span class="st">"latitude"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">coords</span><span class="op">$</span><span class="va">lon</span>, prec <span class="op">=</span> <span class="fl">5</span>, indicator <span class="op">=</span> <span class="st">"longitude"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">coords</span><span class="op">$</span><span class="va">lat</span>, prec <span class="op">=</span> <span class="fl">5</span>, sep <span class="op">=</span> <span class="st">":"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="../reference/dms_decode.html">dms_encode</a></span><span class="op">(</span><span class="va">coords</span><span class="op">$</span><span class="va">lon</span>, prec <span class="op">=</span> <span class="fl">5</span>, sep <span class="op">=</span> <span class="st">":"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="../reference/geocoords_parse.html">geocoords_to_mgrs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">coords</span><span class="op">$</span><span class="va">lon</span>, <span class="va">coords</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>, precision <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;      format                      value</span></span>
+<span><span class="co">#&gt; 1   decimal      40.446389, -74.005972</span></span>
+<span><span class="co">#&gt; 2       DMS 40d26'47.0"N 074d00'21.5"W</span></span>
+<span><span class="co">#&gt; 3 DMS-colon     40:26:47.0 -74:00:21.5</span></span>
+<span><span class="co">#&gt; 4      MGRS    18TWK842954984777783320</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.6</span>
       </span>
     </div>
 
@@ -619,6 +619,182 @@ versions:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic_direct_fast.html">geodesic_inverse_fast</a></span><span class="op">(</span><span class="va">pts1</span>, <span class="va">pts2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  user  system elapsed </span></span>
 <span><span class="co">#&gt;  0.04    0.00    0.04</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="geodesic-intersections">Geodesic Intersections<a class="anchor" aria-label="anchor" href="#geodesic-intersections"></a>
+</h2>
+<p>Find where two geodesics cross on the ellipsoid. This is useful for
+navigation, surveying, and geometric calculations.</p>
+<div class="section level3">
+<h3 id="closest-intersection">Closest Intersection<a class="anchor" aria-label="anchor" href="#closest-intersection"></a>
+</h3>
+<p>Given two geodesics defined by starting points and azimuths, find
+their closest intersection:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Two geodesics starting from different points</span></span>
+<span><span class="co"># Geodesic X: from (0, 0) heading NE at 45°</span></span>
+<span><span class="co"># Geodesic Y: from (1, 0) heading NW at 315°</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fl">45</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fl">315</span><span class="op">)</span></span>
+<span><span class="va">result</span></span>
+<span><span class="co">#&gt;          x        y coincidence       lat lon</span></span>
+<span><span class="co">#&gt; 1 78712.76 78712.76           0 0.5033503 0.5</span></span>
+<span></span>
+<span><span class="co"># The intersection is found ahead on both geodesics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  geodesic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span>,</span>
+<span>  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"(0, 0)"</span>, <span class="st">"(1, 0)"</span><span class="op">)</span>,</span>
+<span>  azimuth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">315</span><span class="op">)</span>,</span>
+<span>  displacement_km <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">x</span>, <span class="va">result</span><span class="op">$</span><span class="va">y</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1000</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;   geodesic  start azimuth displacement_km</span></span>
+<span><span class="co">#&gt; 1        X (0, 0)      45           78.71</span></span>
+<span><span class="co">#&gt; 2        Y (1, 0)     315           78.71</span></span></code></pre></div>
+<p>The output includes: - <code>x</code>, <code>y</code>: Displacements
+along each geodesic from the starting point (meters) -
+<code>coincidence</code>: 0 = normal intersection, +1 =
+parallel/coincident, -1 = antiparallel - <code>lat</code>,
+<code>lon</code>: Coordinates of the intersection point</p>
+</div>
+<div class="section level3">
+<h3 id="segment-intersection">Segment Intersection<a class="anchor" aria-label="anchor" href="#segment-intersection"></a>
+</h3>
+<p>Find if and where two geodesic segments (defined by endpoints)
+intersect:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Two crossing segments</span></span>
+<span><span class="co"># Segment X: from (0, -0.5) to (0, 0.5) - roughly N-S</span></span>
+<span><span class="co"># Segment Y: from (-0.5, 0) to (0.5, 0) - roughly E-W</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect_segment</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>,   <span class="co"># Segment X endpoints</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span>    <span class="co"># Segment Y endpoints</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">result</span></span>
+<span><span class="co">#&gt;          x        y segmode coincidence lat lon</span></span>
+<span><span class="co">#&gt; 1 55287.15 55659.75       0           0   0   0</span></span>
+<span></span>
+<span><span class="co"># segmode = 0 means intersection is within both segments</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">segmode</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Segments intersect at:"</span>, <span class="va">result</span><span class="op">$</span><span class="va">lat</span>, <span class="va">result</span><span class="op">$</span><span class="va">lon</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Segments do not intersect (extended intersection at:"</span>, </span>
+<span>      <span class="va">result</span><span class="op">$</span><span class="va">lat</span>, <span class="va">result</span><span class="op">$</span><span class="va">lon</span>, <span class="st">")\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Segments intersect at: 0 0</span></span></code></pre></div>
+<p>The <code>segmode</code> value indicates whether the intersection
+lies within the segments: - <code>segmode = 0</code>: Intersection is
+within both segments - Non-zero: Intersection is outside one or both
+segments</p>
+</div>
+<div class="section level3">
+<h3 id="non-intersecting-segments">Non-Intersecting Segments<a class="anchor" aria-label="anchor" href="#non-intersecting-segments"></a>
+</h3>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Two parallel segments that don't intersect</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect_segment</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,    <span class="co"># Segment X: lon=0, lat 0 to 1</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>     <span class="co"># Segment Y: lon=1, lat 0 to 1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"segmode:"</span>, <span class="va">result</span><span class="op">$</span><span class="va">segmode</span>, <span class="st">"- segments do not intersect\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; segmode: 4 - segments do not intersect</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Closest point of intersection would be at:"</span>, <span class="va">result</span><span class="op">$</span><span class="va">lat</span>, <span class="va">result</span><span class="op">$</span><span class="va">lon</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Closest point of intersection would be at: 90 180</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="next-intersection">Next Intersection<a class="anchor" aria-label="anchor" href="#next-intersection"></a>
+</h3>
+<p>From a known intersection point, find the next closest intersection.
+Geodesics on an ellipsoid can intersect multiple times:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Two geodesics crossing at the origin</span></span>
+<span><span class="co"># Find where they cross again</span></span>
+<span><span class="va">next_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect_next</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fl">45</span>, <span class="fl">90</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  intersection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"origin"</span>, <span class="st">"next"</span><span class="op">)</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">next_int</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>,</span>
+<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">next_int</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>,</span>
+<span>  distance_km <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">next_int</span><span class="op">$</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;   intersection           lat       lon distance_km</span></span>
+<span><span class="co">#&gt; 1       origin  0.000000e+00    0.0000           0</span></span>
+<span><span class="co">#&gt; 2         next -4.978254e-15 -179.5734       19987</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="all-intersections-within-a-distance">All Intersections Within a Distance<a class="anchor" aria-label="anchor" href="#all-intersections-within-a-distance"></a>
+</h3>
+<p>Find all intersections within a specified distance from the starting
+points:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Find all intersections within 5,000 km</span></span>
+<span><span class="va">all_ints</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect_all</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fl">30</span>,      <span class="co"># Geodesic X: from origin, azimuth 30°</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fl">330</span>,    <span class="co"># Geodesic Y: from (10, 0), azimuth 330°</span></span>
+<span>  maxdist <span class="op">=</span> <span class="fl">5e6</span>     <span class="co"># Search radius: 5,000 km</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Found"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">all_ints</span><span class="op">)</span>, <span class="st">"intersections within 5,000 km\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Found 1 intersections within 5,000 km</span></span>
+<span><span class="va">all_ints</span></span>
+<span><span class="co">#&gt;         x       y coincidence      lat lon</span></span>
+<span><span class="co">#&gt; 1 1104789 1104789           0 8.641145   5</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="practical-example-great-circle-route-crossings">Practical Example: Great Circle Route Crossings<a class="anchor" aria-label="anchor" href="#practical-example-great-circle-route-crossings"></a>
+</h3>
+<p>Determine where two flight routes cross:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Route 1: Sydney to London (via typical great circle)</span></span>
+<span><span class="va">sydney</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="op">-</span><span class="fl">33.87</span><span class="op">)</span></span>
+<span><span class="va">london</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.13</span>, <span class="fl">51.51</span><span class="op">)</span></span>
+<span><span class="va">route1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_direct.html">geodesic_inverse</a></span><span class="op">(</span><span class="va">sydney</span>, <span class="va">london</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Route 2: Tokyo to São Paulo</span></span>
+<span><span class="va">tokyo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">139.69</span>, <span class="fl">35.69</span><span class="op">)</span></span>
+<span><span class="va">sao_paulo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">46.63</span>, <span class="op">-</span><span class="fl">23.55</span><span class="op">)</span></span>
+<span><span class="va">route2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_direct.html">geodesic_inverse</a></span><span class="op">(</span><span class="va">tokyo</span>, <span class="va">sao_paulo</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Find intersection of extended routes</span></span>
+<span><span class="va">crossing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect</a></span><span class="op">(</span></span>
+<span>  <span class="va">sydney</span>, <span class="va">route1</span><span class="op">$</span><span class="va">azi1</span>,</span>
+<span>  <span class="va">tokyo</span>, <span class="va">route2</span><span class="op">$</span><span class="va">azi1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Routes cross at:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">crossing</span><span class="op">$</span><span class="va">lat</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">"lat,"</span>, </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">crossing</span><span class="op">$</span><span class="va">lon</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">"lon\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Routes cross at: 1.37 lat, 124.84 lon</span></span>
+<span></span>
+<span><span class="co"># Distance from each origin to crossing</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"From Sydney:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">crossing</span><span class="op">$</span><span class="va">x</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span>, <span class="st">"km\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; From Sydney: 4778 km</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"From Tokyo:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">crossing</span><span class="op">$</span><span class="va">y</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span>, <span class="st">"km\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; From Tokyo: -4098 km</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="vectorized-operations">Vectorized Operations<a class="anchor" aria-label="anchor" href="#vectorized-operations"></a>
+</h3>
+<p>All intersection functions are vectorized for efficiency:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Multiple intersection problems at once</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_intersect.html">geodesic_intersect</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>,  <span class="co"># Three starting points for X</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>, <span class="fl">60</span>, <span class="fl">75</span><span class="op">)</span>,                     <span class="co"># Three azimuths for X</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>,  <span class="co"># Three starting points for Y</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">315</span>, <span class="fl">300</span>, <span class="fl">285</span><span class="op">)</span>                   <span class="co"># Three azimuths for Y</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  problem <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">lat</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">lon</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  dist_x_km <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">x</span> <span class="op">/</span> <span class="fl">1000</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  dist_y_km <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">y</span> <span class="op">/</span> <span class="fl">1000</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;   problem     lat lon dist_x_km dist_y_km</span></span>
+<span><span class="co">#&gt; 1       1  2.5144 2.5     393.3     393.3</span></span>
+<span><span class="co">#&gt; 2       2 11.4144 2.5     315.1     315.1</span></span>
+<span><span class="co">#&gt; 3       3 20.6130 2.5     269.8     269.8</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

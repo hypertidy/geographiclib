@@ -15,12 +15,14 @@
 <url><loc>/reference/albers_fwd.html</loc></url>
 <url><loc>/reference/azeq_fwd.html</loc></url>
 <url><loc>/reference/cassini_fwd.html</loc></url>
+<url><loc>/reference/dms_decode.html</loc></url>
 <url><loc>/reference/ellipsoid_params.html</loc></url>
 <url><loc>/reference/gars_fwd.html</loc></url>
 <url><loc>/reference/geocentric_fwd.html</loc></url>
 <url><loc>/reference/geocoords_parse.html</loc></url>
 <url><loc>/reference/geodesic_direct.html</loc></url>
 <url><loc>/reference/geodesic_direct_fast.html</loc></url>
+<url><loc>/reference/geodesic_intersect.html</loc></url>
 <url><loc>/reference/geographiclib-package.html</loc></url>
 <url><loc>/reference/geohash_fwd.html</loc></url>
 <url><loc>/reference/georef_fwd.html</loc></url>
