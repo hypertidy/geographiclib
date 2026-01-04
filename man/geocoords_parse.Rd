@@ -2,41 +2,35 @@
 % Please edit documentation in R/geocoords.R
 \name{geocoords_parse}
 \alias{geocoords_parse}
-\alias{geocoords_to_mgrs}
-\alias{geocoords_to_utm}
-\title{Parse and convert geographic coordinates}
+\title{Parse Geographic Coordinate Strings}
 \usage{
 geocoords_parse(x)
-
-geocoords_to_mgrs(x, precision = 5L)
-
-geocoords_to_utm(x, precision = 0L)
 }
 \arguments{
-\item{x}{Character vector of coordinate strings to parse, or for conversion
-functions a two-column matrix of (longitude, latitude).}
-
-\item{precision}{Integer precision for output strings (0-11 for MGRS).}
+\item{x}{Character vector of coordinate strings to parse}
 }
 \value{
+Data frame with columns:
 \itemize{
-\item \code{geocoords_parse()}: Data frame with columns lat, lon, zone, northp,
-easting, northing, convergence, scale
-\item \code{geocoords_to_mgrs()}: Character vector of MGRS strings
-\item \code{geocoords_to_utm()}: Character vector of UTM/UPS strings
+\item \code{lat} - Latitude in degrees
+\item \code{lon} - Longitude in degrees
+\item \code{zone} - UTM/UPS zone number
+\item \code{northp} - Logical, TRUE if in northern hemisphere
+\item \code{easting} - UTM/UPS easting in meters
+\item \code{northing} - UTM/UPS northing in meters
 }
 }
 \description{
-Parse coordinate strings in various formats (MGRS, UTM, DMS) and convert
-between representations.
+Parse coordinate strings in various formats (MGRS, UTM/UPS, DMS, decimal)
+and return latitude/longitude.
 }
 \details{
-The \code{geocoords_parse()} function accepts various input formats:
+Accepts coordinates in multiple formats:
 \itemize{
-\item MGRS codes: "33TWN0500049000", "33T 505000 4900000"
-\item UTM: "33N 505000 4900000"
-\item DMS: "44d 0' 0\" N 33d 0' 0\" E"
-\item Decimal: "44.0 33.0"
+\item MGRS: \code{"33TWN0500049000"}
+\item UTM/UPS: \code{"33N 505000 4900000"}
+\item DMS: \verb{"40d26'47\\"N 74d0'21\\"W"}
+\item Decimal: \code{"40.446 -74.006"}
 }
 }
 \examples{
@@ -46,6 +40,16 @@ geocoords_parse("33TWN0500049000")
 # Parse UTM
 geocoords_parse("33N 505000 4900000")
 
-# Convert to MGRS
-geocoords_to_mgrs(cbind(lon = c(147, -74), lat = c(-42, 40)))
+# Parse DMS
+geocoords_parse("40d26'47\"N 74d0'21\"W")
+
+# Parse decimal
+geocoords_parse("40.446 -74.006")
+
+# Vectorized
+geocoords_parse(c("33TWN0500049000", "40.446 -74.006"))
+
+}
+\seealso{
+\code{\link[=mgrs_fwd]{mgrs_fwd()}}, \code{\link[=mgrs_rev]{mgrs_rev()}}, \code{\link[=utmups_fwd]{utmups_fwd()}}, \code{\link[=utmups_rev]{utmups_rev()}}, \code{\link[=dms_decode]{dms_decode()}}
 }

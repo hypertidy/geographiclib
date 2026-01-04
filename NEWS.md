@@ -11,6 +11,13 @@
 
 Both functions build an optimized spatial index for fast repeated queries.
 
+## Bug fixes
+
+* Fixed `geocoords_to_mgrs()` and `geocoords_to_utm()` which were producing
+ garbled output. These functions have been removed as they duplicated
+ `mgrs_fwd()` and `utm_fwd()` functionality. Use those functions instead.
+
+
 ## Documentation
 
 * Expanded `vignette("geodesics")` with a new section on nearest neighbor search

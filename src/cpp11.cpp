@@ -188,24 +188,10 @@ extern "C" SEXP _geographiclib_geocentric_rev_cpp(SEXP X, SEXP Y, SEXP Z) {
   END_CPP11
 }
 // 000_geocoords_geographiclib.cpp
-cpp11::writable::data_frame geocoords_parse_cpp(cpp11::strings input);
-extern "C" SEXP _geographiclib_geocoords_parse_cpp(SEXP input) {
+cpp11::writable::data_frame geocoords_parse_cpp(cpp11::strings x);
+extern "C" SEXP _geographiclib_geocoords_parse_cpp(SEXP x) {
   BEGIN_CPP11
-    return cpp11::as_sexp(geocoords_parse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(input)));
-  END_CPP11
-}
-// 000_geocoords_geographiclib.cpp
-cpp11::writable::strings geocoords_to_mgrs_cpp(cpp11::doubles lat, cpp11::doubles lon, cpp11::integers precision);
-extern "C" SEXP _geographiclib_geocoords_to_mgrs_cpp(SEXP lat, SEXP lon, SEXP precision) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(geocoords_to_mgrs_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(precision)));
-  END_CPP11
-}
-// 000_geocoords_geographiclib.cpp
-cpp11::writable::strings geocoords_to_utm_cpp(cpp11::doubles lat, cpp11::doubles lon, cpp11::integers precision);
-extern "C" SEXP _geographiclib_geocoords_to_utm_cpp(SEXP lat, SEXP lon, SEXP precision) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(geocoords_to_utm_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(precision)));
+    return cpp11::as_sexp(geocoords_parse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(x)));
   END_CPP11
 }
 // 000_geodesic_geographiclib.cpp
@@ -644,8 +630,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_geocentric_fwd_cpp",                (DL_FUNC) &_geographiclib_geocentric_fwd_cpp,                3},
     {"_geographiclib_geocentric_rev_cpp",                (DL_FUNC) &_geographiclib_geocentric_rev_cpp,                3},
     {"_geographiclib_geocoords_parse_cpp",               (DL_FUNC) &_geographiclib_geocoords_parse_cpp,               1},
-    {"_geographiclib_geocoords_to_mgrs_cpp",             (DL_FUNC) &_geographiclib_geocoords_to_mgrs_cpp,             3},
-    {"_geographiclib_geocoords_to_utm_cpp",              (DL_FUNC) &_geographiclib_geocoords_to_utm_cpp,              3},
     {"_geographiclib_geodesic_direct_cpp",               (DL_FUNC) &_geographiclib_geodesic_direct_cpp,               4},
     {"_geographiclib_geodesic_direct_fast_cpp",          (DL_FUNC) &_geographiclib_geodesic_direct_fast_cpp,          4},
     {"_geographiclib_geodesic_distance_fast_cpp",        (DL_FUNC) &_geographiclib_geodesic_distance_fast_cpp,        4},

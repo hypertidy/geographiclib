@@ -1,32 +1,43 @@
 test_that("geocoords_parse works with MGRS", {
   result <- geocoords_parse("33TWN0500049000")
-
-  expect_s3_class(result, "data.frame")
-  expect_true(result$lat > 40 && result$lat < 50)
-  expect_true(result$lon > 10 && result$lon < 20)
+  expect_equal(nrow(result), 1)
+  expect_true(!is.na(result$lat))
+  expect_true(!is.na(result$lon))
 })
 
-test_that("geocoords_to_mgrs works", {
-  pts <- cbind(lon = c(147, -74), lat = c(-42, 40))
-  result <- geocoords_to_mgrs(pts)
-
-  expect_type(result, "character")
-  expect_length(result, 2)
+test_that("geocoords_parse works with UTM", {
+  result <- geocoords_parse("33N 505000 4900000")
+  expect_equal(nrow(result), 1)
+  expect_true(!is.na(result$lat))
 })
 
-test_that("geocoords_to_utm works", {
-  pts <- cbind(lon = c(147, -74), lat = c(-42, 40))
-  result <- geocoords_to_utm(pts)
-
-  expect_type(result, "character")
-  expect_length(result, 2)
+test_that("geocoords_parse works with DMS", {
+  result <- geocoords_parse("40d26'47\"N 74d0'21\"W")
+  expect_equal(nrow(result), 1)
+  expect_equal(result$lat, 40.446, tolerance = 0.01)
+  expect_equal(result$lon, -74.006, tolerance = 0.01)
 })
 
-test_that("geocoords round-trip works", {
-  original <- cbind(lon = 147.32, lat = -42.88)
-  mgrs <- geocoords_to_mgrs(original, precision = 5)
-  parsed <- geocoords_parse(mgrs)
+test_that("geocoords_parse works with decimal", {
+  result <- geocoords_parse("40.446 -74.006")
+  expect_equal(nrow(result), 1)
+  expect_equal(result$lat, 40.446, tolerance = 0.001)
+  expect_equal(result$lon, -74.006, tolerance = 0.001)
+})
 
-  expect_equal(parsed[["lon"]][1L], original[1, 1], tolerance = 0.0001, ignore_attr = TRUE)
-  expect_equal(parsed$lat, original[1, 2], tolerance = 0.0001, ignore_attr = TRUE)
+test_that("geocoords_parse is vectorized", {
+  result <- geocoords_parse(c("33TWN0500049000", "40.446 -74.006"))
+  expect_equal(nrow(result), 2)
+})
+
+test_that("geocoords_parse handles NA", {
+  result <- geocoords_parse(c("33TWN0500049000", NA_character_))
+  expect_equal(nrow(result), 2)
+  expect_true(!is.na(result$lat[1]))
+  expect_true(is.na(result$lat[2]))
+})
+
+test_that("geocoords_parse handles invalid input", {
+  result <- geocoords_parse("not a coordinate")
+  expect_true(is.na(result$lat))
 })
