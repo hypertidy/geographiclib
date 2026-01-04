@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant • geographiclib</title>
+<title>Map Projections • geographiclib</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Map Projections">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
     </li>
     <li>
-      <a href="../articles/projections.html">Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant</a>
+      <a href="../articles/projections.html">Map Projections</a>
     </li>
   </ul>
 </li>
@@ -89,8 +89,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Map Projections: UTM/UPS, LCC, Cassini,
-Gnomonic, and Azimuthal Equidistant</h1>
+      <h1 data-toc-skip>Map Projections</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/hypertidy/geographiclib/blob/main/vignettes/projections.Rmd" class="external-link"><code>vignettes/projections.Rmd</code></a></small>
@@ -110,48 +109,45 @@ different purposes.</p>
 </h2>
 <p>We’ll use a mix of Northern and Southern Hemisphere locations:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Global test points</span></span>
-<span><span class="va">world_pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
-<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="fl">147.32</span>, <span class="fl">166.67</span>, <span class="op">-</span><span class="fl">68.30</span>, <span class="op">-</span><span class="fl">0.13</span>, <span class="op">-</span><span class="fl">74.01</span>, <span class="fl">139.69</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">33.87</span>, <span class="op">-</span><span class="fl">42.88</span>, <span class="op">-</span><span class="fl">77.85</span>, <span class="op">-</span><span class="fl">54.80</span>, <span class="fl">51.51</span>, <span class="fl">40.71</span>, <span class="fl">35.69</span>, <span class="op">-</span><span class="fl">90</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">world_pts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sydney"</span>, <span class="st">"Hobart"</span>, <span class="st">"McMurdo"</span>, <span class="st">"Ushuaia"</span>,</span>
-<span>                          <span class="st">"London"</span>, <span class="st">"New York"</span>, <span class="st">"Tokyo"</span>, <span class="st">"South Pole"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Australian cities for regional examples</span></span>
+<code class="sourceCode R"><span><span class="co"># Australian cities</span></span>
 <span><span class="va">australia</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
-<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="fl">147.32</span>, <span class="fl">144.96</span>, <span class="fl">153.03</span>, <span class="fl">115.86</span>, <span class="fl">138.60</span><span class="op">)</span>,</span>
-<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">33.87</span>, <span class="op">-</span><span class="fl">42.88</span>, <span class="op">-</span><span class="fl">37.81</span>, <span class="op">-</span><span class="fl">27.47</span>, <span class="op">-</span><span class="fl">31.95</span>, <span class="op">-</span><span class="fl">34.93</span><span class="op">)</span></span>
+<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="fl">144.96</span>, <span class="fl">153.02</span>, <span class="fl">115.86</span>, <span class="fl">138.60</span><span class="op">)</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">33.87</span>, <span class="op">-</span><span class="fl">37.81</span>, <span class="op">-</span><span class="fl">27.47</span>, <span class="op">-</span><span class="fl">31.95</span>, <span class="op">-</span><span class="fl">34.93</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sydney"</span>, <span class="st">"Hobart"</span>, <span class="st">"Melbourne"</span>, <span class="st">"Brisbane"</span>, </span>
-<span>                          <span class="st">"Perth"</span>, <span class="st">"Adelaide"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sydney"</span>, <span class="st">"Melbourne"</span>, <span class="st">"Brisbane"</span>, <span class="st">"Perth"</span>, <span class="st">"Adelaide"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Antarctic stations</span></span>
 <span><span class="va">antarctic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
-<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">166.67</span>, <span class="fl">77.85</span>, <span class="op">-</span><span class="fl">68.13</span>, <span class="fl">39.58</span>, <span class="op">-</span><span class="fl">60.72</span><span class="op">)</span>,</span>
-<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">77.85</span>, <span class="op">-</span><span class="fl">67.60</span>, <span class="op">-</span><span class="fl">67.57</span>, <span class="op">-</span><span class="fl">69.41</span>, <span class="op">-</span><span class="fl">62.99</span><span class="op">)</span></span>
+<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">166.67</span>, <span class="fl">77.97</span>, <span class="fl">39.58</span>, <span class="op">-</span><span class="fl">64.05</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">77.85</span>, <span class="op">-</span><span class="fl">68.58</span>, <span class="op">-</span><span class="fl">67.60</span>, <span class="op">-</span><span class="fl">64.25</span>, <span class="op">-</span><span class="fl">90</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">antarctic</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"McMurdo"</span>, <span class="st">"Davis"</span>, <span class="st">"Palmer"</span>, <span class="st">"Progress"</span>, <span class="st">"Orcadas"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">antarctic</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"McMurdo"</span>, <span class="st">"Davis"</span>, <span class="st">"Mawson"</span>, <span class="st">"Palmer"</span>, <span class="st">"South Pole"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># World cities</span></span>
+<span><span class="va">world_pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
+<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.13</span>, <span class="op">-</span><span class="fl">74.01</span>, <span class="fl">139.69</span>, <span class="fl">151.21</span>, <span class="op">-</span><span class="fl">43.17</span><span class="op">)</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">51.51</span>, <span class="fl">40.71</span>, <span class="fl">35.69</span>, <span class="op">-</span><span class="fl">33.87</span>, <span class="op">-</span><span class="fl">22.91</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">world_pts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"London"</span>, <span class="st">"New York"</span>, <span class="st">"Tokyo"</span>, <span class="st">"Sydney"</span>, <span class="st">"Rio"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="utmups---universal-transverse-mercator">UTM/UPS - Universal Transverse Mercator<a class="anchor" aria-label="anchor" href="#utmups---universal-transverse-mercator"></a>
 </h2>
-<p>UTM divides the Earth into 60 zones, each 6° wide. For polar regions
-(&gt;84°N or &lt;80°S), UPS (Universal Polar Stereographic) is used
-instead.</p>
+<p>UTM divides the Earth into 60 zones, each 6 degrees wide. For polar
+regions (&gt;84N or &lt;80S), UPS (Universal Polar Stereographic) is
+used instead.</p>
 <div class="section level3">
 <h3 id="basic-conversion">Basic Conversion<a class="anchor" aria-label="anchor" href="#basic-conversion"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Convert Australian cities</span></span>
 <span><span class="fu"><a href="../reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          x       y zone northp convergence     scale    lon    lat        crs</span></span>
-<span><span class="co">#&gt; 1 334435.7 6250816   56  FALSE  0.99781261 0.9999379 151.21 -33.87 EPSG:32756</span></span>
-<span><span class="co">#&gt; 2 526133.4 5252461   55  FALSE -0.21775007 0.9996084 147.32 -42.88 EPSG:32755</span></span>
-<span><span class="co">#&gt; 3 320422.8 5813305   55  FALSE  1.25094581 0.9999972 144.96 -37.81 EPSG:32755</span></span>
-<span><span class="co">#&gt; 4 502964.0 6961506   56  FALSE -0.01383852 0.9996001 153.03 -27.47 EPSG:32756</span></span>
-<span><span class="co">#&gt; 5 392259.4 6464539   50  FALSE  0.60332222 0.9997432 115.86 -31.95 EPSG:32750</span></span>
-<span><span class="co">#&gt; 6 280787.4 6132090   54  FALSE  1.37472832 1.0001923 138.60 -34.93 EPSG:32754</span></span></code></pre></div>
+<span><span class="co">#&gt;          x       y zone northp  convergence     scale    lon    lat        crs</span></span>
+<span><span class="co">#&gt; 1 334435.7 6250816   56  FALSE  0.997812613 0.9999379 151.21 -33.87 EPSG:32756</span></span>
+<span><span class="co">#&gt; 2 320422.8 5813305   55  FALSE  1.250945807 0.9999972 144.96 -37.81 EPSG:32755</span></span>
+<span><span class="co">#&gt; 3 501976.0 6961506   56  FALSE -0.009225683 0.9996000 153.02 -27.47 EPSG:32756</span></span>
+<span><span class="co">#&gt; 4 392259.4 6464539   50  FALSE  0.603322218 0.9997432 115.86 -31.95 EPSG:32750</span></span>
+<span><span class="co">#&gt; 5 280787.4 6132090   54  FALSE  1.374728322 1.0001923 138.60 -34.93 EPSG:32754</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="understanding-utm-zones">Understanding UTM Zones<a class="anchor" aria-label="anchor" href="#understanding-utm-zones"></a>
@@ -192,40 +188,17 @@ instead.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Antarctic stations</span></span>
 <span><span class="fu"><a href="../reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">antarctic</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          x       y zone northp convergence     scale    lon    lat        crs</span></span>
-<span><span class="co">#&gt; 1 539232.5 1357811   58  FALSE  -1.6326124 0.9996188 166.67 -77.85 EPSG:32758</span></span>
-<span><span class="co">#&gt; 2 621162.0 2498944   43  FALSE  -2.6352726 0.9997797  77.85 -67.60 EPSG:32743</span></span>
-<span><span class="co">#&gt; 3 537043.1 2504816   19  FALSE  -0.8041904 0.9996168 -68.13 -67.57 EPSG:32719</span></span>
-<span><span class="co">#&gt; 4 522763.7 2299812   37  FALSE  -0.5429524 0.9996063  39.58 -69.41 EPSG:32737</span></span>
-<span><span class="co">#&gt; 5 615509.4 3013477   20  FALSE  -2.0315362 0.9997634 -60.72 -62.99 EPSG:32720</span></span>
-<span></span>
-<span><span class="co"># Note: McMurdo and the polar stations use UPS (zone 0)</span></span>
-<span><span class="co"># Others use standard UTM zones</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="convergence-and-scale">Convergence and Scale<a class="anchor" aria-label="anchor" href="#convergence-and-scale"></a>
-</h3>
-<p>UTM provides convergence angle (grid vs true north) and scale
-factor:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  city <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span>,</span>
-<span>  convergence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">convergence</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">scale</span>, <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;        city convergence    scale</span></span>
-<span><span class="co">#&gt; 1    Sydney        1.00 0.999938</span></span>
-<span><span class="co">#&gt; 2    Hobart       -0.22 0.999608</span></span>
-<span><span class="co">#&gt; 3 Melbourne        1.25 0.999997</span></span>
-<span><span class="co">#&gt; 4  Brisbane       -0.01 0.999600</span></span>
-<span><span class="co">#&gt; 5     Perth        0.60 0.999743</span></span>
-<span><span class="co">#&gt; 6  Adelaide        1.37 1.000192</span></span></code></pre></div>
+<span><span class="co">#&gt;           x       y zone northp convergence     scale    lon    lat        crs</span></span>
+<span><span class="co">#&gt; 1  539232.5 1357811   58  FALSE  -1.6326124 0.9996188 166.67 -77.85 EPSG:32758</span></span>
+<span><span class="co">#&gt; 2  621006.2 2389548   43  FALSE  -2.7651884 0.9997792  77.97 -68.58 EPSG:32743</span></span>
+<span><span class="co">#&gt; 3  524664.5 2501616   37  FALSE  -0.5362394 0.9996074  39.58 -67.60 EPSG:32737</span></span>
+<span><span class="co">#&gt; 4  449103.3 2874707   20  FALSE   0.9457532 0.9996317 -64.05 -64.25 EPSG:32720</span></span>
+<span><span class="co">#&gt; 5 2000000.0 2000000    0  FALSE   0.0000000 0.9940000   0.00 -90.00 EPSG:32761</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="round-trip-conversion">Round-trip Conversion<a class="anchor" aria-label="anchor" href="#round-trip-conversion"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fwd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span></span>
 <span><span class="va">rev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/utmups_fwd.html">utmups_rev</a></span><span class="op">(</span><span class="va">fwd</span><span class="op">$</span><span class="va">x</span>, <span class="va">fwd</span><span class="op">$</span><span class="va">y</span>, <span class="va">fwd</span><span class="op">$</span><span class="va">zone</span>, <span class="va">fwd</span><span class="op">$</span><span class="va">northp</span><span class="op">)</span></span>
 <span></span>
@@ -237,6 +210,34 @@ factor:</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="transverse-mercator-custom">Transverse Mercator (Custom)<a class="anchor" aria-label="anchor" href="#transverse-mercator-custom"></a>
+</h2>
+<p>For custom Transverse Mercator projections with user-defined central
+meridian and scale factor (unlike UTM which auto-selects zones):</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Custom TM centered on Tasmania</span></span>
+<span><span class="fu"><a href="../reference/tm_fwd.html">tm_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">147</span>, k0 <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x        y convergence     scale    lon    lat lon0</span></span>
+<span><span class="co">#&gt; 1   389509.3 -3755726   -2.349232 1.0014708 151.21 -33.87  147</span></span>
+<span><span class="co">#&gt; 2  -179577.2 -4186695    1.250946 0.9999972 144.96 -37.81  147</span></span>
+<span><span class="co">#&gt; 3   595405.5 -3052957   -2.785128 1.0039790 153.02 -27.47  147</span></span>
+<span><span class="co">#&gt; 4 -3004450.5 -3995140   17.749690 1.1129339 115.86 -31.95  147</span></span>
+<span><span class="co">#&gt; 5  -768115.8 -3897657    4.833213 1.0068799 138.60 -34.93  147</span></span>
+<span></span>
+<span><span class="co"># Compare series approximation vs exact</span></span>
+<span><span class="va">pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">147</span>, <span class="fl">148</span>, <span class="fl">149</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">42</span>, <span class="op">-</span><span class="fl">43</span>, <span class="op">-</span><span class="fl">44</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/tm_fwd.html">tm_fwd</a></span><span class="op">(</span><span class="va">pts</span>, lon0 <span class="op">=</span> <span class="fl">147</span><span class="op">)</span>       <span class="co"># Fast (~5nm accuracy)</span></span>
+<span><span class="co">#&gt;           x        y convergence     scale lon lat lon0</span></span>
+<span><span class="co">#&gt; 1      0.00 -4647916   0.0000000 0.9992002 147 -42  147</span></span>
+<span><span class="co">#&gt; 2  81476.04 -4759395  -0.6820358 0.9992819 148 -43  147</span></span>
+<span><span class="co">#&gt; 3 160285.27 -4871868  -1.3896118 0.9995163 149 -44  147</span></span>
+<span><span class="fu"><a href="../reference/tm_fwd.html">tm_exact_fwd</a></span><span class="op">(</span><span class="va">pts</span>, lon0 <span class="op">=</span> <span class="fl">147</span><span class="op">)</span> <span class="co"># Exact (slower)</span></span>
+<span><span class="co">#&gt;           x        y convergence     scale lon lat lon0</span></span>
+<span><span class="co">#&gt; 1      0.00 -4647916   0.0000000 0.9992002 147 -42  147</span></span>
+<span><span class="co">#&gt; 2  81476.04 -4759395  -0.6820358 0.9992819 148 -43  147</span></span>
+<span><span class="co">#&gt; 3 160285.27 -4871868  -1.3896118 0.9995163 149 -44  147</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="lambert-conformal-conic-lcc">Lambert Conformal Conic (LCC)<a class="anchor" aria-label="anchor" href="#lambert-conformal-conic-lcc"></a>
 </h2>
 <p>LCC is ideal for mid-latitude regions with greater east-west extent.
@@ -246,15 +247,14 @@ cone).</p>
 <h3 id="single-standard-parallel">Single Standard Parallel<a class="anchor" aria-label="anchor" href="#single-standard-parallel"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Project Australia using a single standard parallel at -35°</span></span>
+<code class="sourceCode R"><span><span class="co"># Project Australia using a single standard parallel at -35</span></span>
 <span><span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, stdlat <span class="op">=</span> <span class="op">-</span><span class="fl">35</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            x           y convergence    scale    lon    lat</span></span>
 <span><span class="co">#&gt; 1  1493548.7    3909.821   -9.297674 1.000193 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 2  1013854.9 -940228.041   -7.066462 1.009828 147.32 -42.88</span></span>
-<span><span class="co">#&gt; 3   876672.9 -355683.465   -5.712821 1.001213 144.96 -37.81</span></span>
-<span><span class="co">#&gt; 4  1787300.0  675493.281  -10.341583 1.008404 153.03 -27.47</span></span>
-<span><span class="co">#&gt; 5 -1801035.7  165367.391   10.978253 1.001395 115.86 -31.95</span></span>
-<span><span class="co">#&gt; 6   328846.1    1839.535   -2.064875 1.000001 138.60 -34.93</span></span></code></pre></div>
+<span><span class="co">#&gt; 2   876672.9 -355683.465   -5.712821 1.001213 144.96 -37.81</span></span>
+<span><span class="co">#&gt; 3  1786319.5  675672.155  -10.335847 1.008404 153.02 -27.47</span></span>
+<span><span class="co">#&gt; 4 -1801035.7  165367.391   10.978253 1.001395 115.86 -31.95</span></span>
+<span><span class="co">#&gt; 5   328846.1    1839.535   -2.064875 1.000001 138.60 -34.93</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="two-standard-parallels">Two Standard Parallels<a class="anchor" aria-label="anchor" href="#two-standard-parallels"></a>
@@ -267,14 +267,10 @@ region:</p>
 <span><span class="va">result</span></span>
 <span><span class="co">#&gt;            x          y convergence     scale    lon    lat</span></span>
 <span><span class="co">#&gt; 1  1487815.5  -836523.8   -7.390430 0.9947423 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 2  1033331.9 -1800264.0   -5.616909 1.0282667 147.32 -42.88</span></span>
-<span><span class="co">#&gt; 3   881143.8 -1212440.8   -4.540943 1.0057047 144.96 -37.81</span></span>
-<span><span class="co">#&gt; 4  1754224.3  -163923.8   -8.220201 0.9877621 153.03 -27.47</span></span>
-<span><span class="co">#&gt; 5 -1786896.6  -665348.0    8.726270 0.9912930 115.86 -31.95</span></span>
-<span><span class="co">#&gt; 6   327940.2  -862239.3   -1.641305 0.9971666 138.60 -34.93</span></span>
-<span></span>
-<span><span class="co"># Scale factor is 1.0 at the standard parallels</span></span>
-<span><span class="co"># and slightly different elsewhere</span></span></code></pre></div>
+<span><span class="co">#&gt; 2   881143.8 -1212440.8   -4.540943 1.0057047 144.96 -37.81</span></span>
+<span><span class="co">#&gt; 3  1753258.1  -163784.3   -8.215642 0.9877621 153.02 -27.47</span></span>
+<span><span class="co">#&gt; 4 -1786896.6  -665348.0    8.726270 0.9912930 115.86 -31.95</span></span>
+<span><span class="co">#&gt; 5   327940.2  -862239.3   -1.641305 0.9971666 138.60 -34.93</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="lcc-for-antarctica">LCC for Antarctica<a class="anchor" aria-label="anchor" href="#lcc-for-antarctica"></a>
@@ -284,22 +280,140 @@ region:</p>
 <span><span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">antarctic</span>, lon0 <span class="op">=</span> <span class="fl">0</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">71</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">89</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            x          y convergence     scale    lon    lat</span></span>
 <span><span class="co">#&gt; 1   344966.9 -2165162.2  -165.11619 0.9879434 166.67 -77.85</span></span>
-<span><span class="co">#&gt; 2  2420893.4  -313824.6   -77.12423 1.0093051  77.85 -67.60</span></span>
-<span><span class="co">#&gt; 3 -2297337.4    84624.6    67.49484 1.0093968 -68.13 -67.57</span></span>
-<span><span class="co">#&gt; 4  1441431.1   899470.1   -39.21101 1.0040829  39.58 -69.41</span></span>
-<span><span class="co">#&gt; 5 -2607368.1   628833.6    60.15393 1.0253830 -60.72 -62.99</span></span></code></pre></div>
+<span><span class="co">#&gt; 2  2314592.7  -343174.4   -77.24311 1.0064017  77.97 -68.58</span></span>
+<span><span class="co">#&gt; 3  1569910.6  1056939.8   -39.21101 1.0093051  39.58 -67.60</span></span>
+<span><span class="co">#&gt; 4 -2560607.7   412096.3    63.45288 1.0205891 -64.05 -64.25</span></span>
+<span><span class="co">#&gt; 5        0.0  -867205.9     0.00000 1.8855739   0.00 -90.00</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="albers-equal-area">Albers Equal Area<a class="anchor" aria-label="anchor" href="#albers-equal-area"></a>
+</h2>
+<p>Albers is an equal-area conic projection, ideal for thematic maps
+where accurate area representation is important.</p>
 <div class="section level3">
-<h3 id="round-trip-accuracy">Round-trip Accuracy<a class="anchor" aria-label="anchor" href="#round-trip-accuracy"></a>
+<h3 id="two-standard-parallels-most-common">Two Standard Parallels (Most Common)<a class="anchor" aria-label="anchor" href="#two-standard-parallels-most-common"></a>
 </h3>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fwd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">18</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">36</span><span class="op">)</span></span>
-<span><span class="va">rev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lcc_fwd.html">lcc_rev</a></span><span class="op">(</span><span class="va">fwd</span><span class="op">$</span><span class="va">x</span>, <span class="va">fwd</span><span class="op">$</span><span class="va">y</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">18</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">36</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Albers Equal Area for Australia</span></span>
+<span><span class="fu"><a href="../reference/albers_fwd.html">albers_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">132</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">18</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">36</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x       y convergence    scale    lon    lat lon0</span></span>
+<span><span class="co">#&gt; 1  2759463.2 5728938   -8.615282 1.558384 151.21 -33.87  132</span></span>
+<span><span class="co">#&gt; 2  1893029.2 6112549   -5.812288 1.661597 144.96 -37.81  132</span></span>
+<span><span class="co">#&gt; 3  2939004.6 5216954   -9.427029 1.421022 153.02 -27.47  132</span></span>
+<span><span class="co">#&gt; 4 -2303568.9 5652426    7.238451 1.513623 115.86 -31.95  132</span></span>
+<span><span class="co">#&gt; 5   955094.6 5986948   -2.959961 1.584571 138.60 -34.93  132</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="conus-albers-us-standard">CONUS Albers (US Standard)<a class="anchor" aria-label="anchor" href="#conus-albers-us-standard"></a>
+</h3>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Continental US configuration</span></span>
+<span><span class="va">conus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
+<span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.42</span>, <span class="op">-</span><span class="fl">74.01</span>, <span class="op">-</span><span class="fl">87.63</span>, <span class="op">-</span><span class="fl">104.99</span>, <span class="op">-</span><span class="fl">118.24</span><span class="op">)</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">37.77</span>, <span class="fl">40.71</span>, <span class="fl">41.88</span>, <span class="fl">39.74</span>, <span class="fl">34.05</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">conus</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"San Francisco"</span>, <span class="st">"New York"</span>, <span class="st">"Chicago"</span>, <span class="st">"Denver"</span>, <span class="st">"Los Angeles"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">rev</span><span class="op">$</span><span class="va">lon</span> <span class="op">-</span> <span class="va">australia</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">rev</span><span class="op">$</span><span class="va">lat</span> <span class="op">-</span> <span class="va">australia</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.421085e-14</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/albers_fwd.html">albers_fwd</a></span><span class="op">(</span><span class="va">conus</span>, lon0 <span class="op">=</span> <span class="op">-</span><span class="fl">96</span>, stdlat1 <span class="op">=</span> <span class="fl">29.5</span>, stdlat2 <span class="op">=</span> <span class="fl">45.5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x         y convergence     scale     lon   lat lon0</span></span>
+<span><span class="co">#&gt; 1 -2275633.0  299934.9  -15.928691 0.9903128 -122.42 37.77  -96</span></span>
+<span><span class="co">#&gt; 2  1826049.7  523243.1   13.257832 0.9915130  -74.01 40.71  -96</span></span>
+<span><span class="co">#&gt; 3   688859.4  472356.2    5.046296 0.9927869  -87.63 41.88  -96</span></span>
+<span><span class="co">#&gt; 4  -762375.2  238443.6   -5.420096 0.9908110 -104.99 39.74  -96</span></span>
+<span><span class="co">#&gt; 5 -2019412.3 -197542.9  -13.408558 0.9924666 -118.24 34.05  -96</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="antarctic-albers">Antarctic Albers<a class="anchor" aria-label="anchor" href="#antarctic-albers"></a>
+</h3>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Antarctic equal-area projection</span></span>
+<span><span class="fu"><a href="../reference/albers_fwd.html">albers_fwd</a></span><span class="op">(</span><span class="va">antarctic</span>, lon0 <span class="op">=</span> <span class="fl">0</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">72</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">60</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           x         y convergence        scale    lon    lat lon0</span></span>
+<span><span class="co">#&gt; 1   6362785 -14451441  -151.42898 8.975620e+00 166.67 -77.85    0</span></span>
+<span><span class="co">#&gt; 2  12417304   1547213   -70.84009 5.112554e+00  77.97 -68.58    0</span></span>
+<span><span class="co">#&gt; 3   7706574   7855318   -35.96063 4.891702e+00  39.58 -67.60    0</span></span>
+<span><span class="co">#&gt; 4 -11083150   4106510    58.19299 4.264540e+00 -64.05 -64.25    0</span></span>
+<span><span class="co">#&gt; 5         0  10612815     0.00000 3.852793e+31   0.00 -90.00    0</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="why-equal-area-matters">Why Equal-Area Matters<a class="anchor" aria-label="anchor" href="#why-equal-area-matters"></a>
+</h3>
+<p>Albers preserves area, making it suitable for: - Choropleth maps
+(population density, land use) - Statistical analysis where area matters
+- Environmental mapping</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compare Albers (equal-area) vs LCC (conformal)</span></span>
+<span><span class="va">albers_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/albers_fwd.html">albers_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">132</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">18</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">36</span><span class="op">)</span></span>
+<span><span class="va">lcc_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">132</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">18</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">36</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  city <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">australia</span><span class="op">)</span>,</span>
+<span>  albers_scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">albers_result</span><span class="op">$</span><span class="va">scale</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  lcc_scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">lcc_result</span><span class="op">$</span><span class="va">scale</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;        city albers_scale lcc_scale</span></span>
+<span><span class="co">#&gt; 1    Sydney       1.5584    0.9947</span></span>
+<span><span class="co">#&gt; 2 Melbourne       1.6616    1.0057</span></span>
+<span><span class="co">#&gt; 3  Brisbane       1.4210    0.9878</span></span>
+<span><span class="co">#&gt; 4     Perth       1.5136    0.9913</span></span>
+<span><span class="co">#&gt; 5  Adelaide       1.5846    0.9972</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="polar-stereographic">Polar Stereographic<a class="anchor" aria-label="anchor" href="#polar-stereographic"></a>
+</h2>
+<p>Conformal projection for polar regions. The default scale factor (k0
+= 0.994) corresponds to UPS. Use k0 = 1.0 for true stereographic.</p>
+<div class="section level3">
+<h3 id="antarctic-stations">Antarctic Stations<a class="anchor" aria-label="anchor" href="#antarctic-stations"></a>
+</h3>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Antarctic stations with UPS-standard scale</span></span>
+<span><span class="fu"><a href="../reference/polarstereo_fwd.html">polarstereo_fwd</a></span><span class="op">(</span><span class="va">antarctic</span>, northp <span class="op">=</span> <span class="cn">FALSE</span>, k0 <span class="op">=</span> <span class="fl">0.994</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            x          y convergence    scale    lon    lat northp</span></span>
+<span><span class="co">#&gt; 1   312134.1 -1317338.8     -166.67 1.005257 166.67 -77.85  FALSE</span></span>
+<span><span class="co">#&gt; 2  2352282.0   501280.4      -77.97 1.029540  77.97 -68.58  FALSE</span></span>
+<span><span class="co">#&gt; 3  1604242.5  1940574.9      -39.58 1.032951  39.58 -67.60  FALSE</span></span>
+<span><span class="co">#&gt; 4 -2613033.8  1271640.2       64.05 1.045897 -64.05 -64.25  FALSE</span></span>
+<span><span class="co">#&gt; 5        0.0        0.0        0.00 0.994000   0.00 -90.00  FALSE</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="arctic-points">Arctic Points<a class="anchor" aria-label="anchor" href="#arctic-points"></a>
+</h3>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Arctic circle of points</span></span>
+<span><span class="va">arctic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">315</span>, by <span class="op">=</span> <span class="fl">45</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fl">85</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/polarstereo_fwd.html">polarstereo_fwd</a></span><span class="op">(</span><span class="va">arctic</span>, northp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           x         y convergence     scale lon lat northp</span></span>
+<span><span class="co">#&gt; 1       0.0 -555457.4           0 0.9958948   0  85   TRUE</span></span>
+<span><span class="co">#&gt; 2  392767.7 -392767.7          45 0.9958948  45  85   TRUE</span></span>
+<span><span class="co">#&gt; 3  555457.4       0.0          90 0.9958948  90  85   TRUE</span></span>
+<span><span class="co">#&gt; 4  392767.7  392767.7         135 0.9958948 135  85   TRUE</span></span>
+<span><span class="co">#&gt; 5       0.0  555457.4         180 0.9958948 180  85   TRUE</span></span>
+<span><span class="co">#&gt; 6 -392767.7  392767.7        -135 0.9958948 225  85   TRUE</span></span>
+<span><span class="co">#&gt; 7 -555457.4       0.0         -90 0.9958948 270  85   TRUE</span></span>
+<span><span class="co">#&gt; 8 -392767.7 -392767.7         -45 0.9958948 315  85   TRUE</span></span>
+<span></span>
+<span><span class="co"># All points at same latitude have same distance from pole</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/polarstereo_fwd.html">polarstereo_fwd</a></span><span class="op">(</span><span class="va">arctic</span>, northp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">result</span><span class="op">$</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>  <span class="co"># All equal</span></span>
+<span><span class="co">#&gt; [1] 555457.4 555457.4 555457.4 555457.4 555457.4 555457.4 555457.4 555457.4</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="pole-at-origin">Pole at Origin<a class="anchor" aria-label="anchor" href="#pole-at-origin"></a>
+</h3>
+<p>The pole is always at the origin:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># South pole</span></span>
+<span><span class="fu"><a href="../reference/polarstereo_fwd.html">polarstereo_fwd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">90</span><span class="op">)</span>, northp <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   x y convergence scale lon lat northp</span></span>
+<span><span class="co">#&gt; 1 0 0           0 0.994   0 -90  FALSE</span></span>
+<span></span>
+<span><span class="co"># North pole</span></span>
+<span><span class="fu"><a href="../reference/polarstereo_fwd.html">polarstereo_fwd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, northp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   x y convergence scale lon lat northp</span></span>
+<span><span class="co">#&gt; 1 0 0           0 0.994   0  90   TRUE</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -310,41 +424,35 @@ showing distances from a specific location.</p>
 <div class="section level3">
 <h3 id="distances-from-sydney">Distances from Sydney<a class="anchor" aria-label="anchor" href="#distances-from-sydney"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Project world cities relative to Sydney</span></span>
 <span><span class="va">sydney</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="op">-</span><span class="fl">33.87</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_fwd</a></span><span class="op">(</span><span class="va">world_pts</span>, lon0 <span class="op">=</span> <span class="va">sydney</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, lat0 <span class="op">=</span> <span class="va">sydney</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt;             x        y        azi     scale    lon    lat   lon0   lat0</span></span>
-<span><span class="co">#&gt; 1         0.0        0    0.00000 1.0000000 151.21 -33.87 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 2   -319024.0 -1006658 -159.99285 0.9954306 147.32 -42.88 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 3    397699.6 -4937895  161.57776 0.9026699 166.67 -77.85 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 4   3490312.8 -8814999   31.98150 0.6714824 -68.30 -54.80 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 5 -11079223.9 12879887 -119.64500 0.1711505  -0.13  51.51 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 6  14570027.7  6581725   86.24134 0.2338675 -74.01  40.71 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 7  -1348790.6  7675580  -10.19020 0.7678612 139.69  35.69 151.21 -33.87</span></span>
-<span><span class="co">#&gt; 8         0.0 -6252724  -28.79000 0.8478398   0.00 -90.00 151.21 -33.87</span></span>
+<span><span class="co">#&gt;           x         y        azi     scale    lon    lat   lon0   lat0</span></span>
+<span><span class="co">#&gt; 1 -11079224  12879887 -119.64500 0.1711505  -0.13  51.51 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 2  14570028   6581725   86.24134 0.2338675 -74.01  40.71 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 3  -1348791   7675580  -10.19020 0.7678612 139.69  35.69 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 4         0         0    0.00000 1.0000000 151.21 -33.87 151.21 -33.87</span></span>
+<span><span class="co">#&gt; 5   3622420 -13046064   13.96290 0.4028404 -43.17 -22.91 151.21 -33.87</span></span>
 <span></span>
-<span><span class="co"># Distance from Sydney (in km) = sqrt(x² + y²) / 1000</span></span>
+<span><span class="co"># Distance from Sydney (in km) = sqrt(x^2 + y^2) / 1000</span></span>
 <span><span class="va">distances</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">result</span><span class="op">$</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1000</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  city <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">world_pts</span><span class="op">)</span>,</span>
 <span>  distance_km <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">distances</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;         city distance_km</span></span>
-<span><span class="co">#&gt; 1     Sydney           0</span></span>
-<span><span class="co">#&gt; 2     Hobart        1056</span></span>
-<span><span class="co">#&gt; 3    McMurdo        4954</span></span>
-<span><span class="co">#&gt; 4    Ushuaia        9481</span></span>
-<span><span class="co">#&gt; 5     London       16989</span></span>
-<span><span class="co">#&gt; 6   New York       15988</span></span>
-<span><span class="co">#&gt; 7      Tokyo        7793</span></span>
-<span><span class="co">#&gt; 8 South Pole        6253</span></span></code></pre></div>
+<span><span class="co">#&gt;       city distance_km</span></span>
+<span><span class="co">#&gt; 1   London       16989</span></span>
+<span><span class="co">#&gt; 2 New York       15988</span></span>
+<span><span class="co">#&gt; 3    Tokyo        7793</span></span>
+<span><span class="co">#&gt; 4   Sydney           0</span></span>
+<span><span class="co">#&gt; 5      Rio       13540</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="distances-from-south-pole">Distances from South Pole<a class="anchor" aria-label="anchor" href="#distances-from-south-pole"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Distance from South Pole to Antarctic stations</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_fwd</a></span><span class="op">(</span><span class="va">antarctic</span>, lon0 <span class="op">=</span> <span class="fl">0</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">90</span><span class="op">)</span></span>
 <span></span>
@@ -354,24 +462,12 @@ showing distances from a specific location.</p>
 <span>  lat <span class="op">=</span> <span class="va">antarctic</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,</span>
 <span>  distance_from_pole_km <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">distances</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;           station    lat distance_from_pole_km</span></span>
-<span><span class="co">#&gt; McMurdo   McMurdo -77.85                  1357</span></span>
-<span><span class="co">#&gt; Davis       Davis -67.60                  2501</span></span>
-<span><span class="co">#&gt; Palmer     Palmer -67.57                  2504</span></span>
-<span><span class="co">#&gt; Progress Progress -69.41                  2299</span></span>
-<span><span class="co">#&gt; Orcadas   Orcadas -62.99                  3015</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="round-trip-conversion-1">Round-trip Conversion<a class="anchor" aria-label="anchor" href="#round-trip-conversion-1"></a>
-</h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fwd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_fwd</a></span><span class="op">(</span><span class="va">australia</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">25</span><span class="op">)</span></span>
-<span><span class="va">rev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_rev</a></span><span class="op">(</span><span class="va">fwd</span><span class="op">$</span><span class="va">x</span>, <span class="va">fwd</span><span class="op">$</span><span class="va">y</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">25</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">rev</span><span class="op">$</span><span class="va">lon</span> <span class="op">-</span> <span class="va">australia</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2.842171e-14</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">rev</span><span class="op">$</span><span class="va">lat</span> <span class="op">-</span> <span class="va">australia</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.421085e-14</span></span></code></pre></div>
+<span><span class="co">#&gt;               station    lat distance_from_pole_km</span></span>
+<span><span class="co">#&gt; McMurdo       McMurdo -77.85                  1357</span></span>
+<span><span class="co">#&gt; Davis           Davis -68.58                  2391</span></span>
+<span><span class="co">#&gt; Mawson         Mawson -67.60                  2501</span></span>
+<span><span class="co">#&gt; Palmer         Palmer -64.25                  2874</span></span>
+<span><span class="co">#&gt; South Pole South Pole -90.00                     0</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -383,7 +479,7 @@ central meridian.</p>
 <div class="section level3">
 <h3 id="regional-mapping">Regional Mapping<a class="anchor" aria-label="anchor" href="#regional-mapping"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Tasmania centered on Hobart</span></span>
 <span><span class="va">tasmania</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">147.32</span>, <span class="fl">145.49</span>, <span class="fl">146.82</span>, <span class="fl">148.29</span>, <span class="fl">147.13</span><span class="op">)</span>,</span>
@@ -402,13 +498,13 @@ central meridian.</p>
 <div class="section level3">
 <h3 id="cassini-for-antarctic-survey">Cassini for Antarctic Survey<a class="anchor" aria-label="anchor" href="#cassini-for-antarctic-survey"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># McMurdo area survey</span></span>
 <span><span class="va">mcmurdo_area</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">166.67</span>, <span class="fl">166.40</span>, <span class="fl">167.00</span>, <span class="fl">166.87</span>, <span class="fl">168.40</span><span class="op">)</span>,</span>
 <span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">77.85</span>, <span class="op">-</span><span class="fl">77.55</span>, <span class="op">-</span><span class="fl">78.15</span>, <span class="op">-</span><span class="fl">78.65</span>, <span class="op">-</span><span class="fl">77.18</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mcmurdo_area</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"McMurdo"</span>, <span class="st">"Marble Point"</span>, <span class="st">"Black Island"</span>, </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mcmurdo_area</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"McMurdo"</span>, <span class="st">"Marble Point"</span>, <span class="st">"Black Island"</span>,</span>
 <span>                            <span class="st">"Minna Bluff"</span>, <span class="st">"Cape Adare"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/cassini_fwd.html">cassini_fwd</a></span><span class="op">(</span><span class="va">mcmurdo_area</span>, lon0 <span class="op">=</span> <span class="fl">166.67</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">77.85</span><span class="op">)</span></span>
@@ -423,18 +519,18 @@ central meridian.</p>
 <div class="section level2">
 <h2 id="gnomonic-projection">Gnomonic Projection<a class="anchor" aria-label="anchor" href="#gnomonic-projection"></a>
 </h2>
-<p>The gnomonic projection has a unique property: <strong>geodesics
-(great circles) appear as straight lines</strong>. This makes it
-invaluable for route planning.</p>
+<p>The gnomonic projection has a unique property: geodesics (great
+circles) appear as straight lines. This makes it invaluable for route
+planning.</p>
 <div class="section level3">
 <h3 id="great-circle-routes-appear-straight">Great Circle Routes Appear Straight<a class="anchor" aria-label="anchor" href="#great-circle-routes-appear-straight"></a>
 </h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Project Sydney-London great circle path</span></span>
 <span><span class="va">sydney_london</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geodesic_direct.html">geodesic_path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151.21</span>, <span class="op">-</span><span class="fl">33.87</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.13</span>, <span class="fl">51.51</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Project onto gnomonic centered between them</span></span>
-<span><span class="fu"><a href="../reference/gnomonic_fwd.html">gnomonic_fwd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">sydney_london</span><span class="op">$</span><span class="va">lon</span>, <span class="va">sydney_london</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>, </span>
+<span><span class="fu"><a href="../reference/gnomonic_fwd.html">gnomonic_fwd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">sydney_london</span><span class="op">$</span><span class="va">lon</span>, <span class="va">sydney_london</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>,</span>
 <span>             lon0 <span class="op">=</span> <span class="fl">75</span>, lat0 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              x           y       azi         rk       lon        lat</span></span>
 <span><span class="co">#&gt; 1   53750192.8 -38674589.3 105.87562 0.09561024 151.21000 -33.870000</span></span>
@@ -451,7 +547,7 @@ invaluable for route planning.</p>
 <div class="section level3">
 <h3 id="route-planning">Route Planning<a class="anchor" aria-label="anchor" href="#route-planning"></a>
 </h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Flights from Sydney - project candidate destinations</span></span>
 <span><span class="va">destinations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.13</span>, <span class="op">-</span><span class="fl">74.01</span>, <span class="fl">139.69</span>, <span class="fl">77.22</span>, <span class="op">-</span><span class="fl">43.17</span><span class="op">)</span>,</span>
@@ -468,29 +564,13 @@ invaluable for route planning.</p>
 <span><span class="co">#&gt; 4      NaN      NaN  -53.28367 -0.06608416  77.22  28.61</span></span>
 <span><span class="co">#&gt; 5      NaN      NaN   13.96290 -0.52164061 -43.17 -22.91</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="antarctic-flight-planning">Antarctic Flight Planning<a class="anchor" aria-label="anchor" href="#antarctic-flight-planning"></a>
-</h3>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plan routes from McMurdo</span></span>
-<span><span class="fu"><a href="../reference/gnomonic_fwd.html">gnomonic_fwd</a></span><span class="op">(</span><span class="va">antarctic</span>, lon0 <span class="op">=</span> <span class="fl">166.67</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">77.85</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          x        y       azi        rk    lon    lat</span></span>
-<span><span class="co">#&gt; 1        0        0   0.00000 1.0000000 166.67 -77.85</span></span>
-<span><span class="co">#&gt; 2 -2691278 -1320910 -29.73473 0.9055057  77.85 -67.60</span></span>
-<span><span class="co">#&gt; 3  2326001 -3056018  19.52390 0.8573984 -68.13 -67.57</span></span>
-<span><span class="co">#&gt; 4 -2061370 -2971749 -19.94993 0.8705484  39.58 -69.41</span></span>
-<span><span class="co">#&gt; 5  2650763 -3871839  15.18587 0.8063766 -60.72 -62.99</span></span>
-<span></span>
-<span><span class="co"># The x,y coordinates show direction and relative great-circle distance</span></span>
-<span><span class="co"># (though scale varies significantly with distance from center)</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="osgb---ordnance-survey-national-grid">OSGB - Ordnance Survey National Grid<a class="anchor" aria-label="anchor" href="#osgb---ordnance-survey-national-grid"></a>
 </h2>
-<p>OSGB is specific to Great Britain. <strong>Note:</strong> It uses the
-OSGB36 datum, not WGS84.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p>OSGB is specific to Great Britain. Note: It uses the OSGB36 datum,
+not WGS84.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># British locations (using approximate OSGB36 coordinates)</span></span>
 <span><span class="va">britain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.127</span>, <span class="op">-</span><span class="fl">3.188</span>, <span class="op">-</span><span class="fl">4.251</span>, <span class="op">-</span><span class="fl">1.890</span>, <span class="op">-</span><span class="fl">2.587</span><span class="op">)</span>,</span>
@@ -509,7 +589,7 @@ OSGB36 datum, not WGS84.</p>
 <div class="section level3">
 <h3 id="grid-references">Grid References<a class="anchor" aria-label="anchor" href="#grid-references"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get alphanumeric grid references</span></span>
 <span><span class="fu"><a href="../reference/osgb_fwd.html">osgb_gridref</a></span><span class="op">(</span><span class="va">britain</span>, precision <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>  <span class="co"># 100m precision</span></span>
 <span><span class="co">#&gt; [1] "TQ299803" "NT258739" "NS591657" "SP074876" "ST592729"</span></span>
@@ -542,82 +622,47 @@ OSGB36 datum, not WGS84.</p>
 <td>Global standard, topographic maps</td>
 </tr>
 <tr class="even">
+<td>Transverse Mercator</td>
+<td>Shape (conformal)</td>
+<td>Custom zone definitions</td>
+</tr>
+<tr class="odd">
 <td>LCC</td>
 <td>Shape (conformal)</td>
 <td>Mid-latitude regional maps</td>
 </tr>
+<tr class="even">
+<td>Albers Equal Area</td>
+<td>Area</td>
+<td>Thematic/statistical maps</td>
+</tr>
 <tr class="odd">
+<td>Polar Stereographic</td>
+<td>Shape (conformal)</td>
+<td>Polar regions</td>
+</tr>
+<tr class="even">
 <td>Azimuthal Equidistant</td>
 <td>Distance from center</td>
 <td>Showing distances from a point</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Cassini-Soldner</td>
 <td>Scale on central meridian</td>
 <td>Large-scale surveys</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Gnomonic</td>
 <td>Great circles as straight lines</td>
 <td>Route planning</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>OSGB</td>
 <td>Shape (conformal)</td>
 <td>British mapping</td>
 </tr>
 </tbody>
 </table>
-<div class="section level3">
-<h3 id="visual-comparison-same-region-different-projections">Visual Comparison: Same Region, Different Projections<a class="anchor" aria-label="anchor" href="#visual-comparison-same-region-different-projections"></a>
-</h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Project Australia with different methods</span></span>
-<span><span class="va">australia_pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">151</span>, <span class="fl">147</span>, <span class="fl">145</span>, <span class="fl">153</span>, <span class="fl">116</span>, <span class="fl">139</span><span class="op">)</span>,</span>
-<span>                       lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">34</span>, <span class="op">-</span><span class="fl">43</span>, <span class="op">-</span><span class="fl">38</span>, <span class="op">-</span><span class="fl">27</span>, <span class="op">-</span><span class="fl">32</span>, <span class="op">-</span><span class="fl">35</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  UTM <span class="op">=</span> <span class="fu"><a href="../reference/utmups_fwd.html">utmups_fwd</a></span><span class="op">(</span><span class="va">australia_pts</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>  LCC <span class="op">=</span> <span class="fu"><a href="../reference/lcc_fwd.html">lcc_fwd</a></span><span class="op">(</span><span class="va">australia_pts</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, stdlat1 <span class="op">=</span> <span class="op">-</span><span class="fl">18</span>, stdlat2 <span class="op">=</span> <span class="op">-</span><span class="fl">36</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>  AzEq <span class="op">=</span> <span class="fu"><a href="../reference/azeq_fwd.html">azeq_fwd</a></span><span class="op">(</span><span class="va">australia_pts</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">25</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>  Cassini <span class="op">=</span> <span class="fu"><a href="../reference/cassini_fwd.html">cassini_fwd</a></span><span class="op">(</span><span class="va">australia_pts</span>, lon0 <span class="op">=</span> <span class="fl">135</span>, lat0 <span class="op">=</span> <span class="op">-</span><span class="fl">25</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; $UTM</span></span>
-<span><span class="co">#&gt;          x       y</span></span>
-<span><span class="co">#&gt; 1 315290.2 6236041</span></span>
-<span><span class="co">#&gt; 2 500000.0 5239185</span></span>
-<span><span class="co">#&gt; 3 324396.6 5792298</span></span>
-<span><span class="co">#&gt; 4 500000.0 7013565</span></span>
-<span><span class="co">#&gt; 5 405542.5 6459127</span></span>
-<span><span class="co">#&gt; 6 317483.9 6125129</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $LCC</span></span>
-<span><span class="co">#&gt;            x          y</span></span>
-<span><span class="co">#&gt; 1  1466824.3  -848283.5</span></span>
-<span><span class="co">#&gt; 2  1005267.5 -1811316.6</span></span>
-<span><span class="co">#&gt; 3   882988.6 -1233871.0</span></span>
-<span><span class="co">#&gt; 4  1758668.3  -112590.8</span></span>
-<span><span class="co">#&gt; 5 -1773098.6  -668798.2</span></span>
-<span><span class="co">#&gt; 6   364119.9  -871081.7</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $AzEq</span></span>
-<span><span class="co">#&gt;            x          y</span></span>
-<span><span class="co">#&gt; 1  1479471.5 -1095388.2</span></span>
-<span><span class="co">#&gt; 2   992350.8 -2050725.0</span></span>
-<span><span class="co">#&gt; 3   884618.9 -1479481.3</span></span>
-<span><span class="co">#&gt; 4  1781234.9  -343793.0</span></span>
-<span><span class="co">#&gt; 5 -1792187.9  -913664.4</span></span>
-<span><span class="co">#&gt; 6   366928.5 -1114631.2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $Cassini</span></span>
-<span><span class="co">#&gt;            x          y</span></span>
-<span><span class="co">#&gt; 1  1472025.1 -1115405.9</span></span>
-<span><span class="co">#&gt; 2   975136.3 -2067116.3</span></span>
-<span><span class="co">#&gt; 3   876622.5 -1488962.5</span></span>
-<span><span class="co">#&gt; 4  1780341.0  -353050.9</span></span>
-<span><span class="co">#&gt; 5 -1785842.8  -938471.1</span></span>
-<span><span class="co">#&gt; 6   365055.0 -1115858.7</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="see-also">See Also<a class="anchor" aria-label="anchor" href="#see-also"></a>
@@ -632,10 +677,6 @@ etc.</li>
 <li>
 <code><a href="../articles/local-coordinates.html">vignette("local-coordinates")</a></code> for Local Cartesian (ENU)
 and Geocentric</li>
-<li><a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" class="external-link">UTM
-on Wikipedia</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Lambert_conformal_conic_projection" class="external-link">Lambert
-Conformal Conic</a></li>
 </ul>
 </div>
   </div>

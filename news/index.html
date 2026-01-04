@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
       <a href="../articles/local-coordinates.html">Local Coordinates: Geocentric (ECEF), Local Cartesian (ENU), and Ellipsoid Properties</a>
     </li>
     <li>
-      <a href="../articles/projections.html">Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant</a>
+      <a href="../articles/projections.html">Map Projections</a>
     </li>
   </ul></li>
 <li>
@@ -69,6 +69,36 @@
       <small>Source: <a href="https://github.com/hypertidy/geographiclib/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.3" id="geographiclib-033">geographiclib 0.3.3<a class="anchor" aria-label="anchor" href="#geographiclib-033"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-3">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-3"></a></h3>
+<ul><li>
+<code><a href="../reference/albers_fwd.html">albers_fwd()</a></code> and <code><a href="../reference/albers_fwd.html">albers_rev()</a></code> - Albers Equal Area conic projection
+<ul><li>Supports single or two standard parallels</li>
+<li>Vectorized on <code>lon0</code> parameter</li>
+<li>Ideal for thematic maps requiring area preservation</li>
+</ul></li>
+<li>
+<code><a href="../reference/polarstereo_fwd.html">polarstereo_fwd()</a></code> and <code><a href="../reference/polarstereo_fwd.html">polarstereo_rev()</a></code> - Polar Stereographic projection
+<ul><li>Configurable scale factor (default k0 = 0.994 for UPS)</li>
+<li>Supports both north and south polar regions</li>
+<li>
+<code>northp</code> parameter is vectorized</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.2" id="geographiclib-032">geographiclib 0.3.2<a class="anchor" aria-label="anchor" href="#geographiclib-032"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-2">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-2"></a></h3>
+<ul><li>
+<code><a href="../reference/tm_fwd.html">tm_fwd()</a></code> and <code><a href="../reference/tm_fwd.html">tm_rev()</a></code> - Transverse Mercator projection with user-defined central meridian and scale factor (series approximation, fast, ~5nm accuracy)</li>
+<li>
+<code><a href="../reference/tm_fwd.html">tm_exact_fwd()</a></code> and <code><a href="../reference/tm_fwd.html">tm_exact_rev()</a></code> - Transverse Mercator with exact formulation (slower but accurate everywhere)</li>
+<li>All TM functions are vectorized on <code>lon0</code> parameter</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="geographiclib-031">geographiclib 0.3.1<a class="anchor" aria-label="anchor" href="#geographiclib-031"></a></h2>
 <div class="section level3">

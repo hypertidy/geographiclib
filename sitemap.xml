@@ -12,6 +12,7 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/albers_fwd.html</loc></url>
 <url><loc>/reference/azeq_fwd.html</loc></url>
 <url><loc>/reference/cassini_fwd.html</loc></url>
 <url><loc>/reference/ellipsoid_params.html</loc></url>
@@ -28,10 +29,11 @@
 <url><loc>/reference/localcartesian_fwd.html</loc></url>
 <url><loc>/reference/mgrs_fwd.html</loc></url>
 <url><loc>/reference/osgb_fwd.html</loc></url>
+<url><loc>/reference/polarstereo_fwd.html</loc></url>
 <url><loc>/reference/polygon_area.html</loc></url>
 <url><loc>/reference/polygon_area_cumulative.html</loc></url>
 <url><loc>/reference/rhumb_direct.html</loc></url>
+<url><loc>/reference/tm_fwd.html</loc></url>
 <url><loc>/reference/utmups_fwd.html</loc></url>
-<url><loc>/todo-Geohash.html</loc></url>
 </urlset>
 
