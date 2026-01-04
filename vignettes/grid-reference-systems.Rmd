@@ -21,6 +21,8 @@ library(geographiclib)
 This vignette covers the grid reference systems available in geographiclib:
 MGRS, Geohash, GARS, and Georef. These systems encode geographic coordinates
 as alphanumeric strings, useful for human communication and data storage.
+It also covers GeoCoords, which provides universal coordinate parsing and
+conversion between formats.
  
 ## Example Locations
 
@@ -256,6 +258,7 @@ Each system has different strengths:
 | Geohash | Databases, URLs | ~5000km - 1mm | Truncation preserves containment |
 | GARS | Military aviation | 30min - 5min | Simple, easy to read |
 | Georef | Aviation | 15° - 0.001min | Used in flight planning |
+| GeoCoords | Format conversion | N/A | Parses multiple input formats |
 
 ```{r comparison}
 # Same location in all systems
@@ -269,6 +272,120 @@ data.frame(
     gars_fwd(pt, precision = 2),
     georef_fwd(pt, precision = 2)
   )
+)
+```
+
+## GeoCoords - Universal Coordinate Parsing
+
+The GeoCoords functions provide a flexible way to parse coordinate strings in
+multiple formats and convert between representations. This is particularly
+useful when working with data from different sources that may use different
+coordinate formats.
+
+### Parsing Various Formats
+
+`geocoords_parse()` accepts coordinates in many formats:
+
+```{r geocoords-parse}
+# Parse MGRS codes
+geocoords_parse("33TWN0500049000")
+
+# Parse UTM strings
+geocoords_parse("33N 505000 4900000")
+
+# Parse DMS (degrees, minutes, seconds)
+geocoords_parse("44d 0' 0\" N 33d 0' 0\" E")
+
+# Parse decimal degrees (lat lon format)
+geocoords_parse("44.0 33.0")
+```
+
+### Parsing Multiple Coordinates
+
+The functions are vectorized for batch processing:
+ 
+```{r geocoords-batch}
+# Mixed format inputs
+inputs <- c(
+  "56HLU1060372300",           # MGRS (Sydney area)
+  "55G 530000 5250000",        # UTM (Hobart area)
+  "-33.87 151.21",             # Decimal degrees
+  "51d 30' 0\" N 0d 7' 0\" W"  # DMS (London)
+)
+
+parsed <- geocoords_parse(inputs)
+parsed[, c("lat", "lon", "zone", "northp")]
+```
+
+### Converting to MGRS Strings
+
+`geocoords_to_mgrs()` converts coordinates to MGRS format:
+
+```{r geocoords-to-mgrs}
+# Convert our example locations
+pts <- cbind(locations$lon, locations$lat)
+mgrs_codes <- geocoords_to_mgrs(pts, precision = 4)
+data.frame(name = locations$name, mgrs = mgrs_codes)
+
+# Variable precision
+geocoords_to_mgrs(c(151.21, -33.87), precision = 3)  # 100m
+geocoords_to_mgrs(c(151.21, -33.87), precision = 5)  # 1m
+```
+
+### Converting to UTM/UPS Strings
+
+`geocoords_to_utm()` provides human-readable UTM strings:
+
+```{r geocoords-to-utm}
+# Convert locations to UTM strings
+utm_strings <- geocoords_to_utm(pts)
+data.frame(name = locations$name, utm = utm_strings)
+
+# With higher precision
+geocoords_to_utm(c(147.32, -42.88), precision = 2)
+```
+ 
+### Round-Trip Conversion
+
+A common workflow is parsing user input, then converting to a standard format:
+
+```{r geocoords-roundtrip}
+# User provides coordinates in different formats
+user_inputs <- c(
+  "56HLU10607230",      # MGRS
+  "-42.88 147.32",      # Decimal
+  "40d 42' 0\" N 74d 0' 0\" W"  # DMS
+)
+
+# Parse to get lat/lon
+parsed <- geocoords_parse(user_inputs)
+
+# Convert all to consistent MGRS format
+geocoords_to_mgrs(cbind(parsed$lon, parsed$lat), precision = 3)
+
+# Or to UTM
+geocoords_to_utm(cbind(parsed$lon, parsed$lat))
+```
+
+### Integration with Grid Reference Systems
+
+GeoCoords complements the individual grid reference functions by providing
+a universal parser:
+
+```{r geocoords-integration}
+# Parse any input format
+input <- "33TWN0500049000"
+coords <- geocoords_parse(input)
+
+# Then use with any system
+pt <- c(coords$lon, coords$lat)
+data.frame(
+  input = input,
+  lat = coords$lat,
+  lon = coords$lon,
+  geohash = geohash_fwd(pt, len = 8),
+  gars = gars_fwd(pt, precision = 2),
+  georef = georef_fwd(pt, precision = 2)
 )
 ```
 
