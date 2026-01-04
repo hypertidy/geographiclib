@@ -1,8 +1,8 @@
 ---
-title: "Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant"
+title: "Map Projections"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Map Projections: UTM/UPS, LCC, Cassini, Gnomonic, and Azimuthal Equidistant}
+  %\VignetteIndexEntry{Map Projections}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,34 +26,32 @@ projection has different properties making it suitable for different purposes.
 We'll use a mix of Northern and Southern Hemisphere locations:
 
 ```{r locations}
-# Global test points
-world_pts <- cbind(
-  lon = c(151.21, 147.32, 166.67, -68.30, -0.13, -74.01, 139.69, 0),
-  lat = c(-33.87, -42.88, -77.85, -54.80, 51.51, 40.71, 35.69, -90)
-)
-rownames(world_pts) <- c("Sydney", "Hobart", "McMurdo", "Ushuaia",
-                          "London", "New York", "Tokyo", "South Pole")
-
-# Australian cities for regional examples
+# Australian cities
 australia <- cbind(
-  lon = c(151.21, 147.32, 144.96, 153.03, 115.86, 138.60),
-  lat = c(-33.87, -42.88, -37.81, -27.47, -31.95, -34.93)
+  lon = c(151.21, 144.96, 153.02, 115.86, 138.60),
+  lat = c(-33.87, -37.81, -27.47, -31.95, -34.93)
 )
-rownames(australia) <- c("Sydney", "Hobart", "Melbourne", "Brisbane", 
-                          "Perth", "Adelaide")
+rownames(australia) <- c("Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide")
 
 # Antarctic stations
 antarctic <- cbind(
-  lon = c(166.67, 77.85, -68.13, 39.58, -60.72),
-  lat = c(-77.85, -67.60, -67.57, -69.41, -62.99)
+  lon = c(166.67, 77.97, 39.58, -64.05, 0),
+  lat = c(-77.85, -68.58, -67.60, -64.25, -90)
 )
-rownames(antarctic) <- c("McMurdo", "Davis", "Palmer", "Progress", "Orcadas")
+rownames(antarctic) <- c("McMurdo", "Davis", "Mawson", "Palmer", "South Pole")
+
+# World cities
+world_pts <- cbind(
+  lon = c(-0.13, -74.01, 139.69, 151.21, -43.17),
+  lat = c(51.51, 40.71, 35.69, -33.87, -22.91)
+)
+rownames(world_pts) <- c("London", "New York", "Tokyo", "Sydney", "Rio")
 ```
 
 ## UTM/UPS - Universal Transverse Mercator
 
-UTM divides the Earth into 60 zones, each 6° wide. For polar regions (>84°N
-or <80°S), UPS (Universal Polar Stereographic) is used instead.
+UTM divides the Earth into 60 zones, each 6 degrees wide. For polar regions (>84N
+or <80S), UPS (Universal Polar Stereographic) is used instead.
 
 ### Basic Conversion
 
@@ -87,22 +85,6 @@ When zone = 0, the projection is UPS rather than UTM:
 ```{r utm-polar}
 # Antarctic stations
 utmups_fwd(antarctic)
-
-# Note: McMurdo and the polar stations use UPS (zone 0)
-# Others use standard UTM zones
-```
-
-### Convergence and Scale
-
-UTM provides convergence angle (grid vs true north) and scale factor:
- 
-```{r utm-properties}
-result <- utmups_fwd(australia)
-data.frame(
-  city = rownames(australia),
-  convergence = round(result$convergence, 2),
-  scale = round(result$scale, 6)
-)
 ```
 
 ### Round-trip Conversion
@@ -116,6 +98,21 @@ max(abs(rev$lon - australia[,1]))
 max(abs(rev$lat - australia[,2]))
 ```
 
+## Transverse Mercator (Custom)
+
+For custom Transverse Mercator projections with user-defined central meridian
+and scale factor (unlike UTM which auto-selects zones):
+
+```{r tm-custom}
+# Custom TM centered on Tasmania
+tm_fwd(australia, lon0 = 147, k0 = 1.0)
+
+# Compare series approximation vs exact
+pts <- cbind(lon = c(147, 148, 149), lat = c(-42, -43, -44))
+tm_fwd(pts, lon0 = 147)       # Fast (~5nm accuracy)
+tm_exact_fwd(pts, lon0 = 147) # Exact (slower)
+```
+
 ## Lambert Conformal Conic (LCC)
 
 LCC is ideal for mid-latitude regions with greater east-west extent.
@@ -124,7 +121,7 @@ It can use one standard parallel (tangent cone) or two (secant cone).
 ### Single Standard Parallel
 
 ```{r lcc-single}
-# Project Australia using a single standard parallel at -35°
+# Project Australia using a single standard parallel at -35
 lcc_fwd(australia, lon0 = 135, stdlat = -35)
 ```
 
@@ -136,9 +133,6 @@ Two standard parallels give better scale distribution across the region:
 # Project Australia using two standard parallels
 result <- lcc_fwd(australia, lon0 = 135, stdlat1 = -18, stdlat2 = -36)
 result
-
-# Scale factor is 1.0 at the standard parallels
-# and slightly different elsewhere
 ```
 
 ### LCC for Antarctica
@@ -148,14 +142,91 @@ result
 lcc_fwd(antarctic, lon0 = 0, stdlat1 = -71, stdlat2 = -89)
 ```
 
-### Round-trip Accuracy
+## Albers Equal Area
 
-```{r lcc-roundtrip}
-fwd <- lcc_fwd(australia, lon0 = 135, stdlat1 = -18, stdlat2 = -36)
-rev <- lcc_rev(fwd$x, fwd$y, lon0 = 135, stdlat1 = -18, stdlat2 = -36)
+Albers is an equal-area conic projection, ideal for thematic maps where
+accurate area representation is important.
 
-max(abs(rev$lon - australia[,1]))
-max(abs(rev$lat - australia[,2]))
+### Two Standard Parallels (Most Common)
+
+```{r albers-two}
+# Albers Equal Area for Australia
+albers_fwd(australia, lon0 = 132, stdlat1 = -18, stdlat2 = -36)
+```
+
+### CONUS Albers (US Standard)
+
+```{r albers-conus}
+# Continental US configuration
+conus <- cbind(
+  lon = c(-122.42, -74.01, -87.63, -104.99, -118.24),
+  lat = c(37.77, 40.71, 41.88, 39.74, 34.05)
+)
+rownames(conus) <- c("San Francisco", "New York", "Chicago", "Denver", "Los Angeles")
+
+albers_fwd(conus, lon0 = -96, stdlat1 = 29.5, stdlat2 = 45.5)
+```
+
+### Antarctic Albers
+
+```{r albers-antarctic}
+# Antarctic equal-area projection
+albers_fwd(antarctic, lon0 = 0, stdlat1 = -72, stdlat2 = -60)
+```
+
+### Why Equal-Area Matters
+
+Albers preserves area, making it suitable for:
+- Choropleth maps (population density, land use)
+- Statistical analysis where area matters
+- Environmental mapping
+
+```{r albers-vs-lcc}
+# Compare Albers (equal-area) vs LCC (conformal)
+albers_result <- albers_fwd(australia, lon0 = 132, stdlat1 = -18, stdlat2 = -36)
+lcc_result <- lcc_fwd(australia, lon0 = 132, stdlat1 = -18, stdlat2 = -36)
+
+data.frame(
+  city = rownames(australia),
+  albers_scale = round(albers_result$scale, 4),
+  lcc_scale = round(lcc_result$scale, 4)
+)
+```
+
+## Polar Stereographic
+
+Conformal projection for polar regions. The default scale factor (k0 = 0.994)
+corresponds to UPS. Use k0 = 1.0 for true stereographic.
+
+### Antarctic Stations
+
+```{r polarstereo-antarctic}
+# Antarctic stations with UPS-standard scale
+polarstereo_fwd(antarctic, northp = FALSE, k0 = 0.994)
+```
+
+### Arctic Points
+
+```{r polarstereo-arctic}
+# Arctic circle of points
+arctic <- cbind(lon = seq(0, 315, by = 45), lat = 85)
+polarstereo_fwd(arctic, northp = TRUE)
+
+# All points at same latitude have same distance from pole
+result <- polarstereo_fwd(arctic, northp = TRUE)
+sqrt(result$x^2 + result$y^2)  # All equal
+```
+
+### Pole at Origin
+
+The pole is always at the origin:
+
+```{r polarstereo-pole}
+# South pole
+polarstereo_fwd(c(0, -90), northp = FALSE)
+
+# North pole
+polarstereo_fwd(c(0, 90), northp = TRUE)
 ```
 
 ## Azimuthal Equidistant
@@ -171,7 +242,7 @@ sydney <- c(151.21, -33.87)
 result <- azeq_fwd(world_pts, lon0 = sydney[1], lat0 = sydney[2])
 result
 
-# Distance from Sydney (in km) = sqrt(x² + y²) / 1000
+# Distance from Sydney (in km) = sqrt(x^2 + y^2) / 1000
 distances <- sqrt(result$x^2 + result$y^2) / 1000
 data.frame(
   city = rownames(world_pts),
@@ -191,16 +262,6 @@ data.frame(
   lat = antarctic[,2],
   distance_from_pole_km = round(distances)
 )
-```
-
-### Round-trip Conversion
-
-```{r azeq-roundtrip}
-fwd <- azeq_fwd(australia, lon0 = 135, lat0 = -25)
-rev <- azeq_rev(fwd$x, fwd$y, lon0 = 135, lat0 = -25)
-
-max(abs(rev$lon - australia[,1]))
-max(abs(rev$lat - australia[,2]))
 ```
 
 ## Cassini-Soldner Projection
@@ -230,7 +291,7 @@ mcmurdo_area <- cbind(
   lon = c(166.67, 166.40, 167.00, 166.87, 168.40),
   lat = c(-77.85, -77.55, -78.15, -78.65, -77.18)
 )
-rownames(mcmurdo_area) <- c("McMurdo", "Marble Point", "Black Island", 
+rownames(mcmurdo_area) <- c("McMurdo", "Marble Point", "Black Island",
                             "Minna Bluff", "Cape Adare")
 
 cassini_fwd(mcmurdo_area, lon0 = 166.67, lat0 = -77.85)
@@ -238,8 +299,8 @@ cassini_fwd(mcmurdo_area, lon0 = 166.67, lat0 = -77.85)
 
 ## Gnomonic Projection
 
-The gnomonic projection has a unique property: **geodesics (great circles)
-appear as straight lines**. This makes it invaluable for route planning.
+The gnomonic projection has a unique property: geodesics (great circles)
+appear as straight lines. This makes it invaluable for route planning.
 
 ### Great Circle Routes Appear Straight
 
@@ -248,7 +309,7 @@ appear as straight lines**. This makes it invaluable for route planning.
 sydney_london <- geodesic_path(c(151.21, -33.87), c(-0.13, 51.51), n = 10)
 
 # Project onto gnomonic centered between them
-gnomonic_fwd(cbind(sydney_london$lon, sydney_london$lat), 
+gnomonic_fwd(cbind(sydney_london$lon, sydney_london$lat),
              lon0 = 75, lat0 = 10)
 ```
 
@@ -266,19 +327,9 @@ rownames(destinations) <- c("London", "New York", "Tokyo", "Delhi", "Rio")
 gnomonic_fwd(destinations, lon0 = 151.21, lat0 = -33.87)
 ```
 
-### Antarctic Flight Planning
-
-```{r gnomonic-antarctic}
-# Plan routes from McMurdo
-gnomonic_fwd(antarctic, lon0 = 166.67, lat0 = -77.85)
-
-# The x,y coordinates show direction and relative great-circle distance
-# (though scale varies significantly with distance from center)
-```
-
 ## OSGB - Ordnance Survey National Grid
 
-OSGB is specific to Great Britain. **Note:** It uses the OSGB36 datum, not WGS84.
+OSGB is specific to Great Britain. Note: It uses the OSGB36 datum, not WGS84.
 
 ```{r osgb}
 # British locations (using approximate OSGB36 coordinates)
@@ -309,31 +360,17 @@ Different projections preserve different properties:
 | Projection | Preserves | Best For |
 |------------|-----------|----------|
 | UTM/UPS | Shape (conformal) | Global standard, topographic maps |
+| Transverse Mercator | Shape (conformal) | Custom zone definitions |
 | LCC | Shape (conformal) | Mid-latitude regional maps |
+| Albers Equal Area | Area | Thematic/statistical maps |
+| Polar Stereographic | Shape (conformal) | Polar regions |
 | Azimuthal Equidistant | Distance from center | Showing distances from a point |
 | Cassini-Soldner | Scale on central meridian | Large-scale surveys |
 | Gnomonic | Great circles as straight lines | Route planning |
 | OSGB | Shape (conformal) | British mapping |
-
-### Visual Comparison: Same Region, Different Projections
-
-```{r comparison}
-# Project Australia with different methods
-australia_pts <- cbind(lon = c(151, 147, 145, 153, 116, 139),
-                       lat = c(-34, -43, -38, -27, -32, -35))
-
-list(
-  UTM = utmups_fwd(australia_pts)[c("x", "y")],
-  LCC = lcc_fwd(australia_pts, lon0 = 135, stdlat1 = -18, stdlat2 = -36)[c("x", "y")],
-  AzEq = azeq_fwd(australia_pts, lon0 = 135, lat0 = -25)[c("x", "y")],
-  Cassini = cassini_fwd(australia_pts, lon0 = 135, lat0 = -25)[c("x", "y")]
-)
-```
 
 ## See Also
 
 - `vignette("geodesics")` for distance and bearing calculations
 - `vignette("grid-reference-systems")` for MGRS, Geohash, etc.
 - `vignette("local-coordinates")` for Local Cartesian (ENU) and Geocentric
-- [UTM on Wikipedia](https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)
-- [Lambert Conformal Conic](https://en.wikipedia.org/wiki/Lambert_conformal_conic_projection)

@@ -1,45 +1,49 @@
 # GeographicLib Source Usage Analysis
 
-Generated: 2026-01-04
+Generated: 2026-01-04 (Updated)
 
 ## Summary
 
 | Category | Count | Size |
 |----------|-------|------|
 | Total GeographicLib headers | 49 | 916 KB |
-| Used headers | 29 | ~520 KB |
-| **Unused headers** | 20 | 396 KB |
+| Used headers | 32 | ~580 KB |
+| **Unused headers** | 17 | 336 KB |
 | Total GeographicLib .cpp files | 49 | 960 KB |
-| Used .cpp files | 28 | ~596 KB |
-| **Unused .cpp files** | 21 | 364 KB |
-| Our wrapper files (000_*.cpp) | 14 | 88 KB |
+| Used .cpp files | 31 | ~660 KB |
+| **Unused .cpp files** | 18 | 300 KB |
+| Our wrapper files (000_*.cpp) | 17 | 105 KB |
 
-**Approximately 38% of vendored source code is unused.**
+**Approximately 33% of vendored source code is unused.**
 
-## Headers We Directly Include (20)
+## Headers We Directly Include (23)
 
 These are included in our `src/000_*.cpp` wrapper files:
 
-1. AzimuthalEquidistant
-2. CassiniSoldner
-3. Constants
-4. Ellipsoid
-5. GARS
-6. Geocentric
-7. Geodesic
-8. GeodesicExact
-9. GeodesicLine
-10. GeodesicLineExact
-11. Geohash
-12. Georef
-13. Gnomonic
-14. LambertConformalConic
-15. LocalCartesian
-16. MGRS
-17. OSGB
-18. PolygonArea
-19. Rhumb
-20. UTMUPS
+1. AlbersEqualArea
+2. AzimuthalEquidistant
+3. CassiniSoldner
+4. Constants
+5. Ellipsoid
+6. GARS
+7. Geocentric
+8. Geodesic
+9. GeodesicExact
+10. GeodesicLine
+11. GeodesicLineExact
+12. Geohash
+13. Georef
+14. Gnomonic
+15. LambertConformalConic
+16. LocalCartesian
+17. MGRS
+18. OSGB
+19. PolarStereographic
+20. PolygonArea
+21. Rhumb
+22. TransverseMercator
+23. TransverseMercatorExact
+24. UTMUPS
 
 ## Transitive Dependencies (9 additional headers)
 
@@ -52,16 +56,14 @@ These are required by the headers we include:
 5. DST
 6. EllipticFunction
 7. Math
-8. TransverseMercator
-9. TransverseMercatorExact
+8. RhumbLine (required by Rhumb)
 
-## UNUSED Headers (20)
+## UNUSED Headers (17)
 
 These headers are not used by our package:
 
 | Header | Size | Description |
 |--------|------|-------------|
-| AlbersEqualArea.hpp | 16 KB | Albers equal-area conic projection |
 | Angle.hpp | 28 KB | Template class for managing angles |
 | CircularEngine.hpp | 8 KB | Spherical harmonic evaluation |
 | DMS.hpp | 20 KB | Degrees/minutes/seconds parsing |
@@ -74,12 +76,10 @@ These headers are not used by our package:
 | MagneticModel.hpp | 20 KB | Earth magnetic field model (requires data files) |
 | NearestNeighbor.hpp | 36 KB | Nearest neighbor search |
 | NormalGravity.hpp | 20 KB | Normal gravity calculations |
-| PolarStereographic.hpp | 8 KB | Polar stereographic projection |
 | SphericalEngine.hpp | 20 KB | Spherical harmonic engine |
 | SphericalHarmonic.hpp | 16 KB | Spherical harmonics |
 | SphericalHarmonic1.hpp | 12 KB | Spherical harmonics (variant) |
 | SphericalHarmonic2.hpp | 16 KB | Spherical harmonics (variant) |
-| Trigfun.hpp | 32 KB | Trigonometric functions |
 | Utility.hpp | 28 KB | Utility functions |
 
 ## UNUSED .cpp Files (21)

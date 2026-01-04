@@ -19,6 +19,9 @@ for precise geodetic calculations on the WGS84 ellipsoid.
 - **Transverse Mercator** - Custom TM projections with user-defined
   parameters
 - **Lambert Conformal Conic** - Configurable LCC projection
+- **Albers Equal Area** - Equal-area conic projection
+- **Polar Stereographic** - Conformal polar projection with configurable
+  scale
 - **Azimuthal Equidistant** - Projection centered on any point
 - **Cassini-Soldner** - Historical transverse cylindrical projection
 - **Gnomonic** - Geodesics appear as straight lines

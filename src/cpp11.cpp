@@ -5,6 +5,34 @@
 #include "cpp11/declarations.hpp"
 #include <R_ext/Visibility.h>
 
+// 000_albers_geographiclib.cpp
+cpp11::writable::data_frame albers_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles lon0, double stdlat1, double stdlat2, double k1);
+extern "C" SEXP _geographiclib_albers_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP stdlat1, SEXP stdlat2, SEXP k1) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(albers_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat1), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat2), cpp11::as_cpp<cpp11::decay_t<double>>(k1)));
+  END_CPP11
+}
+// 000_albers_geographiclib.cpp
+cpp11::writable::data_frame albers_rev_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::doubles lon0, double stdlat1, double stdlat2, double k1);
+extern "C" SEXP _geographiclib_albers_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP stdlat1, SEXP stdlat2, SEXP k1) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(albers_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat1), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat2), cpp11::as_cpp<cpp11::decay_t<double>>(k1)));
+  END_CPP11
+}
+// 000_albers_geographiclib.cpp
+cpp11::writable::data_frame albers_fwd_single_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles lon0, double stdlat, double k0);
+extern "C" SEXP _geographiclib_albers_fwd_single_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP stdlat, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(albers_fwd_single_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_albers_geographiclib.cpp
+cpp11::writable::data_frame albers_rev_single_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::doubles lon0, double stdlat, double k0);
+extern "C" SEXP _geographiclib_albers_rev_single_cpp(SEXP x, SEXP y, SEXP lon0, SEXP stdlat, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(albers_rev_single_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(stdlat), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
 // 000_azimuthaleq_geographiclib.cpp
 cpp11::writable::data_frame azimuthaleq_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::doubles lon0, cpp11::doubles lat0);
 extern "C" SEXP _geographiclib_azimuthaleq_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP lat0) {
@@ -327,6 +355,34 @@ extern "C" SEXP _geographiclib_osgb_gridref_rev_cpp(SEXP gridref) {
     return cpp11::as_sexp(osgb_gridref_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(gridref)));
   END_CPP11
 }
+// 000_polarstereo_geographiclib.cpp
+cpp11::writable::data_frame polarstereo_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::logicals northp, double k0);
+extern "C" SEXP _geographiclib_polarstereo_fwd_cpp(SEXP lon, SEXP lat, SEXP northp, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(polarstereo_fwd_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::logicals>>(northp), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_polarstereo_geographiclib.cpp
+cpp11::writable::data_frame polarstereo_rev_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::logicals northp, double k0);
+extern "C" SEXP _geographiclib_polarstereo_rev_cpp(SEXP x, SEXP y, SEXP northp, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(polarstereo_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::logicals>>(northp), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_polarstereo_geographiclib.cpp
+cpp11::writable::data_frame polarstereo_fwd_custom_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::logicals northp, double k0);
+extern "C" SEXP _geographiclib_polarstereo_fwd_custom_cpp(SEXP lon, SEXP lat, SEXP northp, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(polarstereo_fwd_custom_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lat), cpp11::as_cpp<cpp11::decay_t<cpp11::logicals>>(northp), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
+// 000_polarstereo_geographiclib.cpp
+cpp11::writable::data_frame polarstereo_rev_custom_cpp(cpp11::doubles x, cpp11::doubles y, cpp11::logicals northp, double k0);
+extern "C" SEXP _geographiclib_polarstereo_rev_custom_cpp(SEXP x, SEXP y, SEXP northp, SEXP k0) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(polarstereo_rev_custom_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<cpp11::logicals>>(northp), cpp11::as_cpp<cpp11::decay_t<double>>(k0)));
+  END_CPP11
+}
 // 000_polygonarea_geographiclib.cpp
 cpp11::writable::data_frame polygonarea_cpp(cpp11::doubles lon, cpp11::doubles lat, cpp11::integers id, bool polyline);
 extern "C" SEXP _geographiclib_polygonarea_cpp(SEXP lon, SEXP lat, SEXP id, SEXP polyline) {
@@ -435,6 +491,10 @@ extern "C" SEXP _geographiclib_utmups_rev_cpp(SEXP x, SEXP y, SEXP zone, SEXP no
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
+    {"_geographiclib_albers_fwd_cpp",                    (DL_FUNC) &_geographiclib_albers_fwd_cpp,                    6},
+    {"_geographiclib_albers_fwd_single_cpp",             (DL_FUNC) &_geographiclib_albers_fwd_single_cpp,             5},
+    {"_geographiclib_albers_rev_cpp",                    (DL_FUNC) &_geographiclib_albers_rev_cpp,                    6},
+    {"_geographiclib_albers_rev_single_cpp",             (DL_FUNC) &_geographiclib_albers_rev_single_cpp,             5},
     {"_geographiclib_azimuthaleq_fwd_cpp",               (DL_FUNC) &_geographiclib_azimuthaleq_fwd_cpp,               4},
     {"_geographiclib_azimuthaleq_rev_cpp",               (DL_FUNC) &_geographiclib_azimuthaleq_rev_cpp,               4},
     {"_geographiclib_cassini_fwd_cpp",                   (DL_FUNC) &_geographiclib_cassini_fwd_cpp,                   4},
@@ -481,6 +541,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_osgb_gridref_cpp",                  (DL_FUNC) &_geographiclib_osgb_gridref_cpp,                  3},
     {"_geographiclib_osgb_gridref_rev_cpp",              (DL_FUNC) &_geographiclib_osgb_gridref_rev_cpp,              1},
     {"_geographiclib_osgb_rev_cpp",                      (DL_FUNC) &_geographiclib_osgb_rev_cpp,                      2},
+    {"_geographiclib_polarstereo_fwd_cpp",               (DL_FUNC) &_geographiclib_polarstereo_fwd_cpp,               4},
+    {"_geographiclib_polarstereo_fwd_custom_cpp",        (DL_FUNC) &_geographiclib_polarstereo_fwd_custom_cpp,        4},
+    {"_geographiclib_polarstereo_rev_cpp",               (DL_FUNC) &_geographiclib_polarstereo_rev_cpp,               4},
+    {"_geographiclib_polarstereo_rev_custom_cpp",        (DL_FUNC) &_geographiclib_polarstereo_rev_custom_cpp,        4},
     {"_geographiclib_polygonarea_cpp",                   (DL_FUNC) &_geographiclib_polygonarea_cpp,                   4},
     {"_geographiclib_polygonarea_cumulative_cpp",        (DL_FUNC) &_geographiclib_polygonarea_cumulative_cpp,        3},
     {"_geographiclib_polygonarea_single_cpp",            (DL_FUNC) &_geographiclib_polygonarea_single_cpp,            3},

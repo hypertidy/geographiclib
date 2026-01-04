@@ -1,3 +1,17 @@
+# geographiclib 0.3.3
+
+## New features
+
+* `albers_fwd()` and `albers_rev()` - Albers Equal Area conic projection
+  - Supports single or two standard parallels
+  - Vectorized on `lon0` parameter
+  - Ideal for thematic maps requiring area preservation
+
+* `polarstereo_fwd()` and `polarstereo_rev()` - Polar Stereographic projection
+  - Configurable scale factor (default k0 = 0.994 for UPS)
+  - Supports both north and south polar regions
+  - `northp` parameter is vectorized
+
 # geographiclib 0.3.2
 
 ## New features
