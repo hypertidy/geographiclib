@@ -13,7 +13,7 @@
 #include <iostream>
 #include <iomanip>
 #include <GeographicLib/Trigfun.hpp>
-#include "kissfft.hpp"
+#include "kissfft.h"
 
 #define USE_ANGLE 0
 

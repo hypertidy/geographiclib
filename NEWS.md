@@ -1,5 +1,7 @@
 # geographiclib 0.3.7
 
+* Commit to rename of kissfft.hh to kissfft.h. 
+
 ## New features
 
 ### Nearest neighbor search
