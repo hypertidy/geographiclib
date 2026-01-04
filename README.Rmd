@@ -23,28 +23,40 @@ R interface to [GeographicLib](https://geographiclib.sourceforge.io/) for precis
 
 ## Features
 
+### Grid Reference Systems
+* **GARS** - Global Area Reference System (military)
+* **Geohash** - Geohash encoding/decoding with precision control
+* **Georef** - World Geographic Reference System (aviation)
 * **MGRS** - Military Grid Reference System encoding/decoding
-* **UTM/UPS** - Universal Transverse Mercator and Universal Polar Stereographic projections
-* **Transverse Mercator** - Custom TM projections with user-defined parameters
-* **Lambert Conformal Conic** - Configurable LCC projection
+* **OSGB** - Ordnance Survey National Grid (Great Britain)
+
+### Coordinate Parsing & Formatting
+* **DMS** - Degrees-minutes-seconds parsing and formatting
+* **GeoCoords** - Universal coordinate parsing (MGRS, UTM, DMS, decimal)
+
+### Map Projections
 * **Albers Equal Area** - Equal-area conic projection
-* **Polar Stereographic** - Conformal polar projection with configurable scale
 * **Azimuthal Equidistant** - Projection centered on any point
 * **Cassini-Soldner** - Historical transverse cylindrical projection
 * **Gnomonic** - Geodesics appear as straight lines
-* **OSGB** - Ordnance Survey National Grid (Great Britain)
-* **Geohash** - Geohash encoding/decoding with precision control
-* **GARS** - Global Area Reference System (military)
-* **Georef** - World Geographic Reference System (aviation)
-* **GeoCoords** - Universal coordinate parsing (MGRS, UTM, DMS, decimal)
-* **DMS** - Degrees-minutes-seconds parsing and formatting
-* **Geodesic calculations** - Distance, bearing, paths on the ellipsoid (exact and fast)
-* **Geodesic intersections** - Find where two geodesics cross on the ellipsoid
-* **Rhumb lines** - Constant-bearing paths (loxodromes)
+* **Lambert Conformal Conic** - Configurable LCC projection
+* **Polar Stereographic** - Conformal polar projection with configurable scale
+* **Transverse Mercator** - Custom TM projections with user-defined parameters
+* **UTM/UPS** - Universal Transverse Mercator and Universal Polar Stereographic
+
+### Geodesic Calculations
+* **Geodesic direct/inverse** - Distance, bearing, paths on the ellipsoid (exact and fast)
+* **Geodesic intersections** - Find where two geodesics cross
+* **Nearest neighbor search** - Find closest points using geodesic distance
 * **Polygon area** - Accurate area/perimeter on the ellipsoid
+* **Rhumb lines** - Constant-bearing paths (loxodromes)
+
+### Coordinate Transformations
 * **Geocentric** - ECEF (Earth-Centered Earth-Fixed) coordinates
 * **Local Cartesian** - East-North-Up (ENU) local coordinates
-* **Ellipsoid** - WGS84 parameters, curvature, auxiliary latitudes
+
+### Ellipsoid
+* **Ellipsoid parameters** - WGS84 parameters, curvature, auxiliary latitudes
 
 All functions are fully vectorized with rich metadata output.
 
@@ -66,18 +78,24 @@ pts <- cbind(lon = c(147.32, -74.01, 0.13),
 
 # MGRS back to coordinates with full metadata
 mgrs_rev(codes)
+
+## arguments are vectorized
+rev0 <- mgrs_rev(vcodes <- mgrs_fwd(rbind(pts, pts), precision = c(0L, 1L, 2L, 3L, 4L, 5L)))
+cbind(mgrs = vcodes, rev0)
 ```
 
 ## Documentation
 
-See the [package overview vignette](https://hypertidy.github.io/geographiclib/articles/geographiclib-overview.html) for a comprehensive tour of all features including:
+Function reference and vignettes are available at
+<https://hypertidy.github.io/geographiclib/>
 
-- MGRS and Geohash encoding
-- UTM/UPS and Lambert Conformal Conic projections
-- Geodesic distance, bearing, and path calculations
-- Polygon area on the ellipsoid
+Articles:
 
-Full documentation at <https://hypertidy.github.io/geographiclib/>
+* **[Getting Started](https://hypertidy.github.io/geographiclib/articles/geographiclib-overview.html)** - Package overview and quick examples
+* **[Geodesics](https://hypertidy.github.io/geographiclib/articles/geodesics.html)** - Distance, bearings, waypoints, intersections, rhumb lines, polygon area, nearest neighbors
+* **[Grid References](https://hypertidy.github.io/geographiclib/articles/grid-reference-systems.html)** - MGRS, Geohash, GARS, Georef, GeoCoords, DMS formatting
+* **[Projections](https://hypertidy.github.io/geographiclib/articles/projections.html)** - UTM/UPS, Transverse Mercator, Lambert, Albers, Polar Stereographic, and more
+* **[Local Coordinates](https://hypertidy.github.io/geographiclib/articles/local-coordinates.html)** - Geocentric (ECEF), Local Cartesian (ENU), ellipsoid properties
 
 ## Performance
 

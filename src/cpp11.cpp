@@ -439,6 +439,20 @@ extern "C" SEXP _geographiclib_mgrs_decode_cpp(SEXP mgrs) {
     return cpp11::as_sexp(mgrs_decode_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(mgrs)));
   END_CPP11
 }
+// 000_nn_geographiclib.cpp
+cpp11::writable::list nn_search_cpp(cpp11::doubles dataset_lat, cpp11::doubles dataset_lon, cpp11::doubles query_lat, cpp11::doubles query_lon, int k);
+extern "C" SEXP _geographiclib_nn_search_cpp(SEXP dataset_lat, SEXP dataset_lon, SEXP query_lat, SEXP query_lon, SEXP k) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nn_search_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(dataset_lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(dataset_lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(query_lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(query_lon), cpp11::as_cpp<cpp11::decay_t<int>>(k)));
+  END_CPP11
+}
+// 000_nn_geographiclib.cpp
+cpp11::writable::list nn_search_radius_cpp(cpp11::doubles dataset_lat, cpp11::doubles dataset_lon, cpp11::doubles query_lat, cpp11::doubles query_lon, double radius);
+extern "C" SEXP _geographiclib_nn_search_radius_cpp(SEXP dataset_lat, SEXP dataset_lon, SEXP query_lat, SEXP query_lon, SEXP radius) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(nn_search_radius_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(dataset_lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(dataset_lon), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(query_lat), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(query_lon), cpp11::as_cpp<cpp11::decay_t<double>>(radius)));
+  END_CPP11
+}
 // 000_osgb_geographiclib.cpp
 cpp11::writable::data_frame osgb_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat);
 extern "C" SEXP _geographiclib_osgb_fwd_cpp(SEXP lon, SEXP lat) {
@@ -665,6 +679,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_mgrs_decode_cpp",                   (DL_FUNC) &_geographiclib_mgrs_decode_cpp,                   1},
     {"_geographiclib_mgrs_fwd_cpp",                      (DL_FUNC) &_geographiclib_mgrs_fwd_cpp,                      3},
     {"_geographiclib_mgrs_rev_cpp",                      (DL_FUNC) &_geographiclib_mgrs_rev_cpp,                      1},
+    {"_geographiclib_nn_search_cpp",                     (DL_FUNC) &_geographiclib_nn_search_cpp,                     5},
+    {"_geographiclib_nn_search_radius_cpp",              (DL_FUNC) &_geographiclib_nn_search_radius_cpp,              5},
     {"_geographiclib_osgb_fwd_cpp",                      (DL_FUNC) &_geographiclib_osgb_fwd_cpp,                      2},
     {"_geographiclib_osgb_gridref_cpp",                  (DL_FUNC) &_geographiclib_osgb_gridref_cpp,                  3},
     {"_geographiclib_osgb_gridref_rev_cpp",              (DL_FUNC) &_geographiclib_osgb_gridref_rev_cpp,              1},

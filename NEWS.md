@@ -1,3 +1,18 @@
+# geographiclib 0.3.7
+
+## New features
+
+### Nearest neighbor search
+* `geodesic_nn()` - Find k nearest neighbors using geodesic distances on the
+  WGS84 ellipsoid. Uses a vantage-point tree for efficient searching.
+* `geodesic_nn_radius()` - Find all neighbors within a specified radius (meters)
+
+Both functions build an optimized spatial index for fast repeated queries.
+
+## Documentation
+
+* Expanded `vignette("geodesics")` with a new section on nearest neighbor search
+
 # geographiclib 0.3.6
 
 ## New features

@@ -248,6 +248,14 @@ mgrs_decode_cpp <- function(mgrs) {
   .Call(`_geographiclib_mgrs_decode_cpp`, mgrs)
 }
 
+nn_search_cpp <- function(dataset_lat, dataset_lon, query_lat, query_lon, k) {
+  .Call(`_geographiclib_nn_search_cpp`, dataset_lat, dataset_lon, query_lat, query_lon, k)
+}
+
+nn_search_radius_cpp <- function(dataset_lat, dataset_lon, query_lat, query_lon, radius) {
+  .Call(`_geographiclib_nn_search_radius_cpp`, dataset_lat, dataset_lon, query_lat, query_lon, radius)
+}
+
 osgb_fwd_cpp <- function(lon, lat) {
   .Call(`_geographiclib_osgb_fwd_cpp`, lon, lat)
 }

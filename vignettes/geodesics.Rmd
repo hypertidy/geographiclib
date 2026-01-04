@@ -551,6 +551,138 @@ data.frame(
 )
 ```
 
+## Nearest Neighbor Search
+
+Find the closest points in a dataset using true geodesic distances on the
+WGS84 ellipsoid. This is useful for spatial queries, clustering, and
+matching points across datasets.
+
+### Basic k-Nearest Neighbors
+
+Find the k closest points in a dataset for each query point:
+
+```{r nn-basic}
+# Australian cities dataset
+oz_cities <- cbind(
+  lon = c(151.21, 144.96, 153.03, 115.86, 138.60, 149.13),
+  lat = c(-33.87, -37.81, -27.47, -31.95, -34.93, -35.28)
+)
+rownames(oz_cities) <- c("Sydney", "Melbourne", "Brisbane", 
+                          "Perth", "Adelaide", "Canberra")
+
+# Find 3 nearest cities to Canberra
+query <- c(149.13, -35.28)  # Canberra
+result <- geodesic_nn(oz_cities, query, k = 3)
+
+# Show nearest cities
+data.frame(
+  rank = 1:3,
+  city = rownames(oz_cities)[result$index[, 1]],
+  distance_km = round(result$distance[, 1] / 1000, 1)
+)
+```
+
+### Multiple Query Points
+
+Search for multiple query points at once:
+
+```{r nn-multiple}
+# New cities to find neighbors for
+queries <- cbind(
+  lon = c(147.32, 130.84),
+  lat = c(-42.88, -12.46)
+)
+rownames(queries) <- c("Hobart", "Darwin")
+
+result <- geodesic_nn(oz_cities, queries, k = 2)
+
+# Results for each query
+for (i in 1:nrow(queries)) {
+  cat(rownames(queries)[i], "- nearest cities:\n")
+  for (j in 1:2) {
+    cat("  ", j, ". ", rownames(oz_cities)[result$index[j, i]], 
+        " (", round(result$distance[j, i] / 1000), " km)\n", sep = "")
+  }
+}
+```
+
+### Radius Search
+
+Find all points within a specified distance:
+
+```{r nn-radius}
+# Find all cities within 500 km of Adelaide
+adelaide <- c(138.60, -34.93)
+within_500km <- geodesic_nn_radius(oz_cities, adelaide, radius = 500000)
+
+if (nrow(within_500km[[1]]) > 0) {
+  data.frame(
+    city = rownames(oz_cities)[within_500km[[1]]$index],
+    distance_km = round(within_500km[[1]]$distance / 1000, 1)
+  )
+}
+```
+
+### Self-Search for Clustering
+
+Search a dataset against itself to find each point's nearest neighbors
+(useful for clustering or outlier detection):
+
+```{r nn-self}
+# Find each city's nearest neighbor (excluding itself)
+result <- geodesic_nn(oz_cities, oz_cities, k = 2)
+
+# The second neighbor (k=2) is the nearest *other* city
+data.frame(
+  city = rownames(oz_cities),
+  nearest = rownames(oz_cities)[result$index[2, ]],
+  distance_km = round(result$distance[2, ] / 1000, 1)
+)
+```
+
+### Distance Matrix
+
+Create a complete distance matrix between two sets of points:
+
+```{r nn-distmat}
+# Distance from each Australian city to key world cities
+world_cities <- cities[c("Sydney", "London", "New York", "Tokyo"), ]
+
+# Get distances (k = all world cities)
+result <- geodesic_nn(world_cities, oz_cities, k = nrow(world_cities))
+
+# Format as distance matrix (km)
+dist_mat <- matrix(
+  round(result$distance / 1000),
+  nrow = nrow(world_cities),
+  dimnames = list(rownames(world_cities), rownames(oz_cities))
+)
+dist_mat
+```
+
+### Performance
+
+The nearest neighbor search uses a vantage-point tree, which provides
+efficient O(log n) queries after O(n log n) construction. This is much
+faster than computing all pairwise distances for large datasets.
+
+```{r nn-performance, eval=FALSE}
+# Example with larger dataset (not run)
+set.seed(42)
+large_dataset <- cbind(
+  lon = runif(10000, 110, 155),
+  lat = runif(10000, -45, -10)
+)
+queries <- cbind(
+  lon = runif(100, 110, 155),
+  lat = runif(100, -45, -10)
+)
+
+system.time(geodesic_nn(large_dataset, queries, k = 10))
+#>  user  system elapsed 
+#>  0.15    0.00    0.15
+```
+
 ## See Also
 
 - `vignette("grid-reference-systems")` for MGRS, Geohash, etc.
