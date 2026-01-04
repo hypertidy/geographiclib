@@ -84,6 +84,10 @@
 </div>
 </div>
 <div class="section level3">
+<h3 id="bug-fixes-0-3-7">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-7"></a></h3>
+<ul><li>Fixed <code>geocoords_to_mgrs()</code> and <code>geocoords_to_utm()</code> which were producing garbled output. These functions have been removed as they duplicated <code><a href="../reference/mgrs_fwd.html">mgrs_fwd()</a></code> and <code>utm_fwd()</code> functionality. Use those functions instead.</li>
+</ul></div>
+<div class="section level3">
 <h3 id="documentation-0-3-7">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-7"></a></h3>
 <ul><li>Expanded <code><a href="../articles/geodesics.html">vignette("geodesics")</a></code> with a new section on nearest neighbor search</li>
 </ul></div>
@@ -144,9 +148,9 @@
 <ul><li>
 <code><a href="../reference/geocoords_parse.html">geocoords_parse()</a></code> - Parse coordinate strings in various formats (MGRS, UTM, DMS)</li>
 <li>
-<code><a href="../reference/geocoords_parse.html">geocoords_to_mgrs()</a></code> - Convert lat/lon to MGRS strings</li>
+<code>geocoords_to_mgrs()</code> - Convert lat/lon to MGRS strings</li>
 <li>
-<code><a href="../reference/geocoords_parse.html">geocoords_to_utm()</a></code> - Convert lat/lon to UTM strings</li>
+<code>geocoords_to_utm()</code> - Convert lat/lon to UTM strings</li>
 </ul></div>
 </div>
     <div class="section level2">
