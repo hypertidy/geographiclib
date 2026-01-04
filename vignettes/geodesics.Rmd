@@ -395,6 +395,162 @@ system.time(geodesic_inverse_fast(pts1, pts2))
 #>  0.04    0.00    0.04
 ```
 
+## Geodesic Intersections
+
+Find where two geodesics cross on the ellipsoid. This is useful for navigation,
+surveying, and geometric calculations.
+
+### Closest Intersection
+
+Given two geodesics defined by starting points and azimuths, find their
+closest intersection:
+
+```{r intersect-closest}
+# Two geodesics starting from different points
+# Geodesic X: from (0, 0) heading NE at 45°
+# Geodesic Y: from (1, 0) heading NW at 315°
+result <- geodesic_intersect(c(0, 0), 45, c(1, 0), 315)
+result
+
+# The intersection is found ahead on both geodesics
+data.frame(
+  geodesic = c("X", "Y"),
+  start = c("(0, 0)", "(1, 0)"),
+  azimuth = c(45, 315),
+  displacement_km = round(c(result$x, result$y) / 1000, 2)
+)
+```
+
+The output includes:
+- `x`, `y`: Displacements along each geodesic from the starting point (meters)
+- `coincidence`: 0 = normal intersection, +1 = parallel/coincident, -1 = antiparallel
+- `lat`, `lon`: Coordinates of the intersection point
+
+### Segment Intersection
+
+Find if and where two geodesic segments (defined by endpoints) intersect:
+
+```{r intersect-segment}
+# Two crossing segments
+# Segment X: from (0, -0.5) to (0, 0.5) - roughly N-S
+# Segment Y: from (-0.5, 0) to (0.5, 0) - roughly E-W
+result <- geodesic_intersect_segment(
+  c(0, -0.5), c(0, 0.5),   # Segment X endpoints
+  c(-0.5, 0), c(0.5, 0)    # Segment Y endpoints
+)
+result
+
+# segmode = 0 means intersection is within both segments
+if (result$segmode == 0) {
+  cat("Segments intersect at:", result$lat, result$lon, "\n")
+} else {
+  cat("Segments do not intersect (extended intersection at:", 
+      result$lat, result$lon, ")\n")
+}
+```
+
+The `segmode` value indicates whether the intersection lies within the segments:
+- `segmode = 0`: Intersection is within both segments
+- Non-zero: Intersection is outside one or both segments
+
+### Non-Intersecting Segments
+
+```{r intersect-segment-parallel}
+# Two parallel segments that don't intersect
+result <- geodesic_intersect_segment(
+  c(0, 0), c(0, 1),    # Segment X: lon=0, lat 0 to 1
+  c(1, 0), c(1, 1)     # Segment Y: lon=1, lat 0 to 1
+)
+
+cat("segmode:", result$segmode, "- segments do not intersect\n")
+cat("Closest point of intersection would be at:", result$lat, result$lon, "\n")
+```
+
+### Next Intersection
+
+From a known intersection point, find the next closest intersection.
+Geodesics on an ellipsoid can intersect multiple times:
+
+```{r intersect-next}
+# Two geodesics crossing at the origin
+# Find where they cross again
+next_int <- geodesic_intersect_next(c(0, 0), 45, 90)
+
+data.frame(
+  intersection = c("origin", "next"),
+  lat = c(0, next_int$lat),
+  lon = c(0, next_int$lon),
+  distance_km = c(0, round(abs(next_int$x) / 1000))
+)
+```
+
+### All Intersections Within a Distance
+
+Find all intersections within a specified distance from the starting points:
+
+```{r intersect-all}
+# Find all intersections within 5,000 km
+all_ints <- geodesic_intersect_all(
+  c(0, 0), 30,      # Geodesic X: from origin, azimuth 30°
+  c(10, 0), 330,    # Geodesic Y: from (10, 0), azimuth 330°
+  maxdist = 5e6     # Search radius: 5,000 km
+)
+
+cat("Found", nrow(all_ints), "intersections within 5,000 km\n")
+all_ints
+```
+
+### Practical Example: Great Circle Route Crossings
+
+Determine where two flight routes cross:
+
+```{r intersect-routes}
+# Route 1: Sydney to London (via typical great circle)
+sydney <- c(151.21, -33.87)
+london <- c(-0.13, 51.51)
+route1 <- geodesic_inverse(sydney, london)
+
+# Route 2: Tokyo to São Paulo
+tokyo <- c(139.69, 35.69)
+sao_paulo <- c(-46.63, -23.55)
+route2 <- geodesic_inverse(tokyo, sao_paulo)
+
+# Find intersection of extended routes
+crossing <- geodesic_intersect(
+  sydney, route1$azi1,
+  tokyo, route2$azi1
+)
+
+cat("Routes cross at:", round(crossing$lat, 2), "lat,", 
+    round(crossing$lon, 2), "lon\n")
+
+# Distance from each origin to crossing
+cat("From Sydney:", round(crossing$x / 1000), "km\n")
+cat("From Tokyo:", round(crossing$y / 1000), "km\n")
+```
+
+### Vectorized Operations
+
+All intersection functions are vectorized for efficiency:
+
+```{r intersect-vectorized}
+# Multiple intersection problems at once
+results <- geodesic_intersect(
+  cbind(c(0, 0, 0), c(0, 10, 20)),  # Three starting points for X
+  c(45, 60, 75),                     # Three azimuths for X
+  cbind(c(5, 5, 5), c(0, 10, 20)),  # Three starting points for Y
+  c(315, 300, 285)                   # Three azimuths for Y
+)
+
+data.frame(
+  problem = 1:3,
+  lat = round(results$lat, 4),
+  lon = round(results$lon, 4),
+  dist_x_km = round(results$x / 1000, 1),
+  dist_y_km = round(results$y / 1000, 1)
+)
+```
+
 ## See Also
 
 - `vignette("grid-reference-systems")` for MGRS, Geohash, etc.

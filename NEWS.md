@@ -1,3 +1,23 @@
+# geographiclib 0.3.6
+
+## New features
+
+### Geodesic intersections
+* `geodesic_intersect()` - Find the closest intersection of two geodesics
+  defined by starting points and azimuths
+* `geodesic_intersect_segment()` - Find the intersection of two geodesic
+  segments defined by their endpoints
+* `geodesic_intersect_next()` - Find the next closest intersection from a
+  known intersection point
+* `geodesic_intersect_all()` - Find all intersections within a maximum distance
+
+All functions return the displacement along each geodesic, a coincidence
+indicator, and the latitude/longitude of the intersection point.
+
+## Documentation
+
+* Expanded `vignette("geodesics")` with a new section on geodesic intersections
+
 # geographiclib 0.3.5
 
 ## New features

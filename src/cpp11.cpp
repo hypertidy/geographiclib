@@ -348,6 +348,34 @@ extern "C" SEXP _geographiclib_gnomonic_rev_cpp(SEXP x, SEXP y, SEXP lon0, SEXP 
     return cpp11::as_sexp(gnomonic_rev_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(x), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(y), cpp11::as_cpp<cpp11::decay_t<double>>(lon0), cpp11::as_cpp<cpp11::decay_t<double>>(lat0)));
   END_CPP11
 }
+// 000_intersect_geographiclib.cpp
+cpp11::writable::data_frame intersect_closest_cpp(cpp11::doubles latX, cpp11::doubles lonX, cpp11::doubles aziX, cpp11::doubles latY, cpp11::doubles lonY, cpp11::doubles aziY);
+extern "C" SEXP _geographiclib_intersect_closest_cpp(SEXP latX, SEXP lonX, SEXP aziX, SEXP latY, SEXP lonY, SEXP aziY) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(intersect_closest_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(aziX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latY), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonY), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(aziY)));
+  END_CPP11
+}
+// 000_intersect_geographiclib.cpp
+cpp11::writable::data_frame intersect_segment_cpp(cpp11::doubles latX1, cpp11::doubles lonX1, cpp11::doubles latX2, cpp11::doubles lonX2, cpp11::doubles latY1, cpp11::doubles lonY1, cpp11::doubles latY2, cpp11::doubles lonY2);
+extern "C" SEXP _geographiclib_intersect_segment_cpp(SEXP latX1, SEXP lonX1, SEXP latX2, SEXP lonX2, SEXP latY1, SEXP lonY1, SEXP latY2, SEXP lonY2) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(intersect_segment_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latX1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonX1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latX2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonX2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latY1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonY1), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latY2), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonY2)));
+  END_CPP11
+}
+// 000_intersect_geographiclib.cpp
+cpp11::writable::data_frame intersect_next_cpp(cpp11::doubles latX, cpp11::doubles lonX, cpp11::doubles aziX, cpp11::doubles aziY);
+extern "C" SEXP _geographiclib_intersect_next_cpp(SEXP latX, SEXP lonX, SEXP aziX, SEXP aziY) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(intersect_next_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(aziX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(aziY)));
+  END_CPP11
+}
+// 000_intersect_geographiclib.cpp
+cpp11::writable::list intersect_all_cpp(cpp11::doubles latX, cpp11::doubles lonX, cpp11::doubles aziX, cpp11::doubles latY, cpp11::doubles lonY, cpp11::doubles aziY, cpp11::doubles maxdist);
+extern "C" SEXP _geographiclib_intersect_all_cpp(SEXP latX, SEXP lonX, SEXP aziX, SEXP latY, SEXP lonY, SEXP aziY, SEXP maxdist) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(intersect_all_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(aziX), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(latY), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(lonY), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(aziY), cpp11::as_cpp<cpp11::decay_t<cpp11::doubles>>(maxdist)));
+  END_CPP11
+}
 // 000_lcc_geographiclib.cpp
 cpp11::writable::data_frame lcc_fwd_cpp(cpp11::doubles lon, cpp11::doubles lat, double lon0, double lat0, double stdlat, double k0);
 extern "C" SEXP _geographiclib_lcc_fwd_cpp(SEXP lon, SEXP lat, SEXP lon0, SEXP lat0, SEXP stdlat, SEXP k0) {
@@ -624,6 +652,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_geographiclib_georef_rev_cpp",                    (DL_FUNC) &_geographiclib_georef_rev_cpp,                    1},
     {"_geographiclib_gnomonic_fwd_cpp",                  (DL_FUNC) &_geographiclib_gnomonic_fwd_cpp,                  4},
     {"_geographiclib_gnomonic_rev_cpp",                  (DL_FUNC) &_geographiclib_gnomonic_rev_cpp,                  4},
+    {"_geographiclib_intersect_all_cpp",                 (DL_FUNC) &_geographiclib_intersect_all_cpp,                 7},
+    {"_geographiclib_intersect_closest_cpp",             (DL_FUNC) &_geographiclib_intersect_closest_cpp,             6},
+    {"_geographiclib_intersect_next_cpp",                (DL_FUNC) &_geographiclib_intersect_next_cpp,                4},
+    {"_geographiclib_intersect_segment_cpp",             (DL_FUNC) &_geographiclib_intersect_segment_cpp,             8},
     {"_geographiclib_lcc_fwd2_cpp",                      (DL_FUNC) &_geographiclib_lcc_fwd2_cpp,                      7},
     {"_geographiclib_lcc_fwd_cpp",                       (DL_FUNC) &_geographiclib_lcc_fwd_cpp,                       6},
     {"_geographiclib_lcc_rev2_cpp",                      (DL_FUNC) &_geographiclib_lcc_rev2_cpp,                      7},

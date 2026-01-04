@@ -196,6 +196,22 @@ gnomonic_rev_cpp <- function(x, y, lon0, lat0) {
   .Call(`_geographiclib_gnomonic_rev_cpp`, x, y, lon0, lat0)
 }
 
+intersect_closest_cpp <- function(latX, lonX, aziX, latY, lonY, aziY) {
+  .Call(`_geographiclib_intersect_closest_cpp`, latX, lonX, aziX, latY, lonY, aziY)
+}
+
+intersect_segment_cpp <- function(latX1, lonX1, latX2, lonX2, latY1, lonY1, latY2, lonY2) {
+  .Call(`_geographiclib_intersect_segment_cpp`, latX1, lonX1, latX2, lonX2, latY1, lonY1, latY2, lonY2)
+}
+
+intersect_next_cpp <- function(latX, lonX, aziX, aziY) {
+  .Call(`_geographiclib_intersect_next_cpp`, latX, lonX, aziX, aziY)
+}
+
+intersect_all_cpp <- function(latX, lonX, aziX, latY, lonY, aziY, maxdist) {
+  .Call(`_geographiclib_intersect_all_cpp`, latX, lonX, aziX, latY, lonY, aziY, maxdist)
+}
+
 lcc_fwd_cpp <- function(lon, lat, lon0, lat0, stdlat, k0) {
   .Call(`_geographiclib_lcc_fwd_cpp`, lon, lat, lon0, lat0, stdlat, k0)
 }

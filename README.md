@@ -33,6 +33,8 @@ for precise geodetic calculations on the WGS84 ellipsoid.
 - **DMS** - Degrees-minutes-seconds parsing and formatting
 - **Geodesic calculations** - Distance, bearing, paths on the ellipsoid
   (exact and fast)
+- **Geodesic intersections** - Find where two geodesics cross on the
+  ellipsoid
 - **Rhumb lines** - Constant-bearing paths (loxodromes)
 - **Polygon area** - Accurate area/perimeter on the ellipsoid
 - **Geocentric** - ECEF (Earth-Centered Earth-Fixed) coordinates
