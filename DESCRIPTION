@@ -2,8 +2,8 @@ Package: geographiclib
 Title: Access to 'GeographicLib' 
 Version: 0.3.7
 Authors@R: c(
-    person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("aut", "cre")), 
-    person("Charles", "Karney", role = "ctb", comment="GeographicLib")
+    person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("cre")), 
+    person("Charles", "Karney", role = c("cph", "aut"), comment="GeographicLib author and maintainer")
     )
 Description: GeographicLib functions for precise geodetic calculations including 
     MGRS (Military Grid Reference System), UTM/UPS projections, Geohash encoding, 

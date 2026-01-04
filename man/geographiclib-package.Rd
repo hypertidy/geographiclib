@@ -19,9 +19,9 @@ Useful links:
 \author{
 \strong{Maintainer}: Michael Sumner \email{mdsumner@gmail.com}
 
-Other contributors:
+Authors:
 \itemize{
-  \item Charles Karney (GeographicLib) [contributor]
+  \item Charles Karney (GeographicLib author and maintainer) [copyright holder]
 }
 
 }
