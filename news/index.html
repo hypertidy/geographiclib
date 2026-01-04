@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.7</span>
       </span>
     </div>
 
@@ -69,6 +69,24 @@
       <small>Source: <a href="https://github.com/hypertidy/geographiclib/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.7" id="geographiclib-037">geographiclib 0.3.7<a class="anchor" aria-label="anchor" href="#geographiclib-037"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-7">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-7"></a></h3>
+<div class="section level4">
+<h4 id="nearest-neighbor-search-0-3-7">Nearest neighbor search<a class="anchor" aria-label="anchor" href="#nearest-neighbor-search-0-3-7"></a></h4>
+<ul><li>
+<code><a href="../reference/geodesic_nn.html">geodesic_nn()</a></code> - Find k nearest neighbors using geodesic distances on the WGS84 ellipsoid. Uses a vantage-point tree for efficient searching.</li>
+<li>
+<code><a href="../reference/geodesic_nn.html">geodesic_nn_radius()</a></code> - Find all neighbors within a specified radius (meters)</li>
+</ul><p>Both functions build an optimized spatial index for fast repeated queries.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="documentation-0-3-7">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-7"></a></h3>
+<ul><li>Expanded <code><a href="../articles/geodesics.html">vignette("geodesics")</a></code> with a new section on nearest neighbor search</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6" id="geographiclib-036">geographiclib 0.3.6<a class="anchor" aria-label="anchor" href="#geographiclib-036"></a></h2>
 <div class="section level3">

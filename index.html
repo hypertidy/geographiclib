@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.7</span>
       </span>
     </div>
 
@@ -98,19 +98,38 @@
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
+<div class="section level3">
+<h3 id="grid-reference-systems">Grid Reference Systems<a class="anchor" aria-label="anchor" href="#grid-reference-systems"></a>
+</h3>
 <ul>
+<li>
+<strong>GARS</strong> - Global Area Reference System (military)</li>
+<li>
+<strong>Geohash</strong> - Geohash encoding/decoding with precision control</li>
+<li>
+<strong>Georef</strong> - World Geographic Reference System (aviation)</li>
 <li>
 <strong>MGRS</strong> - Military Grid Reference System encoding/decoding</li>
 <li>
-<strong>UTM/UPS</strong> - Universal Transverse Mercator and Universal Polar Stereographic projections</li>
+<strong>OSGB</strong> - Ordnance Survey National Grid (Great Britain)</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="coordinate-parsing--formatting">Coordinate Parsing &amp; Formatting<a class="anchor" aria-label="anchor" href="#coordinate-parsing--formatting"></a>
+</h3>
+<ul>
 <li>
-<strong>Transverse Mercator</strong> - Custom TM projections with user-defined parameters</li>
+<strong>DMS</strong> - Degrees-minutes-seconds parsing and formatting</li>
 <li>
-<strong>Lambert Conformal Conic</strong> - Configurable LCC projection</li>
+<strong>GeoCoords</strong> - Universal coordinate parsing (MGRS, UTM, DMS, decimal)</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="map-projections">Map Projections<a class="anchor" aria-label="anchor" href="#map-projections"></a>
+</h3>
+<ul>
 <li>
 <strong>Albers Equal Area</strong> - Equal-area conic projection</li>
-<li>
-<strong>Polar Stereographic</strong> - Conformal polar projection with configurable scale</li>
 <li>
 <strong>Azimuthal Equidistant</strong> - Projection centered on any point</li>
 <li>
@@ -118,33 +137,50 @@
 <li>
 <strong>Gnomonic</strong> - Geodesics appear as straight lines</li>
 <li>
-<strong>OSGB</strong> - Ordnance Survey National Grid (Great Britain)</li>
+<strong>Lambert Conformal Conic</strong> - Configurable LCC projection</li>
 <li>
-<strong>Geohash</strong> - Geohash encoding/decoding with precision control</li>
+<strong>Polar Stereographic</strong> - Conformal polar projection with configurable scale</li>
 <li>
-<strong>GARS</strong> - Global Area Reference System (military)</li>
+<strong>Transverse Mercator</strong> - Custom TM projections with user-defined parameters</li>
 <li>
-<strong>Georef</strong> - World Geographic Reference System (aviation)</li>
+<strong>UTM/UPS</strong> - Universal Transverse Mercator and Universal Polar Stereographic</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="geodesic-calculations">Geodesic Calculations<a class="anchor" aria-label="anchor" href="#geodesic-calculations"></a>
+</h3>
+<ul>
 <li>
-<strong>GeoCoords</strong> - Universal coordinate parsing (MGRS, UTM, DMS, decimal)</li>
+<strong>Geodesic direct/inverse</strong> - Distance, bearing, paths on the ellipsoid (exact and fast)</li>
 <li>
-<strong>DMS</strong> - Degrees-minutes-seconds parsing and formatting</li>
+<strong>Geodesic intersections</strong> - Find where two geodesics cross</li>
 <li>
-<strong>Geodesic calculations</strong> - Distance, bearing, paths on the ellipsoid (exact and fast)</li>
-<li>
-<strong>Geodesic intersections</strong> - Find where two geodesics cross on the ellipsoid</li>
-<li>
-<strong>Rhumb lines</strong> - Constant-bearing paths (loxodromes)</li>
+<strong>Nearest neighbor search</strong> - Find closest points using geodesic distance</li>
 <li>
 <strong>Polygon area</strong> - Accurate area/perimeter on the ellipsoid</li>
+<li>
+<strong>Rhumb lines</strong> - Constant-bearing paths (loxodromes)</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="coordinate-transformations">Coordinate Transformations<a class="anchor" aria-label="anchor" href="#coordinate-transformations"></a>
+</h3>
+<ul>
 <li>
 <strong>Geocentric</strong> - ECEF (Earth-Centered Earth-Fixed) coordinates</li>
 <li>
 <strong>Local Cartesian</strong> - East-North-Up (ENU) local coordinates</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="ellipsoid">Ellipsoid<a class="anchor" aria-label="anchor" href="#ellipsoid"></a>
+</h3>
+<ul>
 <li>
-<strong>Ellipsoid</strong> - WGS84 parameters, curvature, auxiliary latitudes</li>
+<strong>Ellipsoid parameters</strong> - WGS84 parameters, curvature, auxiliary latitudes</li>
 </ul>
 <p>All functions are fully vectorized with rich metadata output.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -173,19 +209,43 @@
 <span><span class="co">#&gt;       scale grid_zone square_100km        crs</span></span>
 <span><span class="co">#&gt; 1 0.9996084       55G           EN EPSG:32755</span></span>
 <span><span class="co">#&gt; 2 0.9996861       18T           WL EPSG:32618</span></span>
-<span><span class="co">#&gt; 3 1.0000870       31U           CT EPSG:32631</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 1.0000870       31U           CT EPSG:32631</span></span>
+<span></span>
+<span><span class="co">## arguments are vectorized</span></span>
+<span><span class="va">rev0</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_rev</a></span><span class="op">(</span><span class="va">vcodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/mgrs_fwd.html">mgrs_fwd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">pts</span>, <span class="va">pts</span><span class="op">)</span>, precision <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>mgrs <span class="op">=</span> <span class="va">vcodes</span>, <span class="va">rev0</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              mgrs         lon       lat        x       y zone northp precision</span></span>
+<span><span class="co">#&gt; 1           55GEN 147.6124506 -42.90097 550000.0 5250000   55  FALSE         0</span></span>
+<span><span class="co">#&gt; 2         18TWL80 -73.9940004  40.69152 585000.0 4505000   18   TRUE         1</span></span>
+<span><span class="co">#&gt; 3       31UCT0010   0.1249653  51.51035 300500.0 5710500   31   TRUE         2</span></span>
+<span><span class="co">#&gt; 4     55GEN261524 147.3202040 -42.88010 526150.0 5252450   55  FALSE         3</span></span>
+<span><span class="co">#&gt; 5   18TWL83620703 -74.0100003  40.70999 583625.0 4507035   18   TRUE         4</span></span>
+<span><span class="co">#&gt; 6 31UCT0084710446   0.1299966  51.51000 300847.5 5710446   31   TRUE         5</span></span>
+<span><span class="co">#&gt;   convergence     scale grid_zone square_100km        crs</span></span>
+<span><span class="co">#&gt; 1  -0.4169241 0.9996308       55G           EN EPSG:32755</span></span>
+<span><span class="co">#&gt; 2   0.6559370 0.9996889       18T           WL EPSG:32618</span></span>
+<span><span class="co">#&gt; 3  -2.2510864 1.0000887       31U           CT EPSG:32631</span></span>
+<span><span class="co">#&gt; 4  -0.2178893 0.9996084       55G           EN EPSG:32755</span></span>
+<span><span class="co">#&gt; 5   0.6457454 0.9996861       18T           WL EPSG:32618</span></span>
+<span><span class="co">#&gt; 6  -2.2471333 1.0000870       31U           CT EPSG:32631</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
-<p>See the <a href="https://hypertidy.github.io/geographiclib/articles/geographiclib-overview.html" class="external-link">package overview vignette</a> for a comprehensive tour of all features including:</p>
+<p>Function reference and vignettes are available at <a href="https://hypertidy.github.io/geographiclib/" class="external-link uri">https://hypertidy.github.io/geographiclib/</a></p>
+<p>Articles:</p>
 <ul>
-<li>MGRS and Geohash encoding</li>
-<li>UTM/UPS and Lambert Conformal Conic projections</li>
-<li>Geodesic distance, bearing, and path calculations</li>
-<li>Polygon area on the ellipsoid</li>
+<li>
+<strong><a href="https://hypertidy.github.io/geographiclib/articles/geographiclib-overview.html" class="external-link">Getting Started</a></strong> - Package overview and quick examples</li>
+<li>
+<strong><a href="https://hypertidy.github.io/geographiclib/articles/geodesics.html" class="external-link">Geodesics</a></strong> - Distance, bearings, waypoints, intersections, rhumb lines, polygon area, nearest neighbors</li>
+<li>
+<strong><a href="https://hypertidy.github.io/geographiclib/articles/grid-reference-systems.html" class="external-link">Grid References</a></strong> - MGRS, Geohash, GARS, Georef, GeoCoords, DMS formatting</li>
+<li>
+<strong><a href="https://hypertidy.github.io/geographiclib/articles/projections.html" class="external-link">Projections</a></strong> - UTM/UPS, Transverse Mercator, Lambert, Albers, Polar Stereographic, and more</li>
+<li>
+<strong><a href="https://hypertidy.github.io/geographiclib/articles/local-coordinates.html" class="external-link">Local Coordinates</a></strong> - Geocentric (ECEF), Local Cartesian (ENU), ellipsoid properties</li>
 </ul>
-<p>Full documentation at <a href="https://hypertidy.github.io/geographiclib/" class="external-link uri">https://hypertidy.github.io/geographiclib/</a></p>
 </div>
 <div class="section level2">
 <h2 id="performance">Performance<a class="anchor" aria-label="anchor" href="#performance"></a>
