@@ -9,6 +9,7 @@ Description: GeographicLib functions for precise geodetic calculations including
     MGRS (Military Grid Reference System), UTM/UPS projections, Geohash encoding, 
     geodesic computations (distance, bearing, paths), and polygon area on the 
     WGS84 ellipsoid. All functions are fully vectorized with rich metadata output. 
+SystemRequirements: C++17
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
