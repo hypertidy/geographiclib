@@ -1,18 +1,22 @@
 Package: geographiclib
-Title: Access to 'GeographicLib' 
+Title: Access to 'GeographicLib'
 Version: 0.3.7
 Authors@R: c(
-    person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("cre")), 
-    person("Charles", "Karney", role = c("cph", "aut"), comment="GeographicLib author and maintainer")
+    person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("cre", "aut")), 
+    person("Charles", "Karney", role = c("cph", "aut"), comment="GeographicLib author and maintainer"),
+    person("Mark", "Borgerding", role = "cph", comment = "kissfft library (BSD-3-Clause)")
     )
-Description: GeographicLib functions for precise geodetic calculations including 
-    MGRS (Military Grid Reference System), UTM/UPS projections, Geohash encoding, 
-    geodesic computations (distance, bearing, paths), and polygon area on the 
-    WGS84 ellipsoid. All functions are fully vectorized with rich metadata output. 
+Description: Bindings to the 'GeographicLib' C++ library
+    <https://geographiclib.sourceforge.io/> for precise geodetic calculations
+    including geodesic computations (distance, bearing, paths, intersections),
+    map projections (UTM/UPS, Transverse Mercator, Lambert Conformal Conic,
+    and more), grid reference systems (MGRS, Geohash, GARS, Georef),
+    coordinate conversions (geocentric, local Cartesian), and polygon area
+    on the WGS84 ellipsoid. All functions are fully vectorized.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 LinkingTo: 
     cpp11
 URL: https://github.com/hypertidy/geographiclib

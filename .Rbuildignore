@@ -10,3 +10,5 @@
 ^Meta$
 ^README.html$
 ^geographiclib-cran-release\.md$
+^geographiclib\.Rcheck$
+^.*Rcheck$

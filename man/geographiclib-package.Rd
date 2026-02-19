@@ -6,7 +6,7 @@
 \alias{geographiclib-package}
 \title{geographiclib: Access to 'GeographicLib'}
 \description{
-GeographicLib functions for precise geodetic calculations including MGRS (Military Grid Reference System), UTM/UPS projections, Geohash encoding, geodesic computations (distance, bearing, paths), and polygon area on the WGS84 ellipsoid. All functions are fully vectorized with rich metadata output.
+Bindings to the 'GeographicLib' C++ library \url{https://geographiclib.sourceforge.io/} for precise geodetic calculations including geodesic computations (distance, bearing, paths, intersections), map projections (UTM/UPS, Transverse Mercator, Lambert Conformal Conic, and more), grid reference systems (MGRS, Geohash, GARS, Georef), coordinate conversions (geocentric, local Cartesian), and polygon area on the WGS84 ellipsoid. All functions are fully vectorized.
 }
 \seealso{
 Useful links:
@@ -22,6 +22,11 @@ Useful links:
 Authors:
 \itemize{
   \item Charles Karney (GeographicLib author and maintainer) [copyright holder]
+}
+
+Other contributors:
+\itemize{
+  \item Mark Borgerding (kissfft library (BSD-3-Clause)) [copyright holder]
 }
 
 }
