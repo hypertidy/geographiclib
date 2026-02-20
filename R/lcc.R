@@ -76,15 +76,15 @@
 #' # Round-trip conversion
 #' fwd <- lcc_fwd(pts, lon0 = -100, stdlat = 40)
 #' lcc_rev(fwd$x, fwd$y, lon0 = -100, stdlat = 40)
-lcc_fwd <- function(x, lon0, lat0 = NULL, stdlat = NULL, 
-                    stdlat1 = NULL, stdlat2 = NULL, 
+lcc_fwd <- function(x, lon0, lat0 = NULL, stdlat = NULL,
+                    stdlat1 = NULL, stdlat2 = NULL,
                     k0 = 1, k1 = 1) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   # Determine which form to use
   if (!is.null(stdlat1) && !is.null(stdlat2)) {
     # Two standard parallels (secant cone)
@@ -101,14 +101,14 @@ lcc_fwd <- function(x, lon0, lat0 = NULL, stdlat = NULL,
 
 #' @rdname lcc_fwd
 #' @export
-lcc_rev <- function(x, y, lon0, lat0 = NULL, stdlat = NULL, 
-                    stdlat1 = NULL, stdlat2 = NULL, 
+lcc_rev <- function(x, y, lon0, lat0 = NULL, stdlat = NULL,
+                    stdlat1 = NULL, stdlat2 = NULL,
                     k0 = 1, k1 = 1) {
   # Ensure vectors are same length
   nn <- max(length(x), length(y))
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
-  
+
   # Determine which form to use
   if (!is.null(stdlat1) && !is.null(stdlat2)) {
     # Two standard parallels (secant cone)

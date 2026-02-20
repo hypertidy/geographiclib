@@ -61,16 +61,16 @@
 #' # Reverse conversion
 #' gars_rev(c("213LR29", "498MH18", "361NS47"))
 gars_fwd <- function(x, precision = 2L) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   nn <- nrow(x)
   precision <- as.integer(rep_len(precision, nn))
-  
+
   if (any(precision < 0 | precision > 2)) {
     stop("precision must be 0, 1, or 2")
   }
-  
+
   gars_fwd_cpp(x[, 1L, drop = TRUE], x[, 2L, drop = TRUE], precision)
 }
 

@@ -38,7 +38,7 @@
 #'
 #' The coordinate system is:
 #' - **x**: positive east
-#' - **y**: positive north  
+#' - **y**: positive north
 #' - **z**: positive up (away from Earth's center)
 #'
 #' This is also known as an ENU (East-North-Up) coordinate system.
@@ -62,14 +62,14 @@
 #' fwd <- localcartesian_fwd(pts, lon0 = -0.1, lat0 = 51.5)
 #' localcartesian_rev(fwd$x, fwd$y, fwd$z, lon0 = -0.1, lat0 = 51.5)
 localcartesian_fwd <- function(x, lon0, lat0, h = 0, h0 = 0) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   nn <- nrow(x)
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
   h <- rep_len(h, nn)
-  
+
   localcartesian_fwd_cpp(lon, lat, h, lon0, lat0, h0)
 }
 
@@ -80,6 +80,6 @@ localcartesian_rev <- function(x, y, z, lon0, lat0, h0 = 0) {
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
   z <- rep_len(z, nn)
-  
+
   localcartesian_rev_cpp(x, y, z, lon0, lat0, h0)
 }

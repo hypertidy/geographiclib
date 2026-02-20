@@ -72,7 +72,7 @@
 #' # Area in square kilometers
 #' abs(result$area) / 1e6
 polygon_area <- function(x, id = NULL, polyline = FALSE) {
-  if (is.list(x) && !is.data.frame(x)) {
+  if (is.list(x)) {
     x <- do.call(cbind, x[1:2])
   }
   if (is.vector(x) && length(x) == 2) {
@@ -125,7 +125,7 @@ polygon_area <- function(x, id = NULL, polyline = FALSE) {
 #' )
 #' polygon_area_cumulative(pts)
 polygon_area_cumulative <- function(x, polyline = FALSE) {
-  if (is.list(x) && !is.data.frame(x)) {
+  if (is.list(x)) {
     x <- do.call(cbind, x[1:2])
   }
 

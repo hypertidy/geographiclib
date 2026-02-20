@@ -77,16 +77,16 @@
 #' # Find length needed for ~1km precision
 #' geohash_length(1/111)  # ~1 degree / 111 km
 geohash_fwd <- function(x, len = 12L) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   nn <- nrow(x)
   len <- as.integer(rep_len(len, nn))
-  
+
   if (any(len < 1 | len > 18)) {
     stop("len must be between 1 and 18")
   }
-  
+
   geohash_fwd_cpp(x[, 1L, drop = TRUE], x[, 2L, drop = TRUE], len)
 }
 

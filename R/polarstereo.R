@@ -82,15 +82,15 @@
 #' fwd <- polarstereo_fwd(stations, northp = FALSE)
 #' polarstereo_rev(fwd$x, fwd$y, northp = FALSE)
 polarstereo_fwd <- function(x, northp, k0 = 0.994) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   nn <- length(lon)
   northp <- as.logical(rep_len(northp, nn))
-  
+
   polarstereo_fwd_custom_cpp(lon, lat, northp, k0)
 }
 
@@ -101,6 +101,6 @@ polarstereo_rev <- function(x, y, northp, k0 = 0.994) {
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
   northp <- as.logical(rep_len(northp, nn))
-  
+
   polarstereo_rev_custom_cpp(x, y, northp, k0)
 }

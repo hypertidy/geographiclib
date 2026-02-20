@@ -61,16 +61,16 @@
 #' # Reverse conversion
 #' georef_rev(c("GJPJ3217", "SKNA2342", "FJBL0630"))
 georef_fwd <- function(x, precision = 2L) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   nn <- nrow(x)
   precision <- as.integer(rep_len(precision, nn))
-  
+
   if (any(precision < -1 | precision > 11)) {
     stop("precision must be between -1 and 11")
   }
-  
+
   georef_fwd_cpp(x[, 1L, drop = TRUE], x[, 2L, drop = TRUE], precision)
 }
 

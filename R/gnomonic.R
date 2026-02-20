@@ -59,12 +59,12 @@
 #' # x and y should be approximately linear
 #' plot(projected$x, projected$y, type = "l")
 gnomonic_fwd <- function(x, lon0, lat0) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   gnomonic_fwd_cpp(lon, lat, lon0, lat0)
 }
 
@@ -74,6 +74,6 @@ gnomonic_rev <- function(x, y, lon0, lat0) {
   nn <- max(length(x), length(y))
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
-  
+
   gnomonic_rev_cpp(x, y, lon0, lat0)
 }

@@ -75,7 +75,7 @@
 #' )
 geodesic_intersect <- function(x, azi_x, y, azi_y) {
   # Parse x coordinates
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
 
   # Parse y coordinates
@@ -139,7 +139,7 @@ geodesic_intersect_segment <- function(x1, x2, y1, y2) {
 #' geodesic_intersect_next(c(0, 0), 45, 315)
 geodesic_intersect_next <- function(x, azi_x, azi_y) {
   # Parse coordinates
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
 
   # Recycle to common length
@@ -160,7 +160,7 @@ geodesic_intersect_next <- function(x, azi_x, azi_y) {
 #' geodesic_intersect_all(c(0, 0), 45, c(1, 0), 315, maxdist = 1e6)
 geodesic_intersect_all <- function(x, azi_x, y, azi_y, maxdist) {
   # Parse x coordinates
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
 
   # Parse y coordinates

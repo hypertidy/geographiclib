@@ -79,12 +79,12 @@
 #' fwd <- osgb_fwd(london_osgb36)
 #' osgb_rev(fwd$easting, fwd$northing)
 osgb_fwd <- function(x) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   osgb_fwd_cpp(lon, lat)
 }
 
@@ -94,25 +94,25 @@ osgb_rev <- function(easting, northing) {
   nn <- max(length(easting), length(northing))
   easting <- rep_len(easting, nn)
   northing <- rep_len(northing, nn)
-  
+
   osgb_rev_cpp(easting, northing)
 }
 
 #' @rdname osgb_fwd
 #' @export
 osgb_gridref <- function(x, precision = 2L) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   nn <- nrow(x)
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
   precision <- as.integer(rep_len(precision, nn))
-  
+
   if (any(precision < -1 | precision > 5)) {
     stop("precision must be between -1 and 5")
   }
-  
+
   osgb_gridref_cpp(lon, lat, precision)
 }
 

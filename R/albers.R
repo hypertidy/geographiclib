@@ -79,15 +79,15 @@
 #' albers_fwd(pts, lon0 = -96, stdlat = 37)
 albers_fwd <- function(x, lon0, stdlat = NULL, stdlat1 = NULL, stdlat2 = NULL,
                        k0 = 1, k1 = 1) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   nn <- length(lon)
   lon0 <- rep_len(lon0, nn)
-  
+
   if (!is.null(stdlat1) && !is.null(stdlat2)) {
     # Two standard parallels
     albers_fwd_cpp(lon, lat, lon0, stdlat1, stdlat2, k1)
@@ -107,7 +107,7 @@ albers_rev <- function(x, y, lon0, stdlat = NULL, stdlat1 = NULL, stdlat2 = NULL
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
   lon0 <- rep_len(lon0, nn)
-  
+
   if (!is.null(stdlat1) && !is.null(stdlat2)) {
     albers_rev_cpp(x, y, lon0, stdlat1, stdlat2, k1)
   } else if (!is.null(stdlat)) {

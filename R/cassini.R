@@ -51,12 +51,12 @@
 #' fwd <- cassini_fwd(pts, lon0 = -100, lat0 = 40)
 #' cassini_rev(fwd$x, fwd$y, lon0 = -100, lat0 = 40)
 cassini_fwd <- function(x, lon0, lat0) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   cassini_fwd_cpp(lon, lat, lon0, lat0)
 }
 
@@ -66,6 +66,6 @@ cassini_rev <- function(x, y, lon0, lat0) {
   nn <- max(length(x), length(y))
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
-  
+
   cassini_rev_cpp(x, y, lon0, lat0)
 }

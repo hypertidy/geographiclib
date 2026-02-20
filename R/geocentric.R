@@ -55,7 +55,7 @@
 #' fwd <- geocentric_fwd(c(-0.1, 51.5, 100))
 #' geocentric_rev(fwd$X, fwd$Y, fwd$Z)
 geocentric_fwd <- function(x, h = 0) {
-  if (is.list(x) && !is.data.frame(x)) {
+  if (is.list(x) ) {
     if (!is.null(x$h)) h <- x$h
     x <- do.call(cbind, x[c("lon", "lat")])
   }
@@ -64,10 +64,10 @@ geocentric_fwd <- function(x, h = 0) {
     h <- x[3]
     x <- matrix(x[1:2], ncol = 2)
   }
-  
+
   nn <- nrow(x)
   h <- rep_len(h, nn)
-  
+
   geocentric_fwd_cpp(x[, 1L, drop = TRUE], x[, 2L, drop = TRUE], h)
 }
 
@@ -78,6 +78,6 @@ geocentric_rev <- function(x, y, z) {
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
   z <- rep_len(z, nn)
-  
+
   geocentric_rev_cpp(x, y, z)
 }

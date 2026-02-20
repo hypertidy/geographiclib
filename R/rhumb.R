@@ -79,96 +79,96 @@
 #' path <- rhumb_path(c(-0.1, 51.5), c(-74, 40.7), n = 10)
 #' path
 rhumb_direct <- function(x, azi, s) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   nn <- max(nrow(x), length(azi), length(s))
   lon1 <- rep_len(x[, 1], nn)
   lat1 <- rep_len(x[, 2], nn)
   azi <- rep_len(azi, nn)
   s <- rep_len(s, nn)
-  
+
   rhumb_direct_cpp(lon1, lat1, azi, s)
 }
 
 #' @rdname rhumb_direct
 #' @export
 rhumb_inverse <- function(x, y) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
   if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
   if (length(y) == 2) y <- matrix(y, ncol = 2)
-  
+
   nn <- max(nrow(x), nrow(y))
   lon1 <- rep_len(x[, 1], nn)
   lat1 <- rep_len(x[, 2], nn)
   lon2 <- rep_len(y[, 1], nn)
   lat2 <- rep_len(y[, 2], nn)
-  
+
   rhumb_inverse_cpp(lon1, lat1, lon2, lat2)
 }
 
 #' @rdname rhumb_direct
 #' @export
 rhumb_path <- function(x, y, n = 100L) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
   if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
   if (length(y) == 2) y <- matrix(y, ncol = 2)
-  
+
   if (nrow(x) != 1 || nrow(y) != 1) {
     stop("rhumb_path requires single start and end points")
   }
-  
+
   rhumb_path_cpp(x[1, 1], x[1, 2], y[1, 1], y[1, 2], as.integer(n))
 }
 
 #' @rdname rhumb_direct
 #' @export
 rhumb_line <- function(x, azi, distances) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   if (nrow(x) != 1) {
     stop("rhumb_line requires a single starting point")
   }
   if (length(azi) != 1) {
     stop("rhumb_line requires a single azimuth")
   }
-  
+
   rhumb_line_cpp(x[1, 1], x[1, 2], azi, as.double(distances))
 }
 
 #' @rdname rhumb_direct
 #' @export
 rhumb_distance <- function(x, y) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
   if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
   if (length(y) == 2) y <- matrix(y, ncol = 2)
-  
+
   nn <- max(nrow(x), nrow(y))
   lon1 <- rep_len(x[, 1], nn)
   lat1 <- rep_len(x[, 2], nn)
   lon2 <- rep_len(y[, 1], nn)
   lat2 <- rep_len(y[, 2], nn)
-  
+
   rhumb_distance_pairwise_cpp(lon1, lat1, lon2, lat2)
 }
 
 #' @rdname rhumb_direct
 #' @export
 rhumb_distance_matrix <- function(x, y = NULL) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   if (is.null(y)) {
     y <- x
   } else {
     if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
     if (length(y) == 2) y <- matrix(y, ncol = 2)
   }
-  
+
   dist_vec <- rhumb_distance_matrix_cpp(x[, 1], x[, 2], y[, 1], y[, 2])
   matrix(dist_vec, nrow = nrow(x), ncol = nrow(y), byrow = TRUE)
 }

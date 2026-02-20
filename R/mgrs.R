@@ -37,7 +37,7 @@
 #'   - `square_100km`: 100km square identifier (e.g., "SM", "GH")
 #'   - `crs`: EPSG code string for the appropriate UTM/UPS projection
 #'     (e.g., "EPSG:32755" for UTM zone 55S, "EPSG:32661" for UPS North)
-#' 
+#'
 #' @details
 #' The Military Grid Reference System (MGRS) is a geocoordinate standard used
 #' by NATO militaries for locating points on Earth. It is an alternative to
@@ -72,7 +72,8 @@
 mgrs_fwd <- function(x, precision = 5L) {
   if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  precision <- as.integer(rep(precision, length.out = dim(x)[1L]))
+  nn <- nrow(x)
+  precision <- as.integer(rep_len(precision, nn))
   if (any(precision > 5 | precision < 0)) stop("precision values out of bounds, must be 0,1,2,3,4, or 5")
   mgrs_fwd_cpp(x[,1L, drop = TRUE], x[,2L, drop = TRUE], precision)
 }

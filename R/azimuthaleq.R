@@ -64,19 +64,19 @@
 #' destinations <- cbind(lon = c(-74, -74, -74), lat = c(40.7, 40.7, 40.7))
 #' azeq_fwd(destinations, lon0 = homes[,1], lat0 = homes[,2])
 azeq_fwd <- function(x, lon0, lat0) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   # Recycle all inputs to common length
   nn <- max(length(lon), length(lon0), length(lat0))
   lon <- rep_len(lon, nn)
   lat <- rep_len(lat, nn)
   lon0 <- rep_len(lon0, nn)
   lat0 <- rep_len(lat0, nn)
-  
+
   azimuthaleq_fwd_cpp(lon, lat, lon0, lat0)
 }
 
@@ -89,6 +89,6 @@ azeq_rev <- function(x, y, lon0, lat0) {
   y <- rep_len(y, nn)
   lon0 <- rep_len(lon0, nn)
   lat0 <- rep_len(lat0, nn)
-  
+
   azimuthaleq_rev_cpp(x, y, lon0, lat0)
 }

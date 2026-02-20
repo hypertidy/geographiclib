@@ -76,16 +76,16 @@
 #' # Exact version for high precision or extreme locations
 #' tm_exact_fwd(pts, lon0 = 147, k0 = 0.9996)
 tm_fwd <- function(x, lon0, k0 = 0.9996) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   # Recycle lon0 to match coordinate length
   nn <- length(lon)
   lon0 <- rep_len(lon0, nn)
-  
+
   tm_fwd_cpp(lon, lat, lon0, k0)
 }
 
@@ -96,22 +96,22 @@ tm_rev <- function(x, y, lon0, k0 = 0.9996) {
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
   lon0 <- rep_len(lon0, nn)
-  
+
   tm_rev_cpp(x, y, lon0, k0)
 }
 
 #' @rdname tm_fwd
 #' @export
 tm_exact_fwd <- function(x, lon0, k0 = 0.9996) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
-  
+
   lon <- x[, 1L, drop = TRUE]
   lat <- x[, 2L, drop = TRUE]
-  
+
   nn <- length(lon)
   lon0 <- rep_len(lon0, nn)
-  
+
   tm_exact_fwd_cpp(lon, lat, lon0, k0)
 }
 
@@ -122,6 +122,6 @@ tm_exact_rev <- function(x, y, lon0, k0 = 0.9996) {
   x <- rep_len(x, nn)
   y <- rep_len(y, nn)
   lon0 <- rep_len(lon0, nn)
-  
+
   tm_exact_rev_cpp(x, y, lon0, k0)
 }

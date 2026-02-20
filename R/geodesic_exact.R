@@ -86,7 +86,7 @@
 #' # Multiple distances along a bearing
 #' geodesic_line(c(-0.1, 51.5), azi = 45, distances = c(100, 500, 1000) * 1000)
 geodesic_direct <- function(x, azi, s) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
 
   nn <- max(nrow(x), length(azi), length(s))
@@ -101,7 +101,7 @@ geodesic_direct <- function(x, azi, s) {
 #' @rdname geodesic_direct
 #' @export
 geodesic_inverse <- function(x, y) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
   if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
   if (length(y) == 2) y <- matrix(y, ncol = 2)
@@ -118,7 +118,7 @@ geodesic_inverse <- function(x, y) {
 #' @rdname geodesic_direct
 #' @export
 geodesic_path <- function(x, y, n = 100L) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
   if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
   if (length(y) == 2) y <- matrix(y, ncol = 2)
@@ -133,7 +133,7 @@ geodesic_path <- function(x, y, n = 100L) {
 #' @rdname geodesic_direct
 #' @export
 geodesic_line <- function(x, azi, distances) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
 
   if (nrow(x) != 1) {
@@ -149,7 +149,7 @@ geodesic_line <- function(x, azi, distances) {
 #' @rdname geodesic_direct
 #' @export
 geodesic_distance <- function(x, y) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
   if (is.list(y) && !is.data.frame(y)) y <- do.call(cbind, y[1:2])
   if (length(y) == 2) y <- matrix(y, ncol = 2)
@@ -166,7 +166,7 @@ geodesic_distance <- function(x, y) {
 #' @rdname geodesic_direct
 #' @export
 geodesic_distance_matrix <- function(x, y = NULL) {
-  if (is.list(x) && !is.data.frame(x)) x <- do.call(cbind, x[1:2])
+  if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
 
   if (is.null(y)) {
