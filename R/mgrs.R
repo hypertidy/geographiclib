@@ -1,4 +1,3 @@
-
 #' Convert coordinates to/from Military Grid Reference System (MGRS)
 #'
 #' @description
@@ -72,10 +71,15 @@
 mgrs_fwd <- function(x, precision = 5L) {
   if (is.list(x)) x <- do.call(cbind, x[1:2])
   if (length(x) == 2) x <- matrix(x, ncol = 2)
+
   nn <- nrow(x)
   precision <- as.integer(rep_len(precision, nn))
-  if (any(precision > 5 | precision < 0)) stop("precision values out of bounds, must be 0,1,2,3,4, or 5")
-  mgrs_fwd_cpp(x[,1L, drop = TRUE], x[,2L, drop = TRUE], precision)
+
+  if (any(precision < 0 | precision > 5)) {
+    stop("precision must be between 0 and 5")
+  }
+
+  mgrs_fwd_cpp(x[, 1L, drop = TRUE], x[, 2L, drop = TRUE], precision)
 }
 
 

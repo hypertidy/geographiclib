@@ -45,8 +45,8 @@
 #' - Colon-separated: `"40:26:47"`, `"-74:0:21.5"`
 #'
 #' Hemisphere designators (N, S, E, W) can appear at the beginning or end.
-#' Many Unicode symbols are supported for degrees (°, º, ˚), minutes (', ′),
-#' and seconds (", ″).
+#' Many Unicode symbols are supported for degrees (\enc{°}{deg}, \enc{º}{o}, \enc{˚}{ring above}),
+#' minutes (', \enc{′}{prime}), and seconds (", \enc{″}{double prime}).
 #'
 #' ## Precision and Components
 #'

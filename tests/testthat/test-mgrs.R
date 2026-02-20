@@ -43,8 +43,8 @@ test_that("mgrs_fwd accepts vector of precisions", {
 
 test_that("mgrs_fwd rejects invalid precision", {
   x <- cbind(147, -42)
-  expect_error(mgrs_fwd(x, precision = 6), "precision values out of bounds")
-  expect_error(mgrs_fwd(x, precision = -1), "precision values out of bounds")
+  expect_error(mgrs_fwd(x, precision = 6), "precision must be between 0 and 5")
+  expect_error(mgrs_fwd(x, precision = -1), "precision must be between 0 and 5")
 })
 
 test_that("mgrs_fwd accepts different input formats", {

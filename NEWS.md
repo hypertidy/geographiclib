@@ -1,4 +1,6 @@
-# geographiclib 0.3.7
+# geographiclib 0.4.0
+
+* First CRAN submission. 
 
 * Commit to rename of kissfft.hh to kissfft.h. 
 

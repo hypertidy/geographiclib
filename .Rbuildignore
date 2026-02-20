@@ -12,3 +12,5 @@
 ^geographiclib-cran-release\.md$
 ^geographiclib\.Rcheck$
 ^.*Rcheck$
+^CRAN-SUBMISSION$
+^cran-comments\.md$

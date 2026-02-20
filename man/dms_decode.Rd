@@ -84,8 +84,8 @@ The \code{dms_decode()} function accepts various input formats:
 }
 
 Hemisphere designators (N, S, E, W) can appear at the beginning or end.
-Many Unicode symbols are supported for degrees (°, º, ˚), minutes (', ′),
-and seconds (", ″).
+Many Unicode symbols are supported for degrees (\enc{°}{deg}, \enc{º}{o}, \enc{˚}{ring above}),
+minutes (', \enc{′}{prime}), and seconds (", \enc{″}{double prime}).
 }
 
 \subsection{Precision and Components}{
