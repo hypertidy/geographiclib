@@ -1,7 +1,7 @@
-## R CMD check results
+## geographiclib 0.4.1
 
-0 errors | 0 warnings | 1 note
+Fixes valgrind issue detected unallocated value returned to R. 
 
-* This is a new release.
+Fixes missing vector heard include in vendored code. 
 
-* "Geohash", "Georef", and "MGRS" are intended. 
+Thanks!. 
