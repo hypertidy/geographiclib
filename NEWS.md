@@ -1,3 +1,9 @@
+# geographiclib 0.4.1
+
+* Trigfun.hpp uses `std::vector<real>` as a member but didn't include, fixed thanks to CRAN. 
+
+
+
 # geographiclib 0.4.0
 
 * First CRAN submission. 
