@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geographiclib</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -69,6 +69,11 @@
       <small>Source: <a href="https://github.com/hypertidy/geographiclib/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.1" id="geographiclib-041">geographiclib 0.4.1<a class="anchor" aria-label="anchor" href="#geographiclib-041"></a></h2>
+<ul><li><p>Trigfun.hpp uses <code>std::vector&lt;real&gt;</code> as a member but didn’t include, fixed thanks to CRAN.</p></li>
+<li><p>000_polygonarea_geographiclib.cpp had unallocated values that triggered valgrind issues with degenerated rings, fixed thanks to CRAN.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="geographiclib-040">geographiclib 0.4.0<small>2026-02-25</small><a class="anchor" aria-label="anchor" href="#geographiclib-040"></a></h2>
 <ul><li><p>First CRAN submission.</p></li>
