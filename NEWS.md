@@ -2,7 +2,8 @@
 
 * Trigfun.hpp uses `std::vector<real>` as a member but didn't include, fixed thanks to CRAN. 
 
-
+* 000_polygonarea_geographiclib.cpp had unallocated values that triggered valgrind issues with 
+ degenerated rings, fixed thanks to CRAN. 
 
 # geographiclib 0.4.0
 

@@ -95,7 +95,8 @@ cpp11::writable::list polygonarea_single_cpp(cpp11::doubles lon, cpp11::doubles 
     poly.AddPoint(lat[i], lon[i]);
   }
 
-  double perimeter, area;
+  double perimeter = 0.0;
+  double area = NA_REAL;
   unsigned n = poly.Compute(false, true, perimeter, area);
 
   writable::list out({
@@ -123,7 +124,8 @@ cpp11::writable::data_frame polygonarea_cumulative_cpp(cpp11::doubles lon, cpp11
   for (size_t i = 0; i < nn; i++) {
     poly.AddPoint(lat[i], lon[i]);
 
-    double perim, ar;
+    double perim = 0.0;
+    double ar = NA_REAL;
     poly.TestPoint(lat[i], lon[i], false, true, perim, ar);
 
     area[i] = ar;
