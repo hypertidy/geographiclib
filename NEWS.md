@@ -1,3 +1,8 @@
+# geographiclib 0.4.2
+
+* Remove unnecessary precision from test, thanks to CRAN found in 
+ r-release-macos-x86_64 and r-oldrel-macos-x86_64. 
+
 # geographiclib 0.4.1
 
 * Trigfun.hpp uses `std::vector<real>` as a member but didn't include, fixed thanks to CRAN. 

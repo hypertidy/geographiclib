@@ -1,7 +1,5 @@
-## geographiclib 0.4.1
+## geographiclib 0.4.2
 
-Fixes valgrind issue detected unallocated value returned to R. 
-
-Fixes missing vector heard include in vendored code. 
+Fixes unnecessary precision check in test on mac. 
 
 Thanks!. 
