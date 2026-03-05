@@ -42,9 +42,10 @@ jobs:
 
       - name: Build site
         run: |
-          pkgdown::build_home(new_process = FALSE)
-          pkgdown::build_reference(new_process = FALSE)
-          pkgdown::build_news(new_process = FALSE)
+          pkgdown::build_home()
+          pkgdown::build_reference()
+          pkgdown::build_news()
+          pkgdown::build_redirects()
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
