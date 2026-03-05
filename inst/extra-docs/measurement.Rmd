@@ -1,12 +1,6 @@
 ---
 title: "Three numbers, one polygon"
-output: rmarkdown::html_vignette
-pkgdown:
-  as_is: true
-vignette: >
-  %\VignetteIndexEntry{Three numbers, one polygon}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: rmarkdown::github_document
 ---
 
 ```{r notes, include=FALSE}
@@ -14,8 +8,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-## if this ever gets updated do this, gha takes care of the rest
-##pkgdown::build_article("articles/measurement")
+## if this ever gets updated do this, copy the .md to https://github.com/hypertidy/geographiclib/wiki/Measurement:-three-numbers-from-one-polygon
+##rmarkdown::render("vignettes/measurement.Rmd")
 library(sf)
 library(terra)
 sf::sf_use_s2(FALSE)
@@ -196,10 +190,15 @@ When seeing warnings like this you can wonder "what does correctly" mean here? A
 there is more than one version of "correct" because that depends on what you intend to do 
 and purpose of your task. A function should simply do what it advertises and (ideally) be consistent within its own context. Declarations of what is correct without significantly more context are specious, at best. 
 
-## Session info
+## Versions
 
 ```{r session}
-sessioninfo::session_info()
+R.version.string
+
+packageVersion("geographiclib")
+packageVersion("terra")
+packageVersion("sf")
+
 ```
 
 ---
