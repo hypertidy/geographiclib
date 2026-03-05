@@ -1,3 +1,7 @@
+# geographiclib dev
+
+* New article 'measurement'. 
+
 # geographiclib 0.4.2
 
 * Remove unnecessary precision from test, thanks to CRAN found in 

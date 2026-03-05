@@ -1,0 +1,185 @@
+---
+title: "Three numbers, one polygon"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Three numbers, one polygon}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Here is a small polygon in EPSG:2154 (RGF93 / Lambert-93, France). We want its perimeter and area. How many different answers can we get?
+
+```{r setup}
+options(digits = 9)
+sf::sf_use_s2(FALSE)
+
+xy <- cbind(
+  x = c(320102.67, 320111.85, 320131.82, 320134.33, 320138.50,
+        320141.93, 320135.33, 320118.58, 320113.45, 320105.18, 320102.67),
+  y = c(6845954.56, 6845962.15, 6845971.55, 6845971.90, 6845953.21,
+        6845936.12, 6845935.07, 6845931.54, 6845929.91, 6845950.57, 6845954.56)
+)
+p   <- sf::st_sf(geometry = sf::st_sfc(sf::st_polygon(list(xy)), crs = "EPSG:2154"))
+pna <- p; sf::st_crs(pna) <- NA
+pll <- sf::st_transform(p, "EPSG:4326")
+ll  <- terra::project(xy, from = terra::crs(terra::vect(p)), to = "EPSG:4326")
+```
+
+Four scenarios: projected CRS, NA CRS, longlat with s2 off, longlat with s2 on.
+geographiclib is the independent Karney reference; it operates on longlat coordinates
+so the projected and NA CRS rows are not applicable.
+
+## Scenario 1: projected CRS (EPSG:2154)
+
+```{r scenario1}
+## perimeter
+as.numeric(sf::st_perimeter(p))
+as.numeric(sf::st_length(sf::st_boundary(p)))
+terra::perim(terra::vect(p))
+
+## area
+as.numeric(sf::st_area(p))
+terra::expanse(terra::vect(p), unit = "m")
+
+## geographiclib reference
+geographiclib::polygon_area(ll)
+```
+
+sf and terra agree on perimeter (planar). For area, terra reprojects internally
+and returns the ellipsoidal answer; sf returns the planar shoelace result.
+geographiclib confirms the ellipsoidal value.
+
+## Scenario 2: NA CRS
+
+```{r scenario2}
+## perimeter
+as.numeric(sf::st_perimeter(pna))
+terra::perim(terra::vect(pna))
+
+## area
+as.numeric(sf::st_area(pna))
+terra::expanse(terra::vect(pna), unit = "m")
+```
+
+Both return planar results. terra warns ("unknown CRS, results can be wrong");
+sf is silent.
+
+## Scenario 3: longlat, s2 off
+
+```{r scenario3}
+sf::sf_use_s2(FALSE)
+
+## perimeter
+as.numeric(sf::st_perimeter(pll))
+as.numeric(sf::st_length(sf::st_boundary(pll)))
+terra::perim(terra::vect(pll))
+
+## area
+as.numeric(sf::st_area(pll))
+terra::expanse(terra::vect(pll), unit = "m")
+
+## geographiclib reference
+geographiclib::polygon_area(ll)
+```
+
+All tools agree on the ellipsoidal (Karney) answer.
+
+## Scenario 4: longlat, s2 on
+
+```{r scenario4}
+sf::sf_use_s2(TRUE)
+
+## perimeter
+as.numeric(sf::st_perimeter(pll))
+as.numeric(sf::st_length(sf::st_boundary(pll)))
+terra::perim(terra::vect(pll))
+
+## area
+as.numeric(sf::st_area(pll))
+terra::expanse(terra::vect(pll), unit = "m")
+
+## geographiclib reference (unaffected by sf_use_s2)
+geographiclib::polygon_area(ll)
+
+sf::sf_use_s2(FALSE)  ## restore
+```
+
+sf gives the spherical answer (s2 uses radius 6,371,010 m, zero flattening).
+terra and geographiclib are unaffected by `sf_use_s2()` and return the
+ellipsoidal answer throughout.
+
+## Summary tables
+
+### Perimeter (m)
+
+| scenario | sf 1.0-21 | sf >= 1.0-22 | terra | geographiclib |
+|---|---:|---:|---:|---:|
+| projected (EPSG:2154) | 129.248935 | 129.248935 | 129.248935 † | — |
+| NA crs | 129.248935 | 129.248935 | 129.248935 ‡ | — |
+| longlat, s2 off | 129.285384 | 129.285384 | 129.285384 | 129.285384 |
+| longlat, s2 on | 129.09815 ★ | 129.285384 | 129.285384 | 129.285384 |
+
+### Area (m²)
+
+| scenario | sf 1.0-21 | sf >= 1.0-22 | terra | geographiclib |
+|---|---:|---:|---:|---:|
+| projected (EPSG:2154) | 1049.651 | 1049.651 | 1050.243 † | — |
+| NA crs | 1049.651 | 1049.651 | 1049.651 ‡ | — |
+| longlat, s2 off | 1050.243 | 1050.243 | 1050.243 | 1050.243 |
+| longlat, s2 on | 1047.026 | 1047.026 | 1050.243 | 1050.243 |
+
+† `terra::perim` and `terra::expanse` are inconsistent for projected CRS: `expanse`
+reprojects internally and returns the ellipsoidal answer; `perim` trusts the
+projected coordinates and returns planar. No warning.
+
+‡ terra warns on NA CRS; sf is silent.
+
+★ fixed in sf 1.0-22 (#2541): `st_perimeter()` now uses ellipsoidal computation
+when `sf_use_s2()` is FALSE.
+
+## The inconsistencies
+
+**1. terra::expanse vs terra::perim (projected CRS)**
+`expanse` reprojects to longlat internally and applies Karney for any known CRS.
+`perim` does not — it returns planar distance for projected inputs and only switches
+to Karney for longlat. There is no good reason for this asymmetry; `expanse` has
+the more defensible design. Worth a terra issue.
+
+**2. sf projected CRS: no ellipsoidal awareness for area**
+`sf::st_area()` on a projected polygon returns the planar shoelace result with no
+warning. It does not reproject. The answer is "correct in the map" but not on
+the Earth. `terra::expanse` does the extra work silently.
+
+**3. sf NA CRS: silent vs terra's warning**
+Both return planar results with no CRS. terra warns; sf does not.
+
+**4. sf < 1.0-22: st_perimeter ignored sf_use_s2()**
+With longlat input and `sf_use_s2(FALSE)`, `st_perimeter()` still dispatched
+through s2 giving the spherical answer, while `st_length(st_boundary())` correctly
+gave Karney. Fixed in sf 1.0-22 (#2541). The broader issue — that s2-on silently
+gives spherical rather than ellipsoidal — remains.
+
+## What to use
+
+For consistent ellipsoidal results across all CRS inputs: `terra::expanse()` for
+area, `geodist::geodist(..., measure = "geodesic")` or `geographiclib` for
+perimeter/length. Note that `terra::perim()` requires longlat input to give the
+ellipsoidal answer.
+
+If you use sf: transform to longlat and set `sf_use_s2(FALSE)`. Both `st_area()`
+and `st_length(st_boundary())` then give Karney results. Keep in mind this is a
+global option — set it deliberately and restore it.
+
+## Session info
+
+```{r session}
+sessioninfo::session_info()
+```
+
+---
+
+*Code from these gists:*
+
+- [correct_area.md](https://gist.github.com/mdsumner/6caeefaeb5200ddf5e77d2aeced3bebd) — area comparison across projections and engines (2023)
+- [area_and_crs.md](https://gist.github.com/mdsumner/5c52e770d822bc4ac183e7460cb2b4fc) — area with Mercator distortion (2024)
+- [real_dist.md](https://gist.github.com/mdsumner/5daedfcbee851ca31a7aa9006dbf74cf) — perimeter, three numbers, R-sig-geo May 2025

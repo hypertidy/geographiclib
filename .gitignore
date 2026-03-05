@@ -8,3 +8,6 @@
 /Meta/
 README.html
 geographiclib-cran-release.md
+inst/doc
+vignettes/articles/*.html
+doc/
