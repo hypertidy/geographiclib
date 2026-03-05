@@ -7,12 +7,24 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r notes, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+## if this ever gets updated do this, gha takes care of the rest
+##pkgdown::build_article("articles/measurement")
+library(sf)
+library(terra)
+sf::sf_use_s2(FALSE)
+```
+
 Here is a small polygon in EPSG:2154 (RGF93 / Lambert-93, France). We want its perimeter and area. How many different answers can we get?
 
 ```{r setup}
 options(digits = 9)
 sf::sf_use_s2(FALSE)
-
+## Spherical geometry (s2) switched off
 xy <- cbind(
   x = c(320102.67, 320111.85, 320131.82, 320134.33, 320138.50,
         320141.93, 320135.33, 320118.58, 320113.45, 320105.18, 320102.67),
@@ -117,7 +129,7 @@ ellipsoidal answer throughout.
 | projected (EPSG:2154) | 129.248935 | 129.248935 | 129.248935 † | — |
 | NA crs | 129.248935 | 129.248935 | 129.248935 ‡ | — |
 | longlat, s2 off | 129.285384 | 129.285384 | 129.285384 | 129.285384 |
-| longlat, s2 on | 129.09815 ★ | 129.285384 | 129.285384 | 129.285384 |
+| longlat, s2 on | ★129.09815  | 129.285384 | 129.285384 | 129.285384 |
 
 ### Area (m²)
 
@@ -142,8 +154,7 @@ when `sf_use_s2()` is FALSE.
 **1. terra::expanse vs terra::perim (projected CRS)**
 `expanse` reprojects to longlat internally and applies Karney for any known CRS.
 `perim` does not — it returns planar distance for projected inputs and only switches
-to Karney for longlat. There is no good reason for this asymmetry; `expanse` has
-the more defensible design. Worth a terra issue.
+to Karney for longlat. This asymmetry presents a cryptic potential gotch for users; `expanse` has the more defensible design as terra does generally. 
 
 **2. sf projected CRS: no ellipsoidal awareness for area**
 `sf::st_area()` on a projected polygon returns the planar shoelace result with no
@@ -156,8 +167,7 @@ Both return planar results with no CRS. terra warns; sf does not.
 **4. sf < 1.0-22: st_perimeter ignored sf_use_s2()**
 With longlat input and `sf_use_s2(FALSE)`, `st_perimeter()` still dispatched
 through s2 giving the spherical answer, while `st_length(st_boundary())` correctly
-gave Karney. Fixed in sf 1.0-22 (#2541). The broader issue — that s2-on silently
-gives spherical rather than ellipsoidal — remains.
+gave Karney. Fixed in sf 1.0-22 (#2541). 
 
 ## What to use
 
@@ -169,6 +179,20 @@ ellipsoidal answer.
 If you use sf: transform to longlat and set `sf_use_s2(FALSE)`. Both `st_area()`
 and `st_length(st_boundary())` then give Karney results. Keep in mind this is a
 global option — set it deliberately and restore it.
+
+There are other functions in the families of sf and terra for distance calculations (i.e. see package {lwgeom} and {geosphere}) but this article is motivated by the problematic framing users face around expectations and results with very widely used functions. 
+
+If you want truly xy-in-map only calculations the only really reliable way is to set crs to NA, this was established by sf early in its history as "good practice" and unfortunately is a clear conclusion from the behaviour we see  here. Having functions that do clearly what they seem named to do would be preferable, but as it is users have to navigate these vagaries to be sure of what they are getting. These same principles appy to buffering and nearest-calcuations but we will not explore those implications here besides to point out one example: 
+
+```r
+Warning message:
+In st_voronoi.sfc(st_geometry(x), st_sfc(envelope), dTolerance,  :
+  st_voronoi does not correctly triangulate longitude/latitude data
+```
+
+When seeing warnings like this you can wonder "what does correctly" mean here? As we've seen
+there is more than one version of "correct" because that depends on what you intend to do 
+and purpose of your task. A function should simply do what it advertises and (ideally) be consistent within its own context. Declarations of what is correct without significantly more context are specious, at best. 
 
 ## Session info
 

@@ -83,10 +83,9 @@
 want its perimeter and area. How many different answers can we get?</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">9</span><span class="op">)</span></span>
-<span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Spherical geometry (s2) switched off</span></span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
+<span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">## Spherical geometry (s2) switched off</span></span>
+<span><span class="va">xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">320102.67</span>, <span class="fl">320111.85</span>, <span class="fl">320131.82</span>, <span class="fl">320134.33</span>, <span class="fl">320138.50</span>,</span>
 <span>        <span class="fl">320141.93</span>, <span class="fl">320135.33</span>, <span class="fl">320118.58</span>, <span class="fl">320113.45</span>, <span class="fl">320105.18</span>, <span class="fl">320102.67</span><span class="op">)</span>,</span>
 <span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6845954.56</span>, <span class="fl">6845962.15</span>, <span class="fl">6845971.55</span>, <span class="fl">6845971.90</span>, <span class="fl">6845953.21</span>,</span>
@@ -103,36 +102,31 @@ applicable.</p>
 <div class="section level2">
 <h2 id="scenario-1-projected-crs-epsg2154">Scenario 1: projected CRS (EPSG:2154)<a class="anchor" aria-label="anchor" href="#scenario-1-projected-crs-epsg2154"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## perimeter</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Linking to GEOS 3.12.1, GDAL 3.13.0dev-a3b7b01d3e-dirty, PROJ 9.8.0;</span></span>
-<span><span class="co">## sf_use_s2() is FALSE</span></span></code></pre>
-<pre><code><span><span class="co">## [1] 129.248935</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_boundary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.248935</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.248935</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## area</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1049.6505</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1050.2426</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## geographiclib reference</span></span>
-<span><span class="fu">geographiclib</span><span class="fu">::</span><span class="fu"><a href="../reference/polygon_area.html">polygon_area</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $area</span></span>
-<span><span class="co">## [1] -1050.2426</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $perimeter</span></span>
-<span><span class="co">## [1] 129.285384</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $n</span></span>
-<span><span class="co">## [1] 11</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.248935</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_boundary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.248935</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.248935</span></span>
+<span></span>
+<span><span class="co">## area</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1049.6505</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1050.2426</span></span>
+<span></span>
+<span><span class="co">## geographiclib reference</span></span>
+<span><span class="fu">geographiclib</span><span class="fu">::</span><span class="fu"><a href="../reference/polygon_area.html">polygon_area</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $area</span></span>
+<span><span class="co">#&gt; [1] -1050.2426</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $perimeter</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $n</span></span>
+<span><span class="co">#&gt; [1] 11</span></span></code></pre></div>
 <p>sf and terra agree on perimeter (planar). For area, terra reprojects
 internally and returns the ellipsoidal answer; sf returns the planar
 shoelace result. geographiclib confirms the ellipsoidal value.</p>
@@ -140,97 +134,89 @@ shoelace result. geographiclib confirms the ellipsoidal value.</p>
 <div class="section level2">
 <h2 id="scenario-2-na-crs">Scenario 2: NA CRS<a class="anchor" aria-label="anchor" href="#scenario-2-na-crs"></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## perimeter</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.248935</span></span></code></pre>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: [perim] unknown CRS. Results can be wrong</span></span></code></pre>
-<pre><code><span><span class="co">## [1] 129.248935</span></span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## area</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1049.6505</span></span></code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: [expanse] unknown CRS. Results can be wrong</span></span></code></pre>
-<pre><code><span><span class="co">## [1] 1049.65051</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.248935</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: [perim] unknown CRS. Results can be wrong</span></span>
+<span><span class="co">#&gt; [1] 129.248935</span></span>
+<span></span>
+<span><span class="co">## area</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1049.6505</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pna</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: [expanse] unknown CRS. Results can be wrong</span></span>
+<span><span class="co">#&gt; [1] 1049.65051</span></span></code></pre></div>
 <p>Both return planar results. terra warns (“unknown CRS, results can be
 wrong”); sf is silent.</p>
 </div>
 <div class="section level2">
 <h2 id="scenario-3-longlat-s2-off">Scenario 3: longlat, s2 off<a class="anchor" aria-label="anchor" href="#scenario-3-longlat-s2-off"></a>
 </h2>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## perimeter</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.285384</span></span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_boundary</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.285384</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.285384</span></span></code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## area</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1050.2426</span></span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1050.2426</span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## geographiclib reference</span></span>
-<span><span class="fu">geographiclib</span><span class="fu">::</span><span class="fu"><a href="../reference/polygon_area.html">polygon_area</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $area</span></span>
-<span><span class="co">## [1] -1050.2426</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $perimeter</span></span>
-<span><span class="co">## [1] 129.285384</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $n</span></span>
-<span><span class="co">## [1] 11</span></span></code></pre>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_boundary</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span></span>
+<span><span class="co">## area</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1050.2426</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1050.2426</span></span>
+<span></span>
+<span><span class="co">## geographiclib reference</span></span>
+<span><span class="fu">geographiclib</span><span class="fu">::</span><span class="fu"><a href="../reference/polygon_area.html">polygon_area</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $area</span></span>
+<span><span class="co">#&gt; [1] -1050.2426</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $perimeter</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $n</span></span>
+<span><span class="co">#&gt; [1] 11</span></span></code></pre></div>
 <p>All tools agree on the ellipsoidal (Karney) answer.</p>
 </div>
 <div class="section level2">
 <h2 id="scenario-4-longlat-s2-on">Scenario 4: longlat, s2 on<a class="anchor" aria-label="anchor" href="#scenario-4-longlat-s2-on"></a>
 </h2>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Spherical geometry (s2) switched on</span></span></code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## perimeter</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.09815</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_boundary</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.09815</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 129.285384</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## area</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1047.02612</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1050.2426</span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## geographiclib reference (unaffected by sf_use_s2)</span></span>
-<span><span class="fu">geographiclib</span><span class="fu">::</span><span class="fu"><a href="../reference/polygon_area.html">polygon_area</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $area</span></span>
-<span><span class="co">## [1] -1050.2426</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $perimeter</span></span>
-<span><span class="co">## [1] 129.285384</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $n</span></span>
-<span><span class="co">## [1] 11</span></span></code></pre>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>  <span class="co">## restore</span></span></code></pre></div>
-<pre><code><span><span class="co">## Spherical geometry (s2) switched off</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Spherical geometry (s2) switched on</span></span>
+<span></span>
+<span><span class="co">## perimeter</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_perimeter</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.09815</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_boundary</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.09815</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/perim.html" class="external-link">perim</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span></span>
+<span><span class="co">## area</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_area</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1047.02612</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/expanse.html" class="external-link">expanse</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">pll</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1050.2426</span></span>
+<span></span>
+<span><span class="co">## geographiclib reference (unaffected by sf_use_s2)</span></span>
+<span><span class="fu">geographiclib</span><span class="fu">::</span><span class="fu"><a href="../reference/polygon_area.html">polygon_area</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $area</span></span>
+<span><span class="co">#&gt; [1] -1050.2426</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $perimeter</span></span>
+<span><span class="co">#&gt; [1] 129.285384</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $n</span></span>
+<span><span class="co">#&gt; [1] 11</span></span>
+<span></span>
+<span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>  <span class="co">## restore</span></span>
+<span><span class="co">#&gt; Spherical geometry (s2) switched off</span></span></code></pre></div>
 <p>sf gives the spherical answer (s2 uses radius 6,371,010 m, zero
 flattening). terra and geographiclib are unaffected by
 <code>sf_use_s2()</code> and return the ellipsoidal answer
@@ -274,7 +260,7 @@ throughout.</p>
 </tr>
 <tr class="even">
 <td>longlat, s2 on</td>
-<td align="right">129.09815 ★</td>
+<td align="right">★129.09815</td>
 <td align="right">129.285384</td>
 <td align="right">129.285384</td>
 <td align="right">129.285384</td>
@@ -340,8 +326,9 @@ ellipsoidal computation when <code>sf_use_s2()</code> is FALSE.</p>
 <code>expanse</code> reprojects to longlat internally and applies Karney
 for any known CRS. <code>perim</code> does not — it returns planar
 distance for projected inputs and only switches to Karney for longlat.
-There is no good reason for this asymmetry; <code>expanse</code> has the
-more defensible design. Worth a terra issue.</p>
+This asymmetry presents a cryptic potential gotch for users;
+<code>expanse</code> has the more defensible design as terra does
+generally.</p>
 <p><strong>2. sf projected CRS: no ellipsoidal awareness for
 area</strong> <code><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">sf::st_area()</a></code> on a projected polygon returns
 the planar shoelace result with no warning. It does not reproject. The
@@ -353,8 +340,7 @@ planar results with no CRS. terra warns; sf does not.</p>
 With longlat input and <code>sf_use_s2(FALSE)</code>,
 <code>st_perimeter()</code> still dispatched through s2 giving the
 spherical answer, while <code>st_length(st_boundary())</code> correctly
-gave Karney. Fixed in sf 1.0-22 (#2541). The broader issue — that s2-on
-silently gives spherical rather than ellipsoidal — remains.</p>
+gave Karney. Fixed in sf 1.0-22 (#2541).</p>
 </div>
 <div class="section level2">
 <h2 id="what-to-use">What to use<a class="anchor" aria-label="anchor" href="#what-to-use"></a>
@@ -369,79 +355,100 @@ ellipsoidal answer.</p>
 <code>sf_use_s2(FALSE)</code>. Both <code>st_area()</code> and
 <code>st_length(st_boundary())</code> then give Karney results. Keep in
 mind this is a global option — set it deliberately and restore it.</p>
+<p>There are other functions in the families of sf and terra for
+distance calculations (i.e. see package {lwgeom} and {geosphere}) but
+this article is motivated by the problematic framing users face around
+expectations and results with very widely used functions.</p>
+<p>If you want truly xy-in-map only calculations the only really
+reliable way is to set crs to NA, this was established by sf early in
+its history as “good practice” and unfortunately is a clear conclusion
+from the behaviour we see here. Having functions that do clearly what
+they seem named to do would be preferable, but as it is users have to
+navigate these vagaries to be sure of what they are getting. These same
+principles appy to buffering and nearest-calcuations but we will not
+explore those implications here besides to point out one example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Warning message<span class="sc">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>In <span class="fu">st_voronoi.sfc</span>(<span class="fu">st_geometry</span>(x), <span class="fu">st_sfc</span>(envelope), dTolerance,  <span class="sc">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  st_voronoi does not correctly triangulate longitude<span class="sc">/</span>latitude data</span></code></pre></div>
+<p>When seeing warnings like this you can wonder “what does correctly”
+mean here? As we’ve seen there is more than one version of “correct”
+because that depends on what you intend to do and purpose of your task.
+A function should simply do what it advertises and (ideally) be
+consistent within its own context. Declarations of what is correct
+without significantly more context are specious, at best.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">##  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
-<span><span class="co">##  version  R version 4.5.2 (2025-10-31)</span></span>
-<span><span class="co">##  os       Ubuntu 22.04.5 LTS</span></span>
-<span><span class="co">##  system   x86_64, linux-gnu</span></span>
-<span><span class="co">##  ui       X11</span></span>
-<span><span class="co">##  language en</span></span>
-<span><span class="co">##  collate  en_AU.UTF-8</span></span>
-<span><span class="co">##  ctype    en_AU.UTF-8</span></span>
-<span><span class="co">##  tz       Etc/UTC</span></span>
-<span><span class="co">##  date     2026-03-05</span></span>
-<span><span class="co">##  pandoc   3.4 @ /usr/lib/rstudio-server/bin/quarto/bin/tools/x86_64/ (via rmarkdown)</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">##  <span style="color: #555555; font-style: italic;">package      </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version   </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
-<span><span class="co">##  bslib           0.9.0      <span style="color: #555555;">2025-01-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">##  cachem          1.1.0      <span style="color: #555555;">2024-05-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
-<span><span class="co">##  class           7.3-23     <span style="color: #555555;">2025-01-01</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.4.2)</span></span></span>
-<span><span class="co">##  classInt        0.4-11     <span style="color: #555555;">2025-01-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">##  cli             3.6.5      <span style="color: #555555;">2025-04-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
-<span><span class="co">##  codetools       0.2-19     <span style="color: #555555;">2023-02-01</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
-<span><span class="co">##  DBI             1.2.3      <span style="color: #555555;">2024-06-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.1)</span></span></span>
-<span><span class="co">##  desc            1.4.3      <span style="color: #555555;">2023-12-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">##  digest          0.6.39     <span style="color: #555555;">2025-11-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  e1071           1.7-17     <span style="color: #555555;">2025-12-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  evaluate        1.0.5      <span style="color: #555555;">2025-08-27</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  fastmap         1.2.0      <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
-<span><span class="co">##  fs              1.6.6      <span style="color: #555555;">2025-04-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">##  geographiclib   <span style="color: #BB00BB; font-weight: bold;">0.4.9001  </span> <span style="color: #555555;">2026-02-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
-<span><span class="co">##  htmltools       0.5.9      <span style="color: #555555;">2025-12-04</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  jquerylib       0.1.4      <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">##  jsonlite        2.0.0      <span style="color: #555555;">2025-03-27</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">##  KernSmooth      2.23-26    <span style="color: #555555;">2025-01-01</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.4.2)</span></span></span>
-<span><span class="co">##  knitr           1.51       <span style="color: #555555;">2025-12-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  lifecycle       1.0.5      <span style="color: #555555;">2026-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  lwgeom          0.2-14     <span style="color: #555555;">2024-02-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  magrittr        2.0.4      <span style="color: #555555;">2025-09-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  memoise         2.0.1      <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">##  otel            0.2.0      <span style="color: #555555;">2025-08-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  pkgdown         2.0.7      <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">##  proxy           0.4-29     <span style="color: #555555;">2025-12-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  purrr           1.2.1      <span style="color: #555555;">2026-01-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  R6              2.6.1      <span style="color: #555555;">2025-02-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.2)</span></span></span>
-<span><span class="co">##  ragg            1.4.0      <span style="color: #555555;">2025-04-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  Rcpp            1.1.1      <span style="color: #555555;">2026-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  rlang           1.1.7      <span style="color: #555555;">2026-01-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  rmarkdown       2.30       <span style="color: #555555;">2025-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  rstudioapi      0.18.0     <span style="color: #555555;">2026-01-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
-<span><span class="co">##  s2              1.1.9      <span style="color: #555555;">2025-05-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">##  sass            0.4.10     <span style="color: #555555;">2025-04-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
-<span><span class="co">##  sessioninfo     1.2.2      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">##  sf            * 1.0-25     <span style="color: #555555;">2026-02-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
-<span><span class="co">##  systemfonts     1.2.3      <span style="color: #555555;">2025-04-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  terra           1.8-97     <span style="color: #555555;">2026-02-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
-<span><span class="co">##  textshaping     0.3.7      <span style="color: #555555;">2023-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">##  units           1.0-0      <span style="color: #555555;">2025-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
-<span><span class="co">##  vctrs           0.7.1      <span style="color: #555555;">2026-01-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
-<span><span class="co">##  wk              <span style="color: #BB00BB; font-weight: bold;">0.9.4.9000</span> <span style="color: #555555;">2026-01-06</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">Github (paleolimbot/wk@c4c68b1)</span></span></span>
-<span><span class="co">##  xfun            0.55       <span style="color: #555555;">2025-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">##  yaml            2.3.12     <span style="color: #555555;">2025-12-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #555555;"> [1] /perm_storage/home/mdsumner/R/x86_64-pc-linux-gnu-library/4.5</span></span></span>
-<span><span class="co">## <span style="color: #555555;"> [2] /usr/local/lib/R/site-library</span></span></span>
-<span><span class="co">## <span style="color: #555555;"> [3] /usr/lib/R/site-library</span></span></span>
-<span><span class="co">## <span style="color: #555555;"> [4] /usr/lib/R/library</span></span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
+<span><span class="co">#&gt;  version  R version 4.5.2 (2025-10-31)</span></span>
+<span><span class="co">#&gt;  os       Ubuntu 22.04.5 LTS</span></span>
+<span><span class="co">#&gt;  system   x86_64, linux-gnu</span></span>
+<span><span class="co">#&gt;  ui       X11</span></span>
+<span><span class="co">#&gt;  language en</span></span>
+<span><span class="co">#&gt;  collate  en_AU.UTF-8</span></span>
+<span><span class="co">#&gt;  ctype    en_AU.UTF-8</span></span>
+<span><span class="co">#&gt;  tz       Etc/UTC</span></span>
+<span><span class="co">#&gt;  date     2026-03-05</span></span>
+<span><span class="co">#&gt;  pandoc   3.4 @ /usr/lib/rstudio-server/bin/quarto/bin/tools/x86_64/ (via rmarkdown)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package      </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version   </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
+<span><span class="co">#&gt;  bslib           0.9.0      <span style="color: #555555;">2025-01-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
+<span><span class="co">#&gt;  cachem          1.1.0      <span style="color: #555555;">2024-05-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
+<span><span class="co">#&gt;  class           7.3-23     <span style="color: #555555;">2025-01-01</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.4.2)</span></span></span>
+<span><span class="co">#&gt;  classInt        0.4-11     <span style="color: #555555;">2025-01-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
+<span><span class="co">#&gt;  cli             3.6.5      <span style="color: #555555;">2025-04-23</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  codetools       0.2-19     <span style="color: #555555;">2023-02-01</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.2.2)</span></span></span>
+<span><span class="co">#&gt;  DBI             1.2.3      <span style="color: #555555;">2024-06-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.1)</span></span></span>
+<span><span class="co">#&gt;  desc            1.4.3      <span style="color: #555555;">2023-12-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
+<span><span class="co">#&gt;  digest          0.6.39     <span style="color: #555555;">2025-11-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  e1071           1.7-17     <span style="color: #555555;">2025-12-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  evaluate        1.0.5      <span style="color: #555555;">2025-08-27</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  fastmap         1.2.0      <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.0)</span></span></span>
+<span><span class="co">#&gt;  fs              1.6.6      <span style="color: #555555;">2025-04-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
+<span><span class="co">#&gt;  geographiclib   <span style="color: #BB00BB; font-weight: bold;">0.4.9001  </span> <span style="color: #555555;">2026-02-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  htmltools       0.5.9      <span style="color: #555555;">2025-12-04</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  jquerylib       0.1.4      <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
+<span><span class="co">#&gt;  jsonlite        2.0.0      <span style="color: #555555;">2025-03-27</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
+<span><span class="co">#&gt;  KernSmooth      2.23-26    <span style="color: #555555;">2025-01-01</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.4.2)</span></span></span>
+<span><span class="co">#&gt;  knitr           1.51       <span style="color: #555555;">2025-12-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  lifecycle       1.0.5      <span style="color: #555555;">2026-01-08</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  lwgeom          0.2-14     <span style="color: #555555;">2024-02-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  magrittr        2.0.4      <span style="color: #555555;">2025-09-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  memoise         2.0.1      <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
+<span><span class="co">#&gt;  otel            0.2.0      <span style="color: #555555;">2025-08-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  pkgdown         2.0.7      <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
+<span><span class="co">#&gt;  proxy           0.4-29     <span style="color: #555555;">2025-12-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  purrr           1.2.1      <span style="color: #555555;">2026-01-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  R6              2.6.1      <span style="color: #555555;">2025-02-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.4.2)</span></span></span>
+<span><span class="co">#&gt;  ragg            1.4.0      <span style="color: #555555;">2025-04-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  Rcpp            1.1.1      <span style="color: #555555;">2026-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  rlang           1.1.7      <span style="color: #555555;">2026-01-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  rmarkdown       2.30       <span style="color: #555555;">2025-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  rstudioapi      0.18.0     <span style="color: #555555;">2026-01-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  s2              1.1.9      <span style="color: #555555;">2025-05-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
+<span><span class="co">#&gt;  sass            0.4.10     <span style="color: #555555;">2025-04-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.0)</span></span></span>
+<span><span class="co">#&gt;  sessioninfo     1.2.2      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
+<span><span class="co">#&gt;  sf            * 1.0-25     <span style="color: #555555;">2026-02-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  systemfonts     1.2.3      <span style="color: #555555;">2025-04-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  terra         * 1.8-97     <span style="color: #555555;">2026-02-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span></span>
+<span><span class="co">#&gt;  textshaping     0.3.7      <span style="color: #555555;">2023-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
+<span><span class="co">#&gt;  units           1.0-0      <span style="color: #555555;">2025-10-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  vctrs           0.7.1      <span style="color: #555555;">2026-01-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.5.2)</span></span></span>
+<span><span class="co">#&gt;  wk              <span style="color: #BB00BB; font-weight: bold;">0.9.4.9000</span> <span style="color: #555555;">2026-01-06</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">Github (paleolimbot/wk@c4c68b1)</span></span></span>
+<span><span class="co">#&gt;  xfun            0.55       <span style="color: #555555;">2025-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt;  yaml            2.3.12     <span style="color: #555555;">2025-12-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.5.1)</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [1] /perm_storage/home/mdsumner/R/x86_64-pc-linux-gnu-library/4.5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [2] /usr/local/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [3] /usr/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [4] /usr/lib/R/library</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre></div>
 <hr>
 <p><em>Code from these gists:</em></p>
 <ul>
