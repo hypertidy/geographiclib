@@ -1,6 +1,8 @@
 ---
 title: "Three numbers, one polygon"
 output: rmarkdown::html_vignette
+pkgdown:
+  as_is: true
 vignette: >
   %\VignetteIndexEntry{Three numbers, one polygon}
   %\VignetteEngine{knitr::rmarkdown}

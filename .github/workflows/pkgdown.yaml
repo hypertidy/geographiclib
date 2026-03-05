@@ -12,10 +12,6 @@ name: pkgdown.yaml
 
 permissions: read-all
 
-concurrency:
-     group: ${{ github.workflow }}-${{ github.ref }}
-     cancel-in-progress: true
-
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
@@ -41,11 +37,7 @@ jobs:
           needs: website
 
       - name: Build site
-        run: |
-          pkgdown::build_home()
-          pkgdown::build_reference()
-          pkgdown::build_news()
-          pkgdown::build_redirects()
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
