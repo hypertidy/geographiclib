@@ -188,9 +188,9 @@ In st_voronoi.sfc(st_geometry(x), st_sfc(envelope), dTolerance,  :
 
 When seeing warnings like this you can wonder "what does correctly" mean here? As we've seen
 there is more than one version of "correct" because that depends on what you intend to do 
-and purpose of your task. A function should simply do what it advertises and (ideally) be consistent within its own context. Declarations of what is correct without significantly more context are specious, at best. 
+and purpose of your task. A function should simply do what it advertises and (ideally) be consistent within its own context. Declarations of what is correct without significantly more context are pretty problematic.
 
-terra also says it could be wrong which is a fairer assessment in my opinion. What's missing us a ckear community guide on navigating the ecosystem of tools.
+terra also says it could be wrong which is a fairer assessment in my opinion. What's missing is a ckear community guide on navigating the ecosystem of tools.
 
 ## Versions
 
