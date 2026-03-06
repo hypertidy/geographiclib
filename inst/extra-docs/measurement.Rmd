@@ -190,6 +190,8 @@ When seeing warnings like this you can wonder "what does correctly" mean here? A
 there is more than one version of "correct" because that depends on what you intend to do 
 and purpose of your task. A function should simply do what it advertises and (ideally) be consistent within its own context. Declarations of what is correct without significantly more context are specious, at best. 
 
+terra also says it could be wrong which is a fairer assessment in my opinion. What's missing us a ckear community guide on navigating the ecosystem of tools.
+
 ## Versions
 
 ```{r session}
